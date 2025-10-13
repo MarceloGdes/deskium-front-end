@@ -1,0 +1,66 @@
+<div class="container-fluid h-100">
+  <div class="row h-100 pe-0">
+    <div class="col-lg-7 col-xl-8 d-md-flex align-items-center justify-content-center col-ilustracao">
+      <img src="assets/images/login/undraw_group-chat_4xw0.svg" alt="Ilustração" style="max-width: 80%;" />
+    </div>
+
+    <!-- Coluna direita com login -->
+    <div class="col-lg-5 col-xl-4 d-flex align-items-center justify-content-center p-0">
+      <div
+        class="login-card rounded-4 h-100 w-100 d-flex flex-column justify-content-center align-items-center p-5 w-100">
+        <div class="mb-4">
+          <h1 class="fs-1 mb-2">Deskium</h1>
+          <h4 class="fw-bold text-center mb-1">Bem-vindo de volta</h4>
+          <p class="text-muted text-center">Faça login para continuar</p>
+        </div>
+
+
+
+        <form (ngSubmit)="onLogin()" class="w-100">
+          <label for="email" class="form-label">E-mail</label>
+          <div class="mb-3 input-group">
+            <span class="input-group-text border-end-0">
+              <span class="material-symbols-outlined">mail</span>
+            </span>
+            <input type="email"
+                   class="form-control"
+                   id="email"
+                   placeholder="seuemail@email.com"
+                   name="email"
+                   [(ngModel)]="enteredEmail" />
+          </div>
+
+          <label for="password" class="form-label">Senha</label>
+          <div class="mb-4 input-group">
+            <span class="input-group-text border-end-0">
+              <span class="material-symbols-outlined">lock</span>
+            </span>
+            <input type="password"
+                   class="form-control"
+                   id="senha"
+                   placeholder="••••••••"
+                   name="senha"
+                   [(ngModel)]="enteredSenha" />
+          </div>
+          <!-- Mensagem de erro -->
+          @if (errorMessage) {
+            <div class="alert alert-warning w-100 mb-3" role="alert">
+              {{ errorMessage }}
+            </div>
+          }
+          <button type="submit"
+                  class="btn btn-login w-100 fw-semibold">
+            @if (isLoading){
+              Entrando...
+            } @else {
+              Entrar
+            }
+          </button>
+          <div class="text-center mt-3">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#modalRecuperacao">Esqueci minha senha</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
