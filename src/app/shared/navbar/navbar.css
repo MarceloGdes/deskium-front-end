@@ -1,0 +1,30 @@
+.navbar {
+  background-color: var(--space-cadet);
+}
+
+.menu-icon {
+  color: var(--antiflash-white);
+}
+
+.logo {
+  font-family: "Funnel Display", sans-serif;
+  color: var(--antiflash-white);
+}
+
+.nav-link.active {
+  background-color: var(--oxford-blue) !important;
+  color: var(--antiflash-white);
+}
+
+.nav-link {
+  color: var(--antiflash-white);
+}
+
+.nav-link:hover {
+  color: var(--verdigris);
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  border-radius: 5px;
+}

@@ -7,7 +7,7 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
+small, strike, sub, sup, tt, var,
 b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
@@ -60,6 +60,22 @@ table {
   --shadow: 0 4px 18px rgba(2, 8, 23, 0.06);
   --card-border-radius: 10px;
 
+}
+
+.ql-toolbar.ql-snow {
+  padding: .375rem .75rem;
+  border-radius: var(--bs-border-radius);
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ql-container.ql-snow {
+  border-top: none;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  min-height: 10em;
+  max-height: 25em;
+  overflow: auto;
 }
 
 * {

@@ -48,13 +48,15 @@
               {{ errorMessage }}
             </div>
           }
-          <button type="submit"
-                  class="btn btn-login w-100 fw-semibold">
-            @if (isLoading){
-              Entrando...
-            } @else {
-              Entrar
-            }
+          <button
+            type="submit"
+            class="btn btn-login w-100 fw-semibold"
+            [disabled]="isLoading">
+              @if (isLoading){
+                Entrando...
+              } @else {
+                Entrar
+              }
           </button>
           <div class="text-center mt-3">
             <a href="#" data-bs-toggle="modal" data-bs-target="#modalRecuperacao">Esqueci minha senha</a>

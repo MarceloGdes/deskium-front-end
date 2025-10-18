@@ -1,7 +1,9 @@
 import {Component, inject} from '@angular/core';
 import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder,FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from './auth/auth-service';
+import {AuthService} from './auth/auth.service';
+import {Router} from '@angular/router';
+import {routes} from '../app.routes';
 
 
 @Component({
@@ -21,6 +23,7 @@ export class Login {
   enteredSenha = '';
 
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   onLogin() {
     this.isLoading = true;
@@ -30,15 +33,17 @@ export class Login {
         email: this.enteredEmail,
         senha: this.enteredSenha
       })
+      //Fluxo assyncrono, semelhante ao promisse. Nativo do http client do angular
+      //.subscribe executa o Observable retornado pelo metodo login do authservice
       .subscribe({
         next: (response) => {
-          console.log('Login realizado com sucesso', response);
-          // Redirecionar para dashboard ou página principal
+          this.router.navigate(['/tickets']);
         },
         error: (error) => {
-          this.errorMessage = error.message || 'Erro ao fazer login. Tente novamente.';
-          this.isLoading = false;
-        }
+          this.errorMessage = error.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+          this.isLoading = false
+        },
+        complete: () => {this.isLoading = false}
       });
   }
 }
