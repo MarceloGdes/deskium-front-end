@@ -11,6 +11,8 @@ import {Categoria} from '../../categorias/categoria.model';
 import {TicketService} from '../ticket.service';
 import {SolicitanteService} from '../../solicitantes/solicitante.service';
 import {Solicitante} from '../../solicitantes/solicitante.model';
+import {ArquivoService} from '../../arquivos/arquivo.service';
+import {Arquivo} from '../../arquivos/arquivo.model';
 
 @Component({
   selector: 'app-new-ticket',
@@ -28,6 +30,7 @@ export class NewTicket {
   private categoriaService = inject(CategoriaService);
   private ticketService = inject(TicketService);
   private solicitanteService = inject(SolicitanteService);
+  private arquivoService = inject(ArquivoService);
 
   enteredDescricao = "";
   enteredTitulo = "";
@@ -37,24 +40,41 @@ export class NewTicket {
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
   solicitante?: Solicitante;
+  anexos: File[] = [];
+  errosArquivos: string[] = [];
 
   constructor() {
-    this.loadMotivos();
-    this.loadCategorias();
-    this.loadSolicitante();
+     this.loadMotivos();
+     this.loadCategorias();
+     this.loadSolicitante();
   }
 
   onSubmit() {
     this.isLoading = true;
+    let arquivos: Arquivo[] = []
 
-    console.log(this.selectedMotivo);
-    console.log(this.selectedCategoria);
+    // console.log(this.selectedMotivo);
+    // console.log(this.selectedCategoria);
+    // console.log(this.anexos)
+
+    for(let file of this.anexos){
+      this.arquivoService.uploadFile(file)
+        .subscribe({
+          next: response => {
+            arquivos.push(response);
+          },
+          error: err => {
+            console.log(err)
+          }
+        })
+    }
 
     this.ticketService.create({
       titulo: this.enteredTitulo,
       descricaoHtml: this.enteredDescricao,
       motivoId: this.selectedMotivo?.id,
-      categoriaId: this.selectedCategoria?.id
+      categoriaId: this.selectedCategoria?.id,
+      arquivos: arquivos
     })
       .subscribe({
         next: response =>{
@@ -73,7 +93,6 @@ export class NewTicket {
       .subscribe({
         next: (response) => {
           this.motivos = response;
-          console.log(this.motivos);
         },
         error: (error) => {console.log(error);}
       })
@@ -84,7 +103,6 @@ export class NewTicket {
       .subscribe({
         next: (response) => {
           this.categorias = response;
-          console.log(this.categorias);
         },
         error: (error) => {console.log(error);}
       })
@@ -97,5 +115,34 @@ export class NewTicket {
           this.solicitante = response;
         }
       })
+  }
+
+  onFilesSelected(event: Event) {
+    //Type Assertion - Declarando que esse evento generico vé um input de arquivo.
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+
+    const maxSize = 5 * 1024 * 1024; // 5 MB
+    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf'];
+
+
+    for (let file of input.files) {
+      if (!tiposPermitidos.includes(file.type)) {
+        this.errosArquivos.push(`O arquivo "${file.name}" não é um tipo permitido.`);
+        return;
+      }
+
+      if (file.size > maxSize) {
+        this.errosArquivos.push(`O arquivo "${file.name}" excede o limite de 5MB.`);
+        return;
+      }
+
+      this.anexos.push(file)
+    }
+
+  }
+
+  removerAnexo(file: File) {
+    this.anexos = this.anexos.filter(f => f !== file);
   }
 }

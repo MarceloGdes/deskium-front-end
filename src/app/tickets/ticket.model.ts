@@ -6,7 +6,12 @@ export interface CreateTicketRequest {
   titulo: string,
   motivoId: number | undefined,
   categoriaId: number | undefined,
-  descricaoHtml: string
+  descricaoHtml: string,
+  arquivos: Arquivo[] | undefined
+}
+
+export interface Arquivo{
+  fileName: string
 }
 
 export interface Ticket {
