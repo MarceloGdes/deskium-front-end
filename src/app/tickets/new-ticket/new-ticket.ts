@@ -5,7 +5,6 @@ import {FormsModule} from '@angular/forms';
 import {QuillModule} from 'ngx-quill';
 import {Motivo} from '../../motivos/motivo.model';
 import {MotivoService} from '../../motivos/motivo.service';
-import {Observable} from 'rxjs';
 import {CategoriaService} from '../../categorias/categoria.service';
 import {Categoria} from '../../categorias/categoria.model';
 import {TicketService} from '../ticket.service';
@@ -13,6 +12,7 @@ import {SolicitanteService} from '../../solicitantes/solicitante.service';
 import {Solicitante} from '../../solicitantes/solicitante.model';
 import {ArquivoService} from '../../arquivos/arquivo.service';
 import {Arquivo} from '../../arquivos/arquivo.model';
+import {EMPTY} from 'rxjs';
 
 @Component({
   selector: 'app-new-ticket',
@@ -41,7 +41,7 @@ export class NewTicket {
   selectedCategoria?: Categoria;
   solicitante?: Solicitante;
   anexos: File[] = [];
-  errosArquivos: string[] = [];
+  errorMessage = '';
 
   constructor() {
      this.loadMotivos();
@@ -51,6 +51,7 @@ export class NewTicket {
 
   onSubmit() {
     this.isLoading = true;
+    this.errorMessage = '';
     let arquivos: Arquivo[] = []
 
     // console.log(this.selectedMotivo);
@@ -64,28 +65,32 @@ export class NewTicket {
             arquivos.push(response);
           },
           error: err => {
-            console.log(err)
+            this.errorMessage = err.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+            this.isLoading = false
+            return
           }
         })
     }
 
-    this.ticketService.create({
-      titulo: this.enteredTitulo,
-      descricaoHtml: this.enteredDescricao,
-      motivoId: this.selectedMotivo?.id,
-      categoriaId: this.selectedCategoria?.id,
-      arquivos: arquivos
-    })
-      .subscribe({
-        next: response =>{
-          console.log(response)
-          this.isLoading = false;
-        },
-        error: error=> {
-          console.log(error)
-          this.isLoading = false;
-        }
+    if(arquivos.length == this.anexos.length){
+      this.ticketService.create({
+        titulo: this.enteredTitulo,
+        descricaoHtml: this.enteredDescricao,
+        motivoId: this.selectedMotivo?.id,
+        categoriaId: this.selectedCategoria?.id,
+        arquivos: arquivos
       })
+        .subscribe({
+          next: response =>{
+            console.log(response)
+            this.isLoading = false;
+          },
+          error: error=> {
+            this.errorMessage = error.message;
+            this.isLoading = false
+          }
+        })
+    }
   }
 
   private loadMotivos() {
@@ -94,7 +99,9 @@ export class NewTicket {
         next: (response) => {
           this.motivos = response;
         },
-        error: (error) => {console.log(error);}
+        error: (error) => {
+          this.errorMessage = error.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+        }
       })
   }
 
@@ -104,7 +111,9 @@ export class NewTicket {
         next: (response) => {
           this.categorias = response;
         },
-        error: (error) => {console.log(error);}
+        error: (error) => {
+          this.errorMessage = error.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+        }
       })
   }
 
@@ -118,7 +127,7 @@ export class NewTicket {
   }
 
   onFilesSelected(event: Event) {
-    //Type Assertion - Declarando que esse evento generico vé um input de arquivo.
+    //Type Assertion - Declarando que esse evento generico vem de um input de arquivo.
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
 
@@ -128,12 +137,12 @@ export class NewTicket {
 
     for (let file of input.files) {
       if (!tiposPermitidos.includes(file.type)) {
-        this.errosArquivos.push(`O arquivo "${file.name}" não é um tipo permitido.`);
+        this.errorMessage = `O arquivo "${file.name}" não é um tipo permitido.`;
         return;
       }
 
       if (file.size > maxSize) {
-        this.errosArquivos.push(`O arquivo "${file.name}" excede o limite de 5MB.`);
+        this.errorMessage = `O arquivo "${file.name}" excede o limite de 5MB.`;
         return;
       }
 

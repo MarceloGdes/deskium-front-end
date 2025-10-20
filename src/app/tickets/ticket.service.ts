@@ -17,17 +17,29 @@ export class TicketService {
   }
 
   private handleError(error: any): Observable<never>{
-    let errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
+    let errorMessage = ''
 
     switch (error.status) {
       case 400:
-        errorMessage = error.error.errorList.join(', ');
+        let errors = [];
+
+        for (let errMsg of error.error?.errorList) {
+          errMsg = errMsg
+            .replace('motivoId', 'Motivo')
+            .replace('descricaoHtml', 'Descrição')
+            .replace('titulo', 'Título');
+
+          errors.push(errMsg);
+        }
+
+        errorMessage = errors.join('; ');
+
         break;
       case 500:
         errorMessage = 'Erro no servidor. Tente mais tarde.';
         break;
       default:
-        errorMessage = error.error?.message || errorMessage;
+        errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
     }
 
     return throwError(() => ({message: errorMessage}));

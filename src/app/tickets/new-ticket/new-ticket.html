@@ -112,44 +112,6 @@
             </quill-editor>
           </div>
           <div class="border-top pt-3">
-<!--            <div class="mb-3 d-flex">-->
-<!--              <div>-->
-<!--                <span class="form-label">Arquivos</span>-->
-<!--                <div class="d-flex flex-wrap gap-2">-->
-<!--                      <span-->
-<!--                        class="badge bg-light text-dark border d-flex align-itens-center gap-2 align-items-center"-->
-<!--                      >-->
-<!--                        <span>print.png</span>-->
-<!--                        <button-->
-<!--                          type="button"-->
-<!--                          class="btn-close btn-delete-attachment"-->
-<!--                          aria-label="Close"-->
-<!--                        ></button>-->
-<!--                      </span>-->
-<!--                  <span-->
-<!--                    class="badge bg-light text-dark border d-flex align-itens-center gap-2 align-items-center"-->
-<!--                  >-->
-<!--                        <span>print.png</span>-->
-<!--                        <button-->
-<!--                          type="button"-->
-<!--                          class="btn-close btn-delete-attachment"-->
-<!--                          aria-label="Close"-->
-<!--                        ></button>-->
-<!--                      </span>-->
-<!--                  <span-->
-<!--                    class="badge bg-light text-dark border d-flex align-itens-center gap-2 align-items-center"-->
-<!--                  >-->
-<!--                        <span>print.png</span>-->
-<!--                        <button-->
-<!--                          type="button"-->
-<!--                          class="btn-close btn-delete-attachment"-->
-<!--                          aria-label="Close"-->
-<!--                        ></button>-->
-<!--                      </span>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-
             <div class="mb-3 d-flex">
               <div>
                 <span class="form-label">Arquivos</span>
@@ -176,6 +138,13 @@
               </div>
             </div>
 
+            <!-- Mensagem de erro -->
+            @if (errorMessage) {
+              <div class="alert alert-danger w-100 mb-3" role="alert">
+                <h4 class="mb-1 fw-bold">Erro:</h4>
+                {{ errorMessage }}
+              </div>
+            }
             <div class="d-flex justify-content-between mt-3">
               <label for="file-upload" class="btn btn-secondary d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">upload</span>
