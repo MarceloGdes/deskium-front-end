@@ -1,7 +1,9 @@
-import {Component, Input} from '@angular/core';
-import {NgbNav, NgbNavItem, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
+import {Component, inject, Input, TemplateRef} from '@angular/core';
+import {NgbNav, NgbNavItem, NgbNavOutlet, NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
 import {TabModel} from './tab.model';
 import {NgClass} from '@angular/common';
+import {RouterLink, RouterLinkActive} from '@angular/router';
+import {AuthService} from '../../pages/login/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +11,9 @@ import {NgClass} from '@angular/common';
     NgbNavItem,
     NgbNav,
     NgbNavOutlet,
-    NgClass
+    NgClass,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
@@ -20,7 +24,10 @@ export class Navbar {
   counter = this.tabs.length + 1;
   active = 1;
 
-  close(event: MouseEvent, toRemove: number) {
+  private offcanvasService = inject(NgbOffcanvas);
+  private authService = inject(AuthService);
+
+  closeTab(event: MouseEvent, toRemove: number) {
     this.tabs = this.tabs.filter((tab) => tab.id !== toRemove);
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -31,4 +38,13 @@ export class Navbar {
   //   this.tabs.push(this.tab);
   //   event.preventDefault();
   // }
+  openSidebar(sidebar: TemplateRef<any>) {
+    this.offcanvasService.open(sidebar, {
+      panelClass: 'offcanvas'
+    });
+  }
+
+  onLogout(){
+    this.authService.logout();
+  }
 }

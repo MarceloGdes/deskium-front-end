@@ -7,7 +7,7 @@ import {Motivo} from '../../motivos/motivo.model';
 import {MotivoService} from '../../motivos/motivo.service';
 import {CategoriaService} from '../../categorias/categoria.service';
 import {Categoria} from '../../categorias/categoria.model';
-import {TicketService} from '../ticket.service';
+import {TicketService} from '../../tickets/ticket.service';
 import {SolicitanteService} from '../../solicitantes/solicitante.service';
 import {Solicitante} from '../../solicitantes/solicitante.model';
 import {ArquivoService} from '../../arquivos/arquivo.service';
@@ -17,7 +17,6 @@ import {EMPTY} from 'rxjs';
 @Component({
   selector: 'app-new-ticket',
   imports: [
-    Navbar,
     FormsModule,
     QuillModule
   ],

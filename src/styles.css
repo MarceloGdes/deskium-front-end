@@ -62,6 +62,33 @@ table {
 
 }
 
+/* Sidebar */
+.offcanvas {
+  background: var(--oxford-blue);
+  color: var(--antiflash-white);
+}
+
+.offcanvas .logo {
+  font-weight: 800;
+  font-size: 1.7rem;
+}
+
+.offcanvas .btn {
+  text-align: left;
+  color: var(--antiflash-white);
+  border: none;
+}
+
+.offcanvas .btn:hover {
+  background: var(--space-cadet);
+  transition: background 0.5s;
+}
+
+.offcanvas .btn.active {
+  background: var(--space-cadet);
+}
+
+
 .ql-toolbar.ql-snow {
   padding: .375rem .75rem;
   border-radius: var(--bs-border-radius);
