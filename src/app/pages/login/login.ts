@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder,FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from './auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 import {Router} from '@angular/router';
 import {routes} from '../../app.routes';
 

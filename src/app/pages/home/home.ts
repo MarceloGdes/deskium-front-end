@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {Navbar} from '../../shared/navbar/navbar';
+import {Navbar} from '../../layout/navbar/navbar';
 
 @Component({
   selector: 'app-home',
@@ -13,4 +13,10 @@ import {Navbar} from '../../shared/navbar/navbar';
 })
 export class Home {
 
+  constructor() {
+  }
+
+  private loadUser(){
+
+  }
 }

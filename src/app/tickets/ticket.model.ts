@@ -1,6 +1,7 @@
 import {Motivo} from '../motivos/motivo.model';
 import {Categoria} from '../categorias/categoria.model';
 import {Solicitante} from '../solicitantes/solicitante.model';
+import {Arquivo} from '../arquivos/arquivo.model';
 
 export interface CreateTicketRequest {
   titulo: string,
@@ -8,10 +9,6 @@ export interface CreateTicketRequest {
   categoriaId: number | undefined,
   descricaoHtml: string,
   arquivos: Arquivo[] | undefined
-}
-
-export interface Arquivo{
-  fileName: string
 }
 
 export interface Ticket {

@@ -9,7 +9,7 @@ export class SolicitanteService{
 
   constructor(private client: HttpClient) {}
 
-  getLoggedSolicitante(): Observable<any>{
+  getLoggedSolicitante(): Observable<Solicitante>{
     return this.client.get<Solicitante>(`${this.apiUrl}/me`)
       .pipe(
         catchError(error => this.handleError(error))

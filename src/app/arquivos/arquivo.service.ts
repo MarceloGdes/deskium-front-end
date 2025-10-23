@@ -9,13 +9,16 @@ export class ArquivoService {
 
   constructor(private client: HttpClient) {}
 
-  uploadFile(file: File): Observable<any> {
+  uploadFile(files: File[]): Observable<Arquivo[]> {
     const formData = new FormData();
 
-    // enviando como formData
-    formData.append('file', file);
+    // enviando os arquivo no como multipart/form-data
+    // Adicionando cada arquivo com a chave "file"
+    files.forEach(file => {
+      formData.append('file', file);
+    })
 
-    return this.client.post<Arquivo>(this.apiUrl, formData)
+    return this.client.post<Arquivo[]>(this.apiUrl, formData)
       .pipe(
         catchError(error => this.handleError(error))
       )

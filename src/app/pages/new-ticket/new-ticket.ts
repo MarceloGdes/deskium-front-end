@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
-import {Navbar} from '../../shared/navbar/navbar';
 import {FormsModule} from '@angular/forms';
+
 //wrapper ngx-quill, que faz a integração Angular + Quill Editor
 import {QuillModule} from 'ngx-quill';
 import {Motivo} from '../../motivos/motivo.model';
@@ -12,7 +12,7 @@ import {SolicitanteService} from '../../solicitantes/solicitante.service';
 import {Solicitante} from '../../solicitantes/solicitante.model';
 import {ArquivoService} from '../../arquivos/arquivo.service';
 import {Arquivo} from '../../arquivos/arquivo.model';
-import {EMPTY} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-new-ticket',
@@ -30,10 +30,11 @@ export class NewTicket {
   private ticketService = inject(TicketService);
   private solicitanteService = inject(SolicitanteService);
   private arquivoService = inject(ArquivoService);
+  private router = inject(Router);
 
   enteredDescricao = "";
   enteredTitulo = "";
-  isLoading: any;
+  isLoading = false;
   motivos: Motivo[] = [];
   categorias: Categoria[] = [];
   selectedMotivo?: Motivo;
@@ -43,25 +44,36 @@ export class NewTicket {
   errorMessage = '';
 
   constructor() {
-     this.loadMotivos();
-     this.loadCategorias();
-     this.loadSolicitante();
+    this.loadMotivos();
+    this.loadCategorias();
+    this.loadSolicitante();
   }
 
   onSubmit() {
-    this.isLoading = true;
     this.errorMessage = '';
-    let arquivos: Arquivo[] = []
 
-    // console.log(this.selectedMotivo);
-    // console.log(this.selectedCategoria);
-    // console.log(this.anexos)
+    if(this.selectedMotivo === undefined){
+      this.errorMessage = 'Motivo não selecionado';
+      return;
+    }
 
-    for(let file of this.anexos){
-      this.arquivoService.uploadFile(file)
+    if(this.enteredTitulo === ""){
+      this.errorMessage = 'Titulo não preenchido';
+      return;
+    }
+
+    if(this.enteredDescricao === ""){
+      this.errorMessage = 'Descrição não preenchida';
+      return;
+    }
+
+    this.isLoading = true;
+
+    if(this.anexos.length > 0){
+      this.arquivoService.uploadFile(this.anexos)
         .subscribe({
           next: response => {
-            arquivos.push(response);
+            this.saveTicket(response);
           },
           error: err => {
             this.errorMessage = err.message || 'Ocorreu um erro. Tente novamente mais tarde.';
@@ -69,27 +81,30 @@ export class NewTicket {
             return
           }
         })
+    }else {
+      this.saveTicket();
     }
+  }
 
-    if(arquivos.length == this.anexos.length){
-      this.ticketService.create({
-        titulo: this.enteredTitulo,
-        descricaoHtml: this.enteredDescricao,
-        motivoId: this.selectedMotivo?.id,
-        categoriaId: this.selectedCategoria?.id,
-        arquivos: arquivos
+  private saveTicket(fileNames?: Arquivo[] ){
+    this.ticketService.create({
+      titulo: this.enteredTitulo,
+      descricaoHtml: this.enteredDescricao,
+      motivoId: this.selectedMotivo?.id,
+      categoriaId: this.selectedCategoria?.id,
+      arquivos: fileNames
+    })
+      .subscribe({
+        next: response =>{
+          console.log(response)
+          this.isLoading = false;
+          this.router.navigate(['/opened']);
+        },
+        error: error=> {
+          this.errorMessage = error.message;
+          this.isLoading = false
+        }
       })
-        .subscribe({
-          next: response =>{
-            console.log(response)
-            this.isLoading = false;
-          },
-          error: error=> {
-            this.errorMessage = error.message;
-            this.isLoading = false
-          }
-        })
-    }
   }
 
   private loadMotivos() {

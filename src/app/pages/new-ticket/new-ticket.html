@@ -1,3 +1,12 @@
+<!-- Overlay de carregamento -->
+@if(isLoading){
+  <div class="loading-overlay">
+    <div class="spinner-border text-primary">
+    </div>
+    <p class="mt-3 text-primary fw-semibold">Carregando...</p>
+  </div>
+}
+
 <div class="row g-3">
   <!-- Card Solicitante -->
   <div class="col-md-4">
@@ -42,8 +51,15 @@
   </div>
 
   <!-- Card Ticket -->
-  <div class="col-md-8">
+  <div class="col-md-8" >
     <div class="card p-3">
+      <!-- Mensagem de erro -->
+      @if (errorMessage) {
+        <div class="alert alert-danger w-100 mb-3" role="alert">
+          <h4 class="mb-1 fw-bold">Erro:</h4>
+          {{ errorMessage }}
+        </div>
+      }
       <h2 class="fw-semibold fs-5 mb-4">Dados do Ticket</h2>
 
       <form (ngSubmit)="onSubmit()">
@@ -100,8 +116,9 @@
             placeholder="O que você precisa?"
             [modules]="{
               toolbar: [
-                ['bold', 'italic', 'underline', 'image'],
+                ['bold', 'italic', 'underline'],
               ],
+              clipboard: false
             }"
             theme="snow">
           </quill-editor>
@@ -133,13 +150,7 @@
             </div>
           </div>
 
-          <!-- Mensagem de erro -->
-          @if (errorMessage) {
-            <div class="alert alert-danger w-100 mb-3" role="alert">
-              <h4 class="mb-1 fw-bold">Erro:</h4>
-              {{ errorMessage }}
-            </div>
-          }
+
           <div class="d-flex justify-content-between mt-3">
             <label for="file-upload" class="btn btn-secondary d-flex align-items-center gap-2">
               <span class="material-symbols-outlined">upload</span>
@@ -152,6 +163,7 @@
               hidden
               multiple
               accept=".png,.jpg,.jpeg,.pdf"
+              [disabled]="isLoading"
               (change)="onFilesSelected($event)"/>
 
             <button

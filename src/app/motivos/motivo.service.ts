@@ -10,7 +10,7 @@ export class MotivoService {
   constructor(private client: HttpClient) {
   }
 
-  getAll(): Observable<any>{
+  getAll(): Observable<Motivo[]>{
     return this.client.get<Motivo[]>(this.apiUrl)
       .pipe(
         catchError(error => this.handleError(error))

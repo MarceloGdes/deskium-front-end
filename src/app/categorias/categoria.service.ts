@@ -10,7 +10,7 @@ export class CategoriaService{
   constructor(private client: HttpClient) {
   }
 
-  getAll(): Observable<any>{
+  getAll(): Observable<Categoria[]>{
     return this.client.get<Categoria[]>(this.apiUrl)
       .pipe(
         catchError(error => this.handleError(error))

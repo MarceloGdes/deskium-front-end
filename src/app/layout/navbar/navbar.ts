@@ -3,7 +3,7 @@ import {NgbNav, NgbNavItem, NgbNavOutlet, NgbOffcanvas} from '@ng-bootstrap/ng-b
 import {TabModel} from './tab.model';
 import {NgClass} from '@angular/common';
 import {RouterLink, RouterLinkActive} from '@angular/router';
-import {AuthService} from '../../pages/login/auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',

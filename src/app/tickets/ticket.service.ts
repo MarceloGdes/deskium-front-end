@@ -9,8 +9,8 @@ export class TicketService {
 
   constructor(private client: HttpClient) {}
 
-  create(request: CreateTicketRequest): Observable<any>{
-    return this.client.post(this.apiUrl, request)
+  create(request: CreateTicketRequest): Observable<Ticket>{
+    return this.client.post<Ticket>(this.apiUrl, request)
     .pipe(
       catchError(err => this.handleError(err))
     )

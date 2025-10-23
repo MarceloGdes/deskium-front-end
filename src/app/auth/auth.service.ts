@@ -9,8 +9,7 @@ export class AuthService {
   private apiUrl = "http://localhost:8080/auth";
   private router = inject(Router);
   //Usando o client nativo do Angular para fazer as requisições
-  constructor(private client: HttpClient) {
-  }
+  private client = inject(HttpClient);
 
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.client.post<LoginResponse>(`${this.apiUrl}/login`, request)
@@ -18,7 +17,6 @@ export class AuthService {
         tap(response => {
           if(response.token) {
             this.saveToken(response.token);
-            console.log(this.getToken());
           }
         }),
         //Interrompe o fluxo e entrega um Observable de erro
@@ -45,7 +43,7 @@ export class AuthService {
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Ocorreu um erro. Tente novamente mais tarde.';
 
-    if (error.error?.errorList?.length) {
+    if (error.error?.errorList?.length > 0) {
       switch (error.status) {
         case 400:
           errorMessage = error.error.errorList.join(', ');
