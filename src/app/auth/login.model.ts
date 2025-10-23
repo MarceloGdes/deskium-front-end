@@ -7,6 +7,8 @@ export interface LoginResponse {
   token: string
 }
 
-export interface LoginError {
-  errorList: [string]
+export interface AuthenticatedUser {
+  nomeCompleto: string,
+  email: string,
+  tipoUsuario: string
 }

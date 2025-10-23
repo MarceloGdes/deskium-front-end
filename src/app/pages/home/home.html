@@ -1,5 +1,10 @@
+<!-- Overlay de carregamento -->
+@if(isLoading){
+  <app-loading-overlay></app-loading-overlay>
+}
+
 <app-navbar
-  [tabs]="[{id: 1, title: 'Novo ticket', content: null, closable: false}]">
+  [navItems]=navItems>
 </app-navbar>
 
 <main class="main pt-2 container-fluid">

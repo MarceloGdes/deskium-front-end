@@ -13,12 +13,14 @@ import {Solicitante} from '../../solicitantes/solicitante.model';
 import {ArquivoService} from '../../arquivos/arquivo.service';
 import {Arquivo} from '../../arquivos/arquivo.model';
 import {Router} from '@angular/router';
+import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
 
 @Component({
   selector: 'app-new-ticket',
   imports: [
     FormsModule,
-    QuillModule
+    QuillModule,
+    LoadingOverlay
   ],
   standalone: true,
   templateUrl: './new-ticket.html',
@@ -32,9 +34,13 @@ export class NewTicket {
   private arquivoService = inject(ArquivoService);
   private router = inject(Router);
 
+  isLoading = false;
+  isLoadingSolicitante = false
+  isLoadingMotivos = false
+  isLoadingCategorias = false
+
   enteredDescricao = "";
   enteredTitulo = "";
-  isLoading = false;
   motivos: Motivo[] = [];
   categorias: Categoria[] = [];
   selectedMotivo?: Motivo;
@@ -44,6 +50,12 @@ export class NewTicket {
   errorMessage = '';
 
   constructor() {
+    //Requisições são assyncronas
+
+    this.isLoadingSolicitante = true
+    this.isLoadingMotivos = true
+    this.isLoadingCategorias = true
+
     this.loadMotivos();
     this.loadCategorias();
     this.loadSolicitante();
@@ -115,6 +127,9 @@ export class NewTicket {
         },
         error: (error) => {
           this.errorMessage = error.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+        },
+        complete: () => {
+          this.isLoadingMotivos = false;
         }
       })
   }
@@ -127,6 +142,9 @@ export class NewTicket {
         },
         error: (error) => {
           this.errorMessage = error.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+        },
+        complete: () => {
+          this.isLoadingCategorias = false;
         }
       })
   }
@@ -136,6 +154,9 @@ export class NewTicket {
       .subscribe({
         next: (response) => {
           this.solicitante = response;
+        },
+        complete: () => {
+          this.isLoadingSolicitante = false;
         }
       })
   }

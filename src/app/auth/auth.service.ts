@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {LoginError, LoginRequest, LoginResponse} from './login.model';
+import {AuthenticatedUser, LoginRequest, LoginResponse} from './login.model';
 import {catchError, Observable, tap, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 
@@ -25,7 +25,11 @@ export class AuthService {
     );
   }
 
-  saveToken(token: string){
+  getAuthenticatedUser(): Observable<AuthenticatedUser> {
+    return this.client.get<AuthenticatedUser>(this.apiUrl)
+  }
+
+  private saveToken(token: string){
     localStorage.setItem('auth_token', `Bearer ${token}`);
   }
 
