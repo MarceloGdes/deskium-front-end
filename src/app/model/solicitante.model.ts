@@ -1,4 +1,4 @@
-import {Empresa} from '../empresas/empresa.model';
+import {Empresa} from './empresa.model';
 
 export interface Solicitante {
   id: number;

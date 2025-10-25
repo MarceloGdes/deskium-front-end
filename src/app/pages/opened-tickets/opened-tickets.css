@@ -1,0 +1,26 @@
+.card-table {
+  background-color: var(--antiflash-white);
+  max-height: calc(100vh - 85px);
+  overflow: hidden;
+}
+
+.card-tickets-list {
+  height: calc(100vh - 85px);
+  border: 1px solid var(--line);
+  background: var(--antiflash-white);
+  box-shadow: var(--shadow);
+}
+
+table,
+tbody,
+th,
+td {
+  background-color: var(--antiflash-white) !important;
+}
+
+table,
+tbody,
+td {
+  height: 3.7rem;
+  vertical-align: middle;
+}

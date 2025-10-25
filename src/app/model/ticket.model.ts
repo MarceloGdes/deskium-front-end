@@ -1,7 +1,8 @@
-import {Motivo} from '../motivos/motivo.model';
-import {Categoria} from '../categorias/categoria.model';
-import {Solicitante} from '../solicitantes/solicitante.model';
-import {Arquivo} from '../arquivos/arquivo.model';
+import {Motivo} from './motivo.model';
+import {Categoria} from './categoria.model';
+import {Solicitante} from './solicitante.model';
+import {Arquivo} from './arquivo.model';
+import {SubStatus} from './sub-status.model';
 
 export interface CreateTicketRequest {
   titulo: string,
@@ -13,21 +14,21 @@ export interface CreateTicketRequest {
 
 export interface Ticket {
   id: number;
-  criadoEm: string;
+  criadoEm: Date;
   titulo: string;
-  previsaoResolucao: string | null;
-  dataResolucao: string | null;
-  previsaoPrimeiraResposta: string | null;
-  dataPrimeiraResposta: string | null;
-  horasApontadas: number | null;
+  previsaoResolucao?: string;
+  dataResolucao?: string;
+  previsaoPrimeiraResposta?: string;
+  dataPrimeiraResposta?: string;
+  horasApontadas?: number;
   status: string;
   solicitante: Solicitante;
   suporte: Suporte;
   motivo: Motivo;
-  categoria: Categoria;
-  subStatus: string;
-  prioridade: string | null;
-  acoes: Acao[];
+  categoria?: Categoria;
+  subStatus: SubStatus;
+  prioridade?: string;
+  acoes?: Acao[];
 }
 
 

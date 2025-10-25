@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {AuthenticatedUser, LoginRequest, LoginResponse} from './login.model';
+import {AuthenticatedUser, LoginRequest, LoginResponse} from '../../model/login.model';
 import {catchError, Observable, tap, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 

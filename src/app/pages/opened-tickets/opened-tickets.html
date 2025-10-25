@@ -1,1 +1,150 @@
-<p>tickets-abertos works!</p>
+<!-- Overlay de carregamento -->
+@if(isLoadingTickets || isLoadingCategorias || isLoadingMotivos){
+  <app-loading-overlay></app-loading-overlay>
+}
+
+<div class="container-fluid">
+  <div class="card border-0 p-4 card-tickets-list">
+    <form class="mb-3">
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-2">
+          <label class="form-label">Número do ticket</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="0000"
+            name="numTicket"
+            [(ngModel)]="enteredNumTicket"/>
+        </div>
+        <div class="col-md-6 col-lg-2">
+          <label class="form-label">Assunto</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Assunto do ticket"
+            name="assunto"
+            [(ngModel)]="enteredAssuntoTicket"/>
+        </div>
+
+        <div class="col-md-6 col-lg-2">
+          <label class="form-label">Responsável</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nome do responsável"
+            name="responsavel"
+            [(ngModel)]="enteredResponsavel"/>
+        </div>
+
+        <div class="col-md-6 col-lg-2">
+          <label class="form-label">Sub-Status</label>
+          <select
+            class="form-select"
+            name="sub-status"
+            [(ngModel)]="selectedSubStatus">
+            @if (subStatusList?.length){
+              @for (subStatus of subStatusList; track subStatus.id){
+                <option [ngValue]="subStatus">{{ subStatus.descricao }}</option>
+              }
+            }
+          </select>
+        </div>
+
+        <div class="col-md-6 col-lg-2">
+          <label class="form-label">Motivo</label>
+          <select
+            id="motivo"
+            class="form-select"
+            name="motivo"
+            [(ngModel)]="selectedMotivo">
+            @if(motivos?.length){
+              @for (motivo of motivos; track motivo.id) {
+                <option [ngValue]="motivo">
+                  {{ motivo.descricao }}
+                </option>
+              }
+            }
+          </select>
+        </div>
+
+        <div class="col-md-6 col-lg-2">
+          <label class="form-label">Categoria</label>
+          <label for="categoria" class="form-label mb-1">Categoria</label>
+          <select
+            id="categoria"
+            class="form-select"
+            name="categoria"
+            [(ngModel)]="selectedCategoria">
+            @if(categorias?.length){
+              @for (categoria of categorias; track categoria.id) {
+                <option [ngValue]="categoria">
+                  {{ categoria.descricao }}
+                </option>
+              }
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mt-3 mb-4 flex-grow">
+        <button class="btn btn-primary d-flex justify-content-center align-items-center gap-1">
+          <span class="material-symbols-outlined fs-5">search</span>
+          <span>Filtrar</span>
+        </button>
+        <button class="btn btn-secondary d-flex justify-content-center align-items-center gap-1">
+          <span class="material-symbols-outlined fs-5">ink_eraser</span>
+          <span>Limpar Filtros</span>
+        </button>
+        <button class="btn btn-success d-flex justify-content-center align-items-center gap-1 ms-auto">
+          <span class="material-symbols-outlined fs-5">add_box</span>
+          <span>Novo Ticket</span>
+        </button>
+      </div>
+    </form>
+    <div class="card border-0 card-table">
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+          <tr>
+            <th scope="col" class="fw-medium">Ticket</th>
+            <th scope="col" class="fw-medium">Título</th>
+            <th scope="col" class="fw-medium">Sub-Status</th>
+            <th scope="col" class="fw-medium">Motivo</th>
+            <th scope="col" class="fw-medium">Categoria</th>
+            <th scope="col" class="fw-medium">Responsável</th>
+            <th scope="col" class="fw-medium">Data de Abertura</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (ticket of tickets; track ticket.id) {
+              <tr class="border-bottom">
+                <td >
+                  <a class="link-primary" href="">
+                    #{{ ticket.id }}
+                  </a>
+                </td>
+                <td >{{ ticket.titulo }}</td>
+                <td class="td-substatus">
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning text-dark': ticket.subStatus.id === 'AGUARDANDO_RETORNO',
+                      'bg-success text-white': ticket.subStatus.id === 'EM_ATENDIMENTO',
+                      'bg-primary text-white': ticket.subStatus.id === 'NOVO'
+                    }">
+                    {{ ticket.subStatus.descricao }}
+                  </span>
+                </td>
+                <td >{{ ticket.motivo.descricao }}</td>
+                <td >{{ ticket.categoria?.descricao }}</td>
+                <td >{{ ticket.suporte.nomeCompleto }}</td>
+                <!--Date pipe para formatar a data -->
+                <td >{{ ticket.criadoEm | date:'short' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

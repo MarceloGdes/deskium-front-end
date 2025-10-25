@@ -1,30 +1,23 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
-import {Arquivo} from './arquivo.model';
+import {Categoria} from '../model/categoria.model';
 
 @Injectable({providedIn: 'root'})
-export class ArquivoService {
-  private apiUrl = 'http://localhost:8080/arquivos';
+export class CategoriaService{
+  private apiUrl = 'http://localhost:8080/categorias';
 
-  constructor(private client: HttpClient) {}
+  constructor(private client: HttpClient) {
+  }
 
-  uploadFile(files: File[]): Observable<Arquivo[]> {
-    const formData = new FormData();
-
-    // enviando os arquivo no como multipart/form-data
-    // Adicionando cada arquivo com a chave "file"
-    files.forEach(file => {
-      formData.append('file', file);
-    })
-
-    return this.client.post<Arquivo[]>(this.apiUrl, formData)
+  getAll(): Observable<Categoria[]>{
+    return this.client.get<Categoria[]>(this.apiUrl)
       .pipe(
         catchError(error => this.handleError(error))
       )
   }
 
-  private handleError(error: any): Observable<never>{
+  private handleError(error: any): Observable<never> {
     let errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
 
     switch (error.status) {

@@ -1,17 +1,17 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 //wrapper ngx-quill, que faz a integração Angular + Quill Editor
 import {QuillModule} from 'ngx-quill';
-import {Motivo} from '../../motivos/motivo.model';
-import {MotivoService} from '../../motivos/motivo.service';
-import {CategoriaService} from '../../categorias/categoria.service';
-import {Categoria} from '../../categorias/categoria.model';
-import {TicketService} from '../../tickets/ticket.service';
-import {SolicitanteService} from '../../solicitantes/solicitante.service';
-import {Solicitante} from '../../solicitantes/solicitante.model';
-import {ArquivoService} from '../../arquivos/arquivo.service';
-import {Arquivo} from '../../arquivos/arquivo.model';
+import {Motivo} from '../../model/motivo.model';
+import {MotivoService} from '../../service/motivo.service';
+import {CategoriaService} from '../../service/categoria.service';
+import {Categoria} from '../../model/categoria.model';
+import {TicketService} from '../../service/ticket.service';
+import {SolicitanteService} from '../../service/solicitante.service';
+import {Solicitante} from '../../model/solicitante.model';
+import {ArquivoService} from '../../service/arquivo.service';
+import {Arquivo} from '../../model/arquivo.model';
 import {Router} from '@angular/router';
 import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
 
@@ -26,7 +26,7 @@ import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overla
   templateUrl: './new-ticket.html',
   styleUrl: './new-ticket.css'
 })
-export class NewTicket {
+export class NewTicket implements OnInit{
   private motivoService = inject(MotivoService);
   private categoriaService = inject(CategoriaService);
   private ticketService = inject(TicketService);
@@ -50,12 +50,13 @@ export class NewTicket {
   errorMessage = '';
 
   constructor() {
-    //Requisições são assyncronas
-
     this.isLoadingSolicitante = true
     this.isLoadingMotivos = true
     this.isLoadingCategorias = true
+  }
 
+  ngOnInit(): void {
+    //Requisições são assyncronas
     this.loadMotivos();
     this.loadCategorias();
     this.loadSolicitante();

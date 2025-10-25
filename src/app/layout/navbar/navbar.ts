@@ -1,9 +1,9 @@
 import {Component, inject, Input, TemplateRef} from '@angular/core';
 import {NgbNav, NgbNavItem, NgbNavOutlet, NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
-import {NavItem, TabModel} from './tab.model';
+import {NavItem, NavModel} from '../../model/nav.model';
 import {NgClass} from '@angular/common';
 import {RouterLink, RouterLinkActive} from '@angular/router';
-import {AuthService} from '../../auth/auth.service';
+import {AuthService} from '../../service/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +11,6 @@ import {AuthService} from '../../auth/auth.service';
     NgbNavItem,
     NgbNav,
     NgbNavOutlet,
-    NgClass,
     RouterLink,
     RouterLinkActive
   ],
@@ -19,7 +18,7 @@ import {AuthService} from '../../auth/auth.service';
   styleUrl: './navbar.css'
 })
 export class Navbar {
-  tabs: TabModel[] | undefined;
+  tabs: NavModel[] | undefined;
   @Input({required:true}) navItems: NavItem[] | undefined;
   // counter = this.tab.length + 1;
   active = 1;
@@ -49,7 +48,7 @@ export class Navbar {
     this.authService.logout();
   }
 
-  onRouterLinkActive(isActive: boolean, tabs: TabModel[]) {
+  onRouterLinkActive(isActive: boolean, tabs: NavModel[]) {
     console.log(isActive);
     if(isActive) {
       this.tabs = tabs;

@@ -1,9 +1,9 @@
 import {Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Navbar} from '../../layout/navbar/navbar';
-import {AuthService} from '../../auth/auth.service';
-import {AuthenticatedUser} from '../../auth/login.model';
-import {NavItem} from '../../layout/navbar/tab.model';
+import {AuthService} from '../../service/auth/auth.service';
+import {AuthenticatedUser} from '../../model/login.model';
+import {NavItem} from '../../model/nav.model';
 import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
 
 @Component({

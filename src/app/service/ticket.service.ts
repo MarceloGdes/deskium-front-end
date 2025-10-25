@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, pipe, throwError} from 'rxjs';
-import {CreateTicketRequest, Ticket} from './ticket.model';
+import {CreateTicketRequest, Ticket} from '../model/ticket.model';
 
 @Injectable({providedIn: 'root'})
 export class TicketService {
@@ -14,6 +14,19 @@ export class TicketService {
     .pipe(
       catchError(err => this.handleError(err))
     )
+  }
+
+  getAllMyTickets(status: string): Observable<Ticket[]>{
+    return this.client.get<Ticket[]>(
+      `${this.apiUrl}/my-tickets`,
+      {
+        params: {
+          status: status
+        }
+      })
+      .pipe(
+        catchError(err => this.handleError(err))
+      )
   }
 
   private handleError(error: any): Observable<never>{

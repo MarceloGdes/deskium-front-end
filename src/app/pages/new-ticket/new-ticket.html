@@ -1,5 +1,5 @@
 <!-- Overlay de carregamento -->
-@if(isLoading || isLoadingSolicitante || isLoadingCategorias || isLoadingMotivos){
+@if(isLoadingCategorias || isLoadingMotivos){
   <app-loading-overlay></app-loading-overlay>
 }
 
@@ -86,7 +86,6 @@
                   {{ categoria.descricao }}
                 </option>
               }
-
             </select>
           </div>
         </div>
