@@ -35,10 +35,7 @@ export class Home {
       .subscribe({
         next: (response) => {
           this.user = response
-        },
-        complete: () => {
           this.loadComponents(this.user)
-
         }
       })
   }

@@ -89,7 +89,7 @@ export class NewTicket implements OnInit{
             this.saveTicket(response);
           },
           error: err => {
-            this.errorMessage = err.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+            this.errorMessage = err.message;
             this.isLoading = false
             return
           }
@@ -127,7 +127,7 @@ export class NewTicket implements OnInit{
           this.motivos = response;
         },
         error: (error) => {
-          this.errorMessage = error.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+          this.errorMessage = error.message;
         },
         complete: () => {
           this.isLoadingMotivos = false;
@@ -142,7 +142,7 @@ export class NewTicket implements OnInit{
           this.categorias = response;
         },
         error: (error) => {
-          this.errorMessage = error.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+          this.errorMessage = error.message;
         },
         complete: () => {
           this.isLoadingCategorias = false;
@@ -155,6 +155,9 @@ export class NewTicket implements OnInit{
       .subscribe({
         next: (response) => {
           this.solicitante = response;
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
         },
         complete: () => {
           this.isLoadingSolicitante = false;

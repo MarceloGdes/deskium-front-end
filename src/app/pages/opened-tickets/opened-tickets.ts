@@ -7,10 +7,11 @@ import {Ticket} from '../../model/ticket.model';
 import {Categoria} from '../../model/categoria.model';
 import {Motivo} from '../../model/motivo.model';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCollapse, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe, NgClass} from '@angular/common';
 import {SubStatusService} from '../../service/sub-status.service';
 import {SubStatus} from '../../model/sub-status.model';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-opened-tickets',
@@ -19,7 +20,10 @@ import {SubStatus} from '../../model/sub-status.model';
     ReactiveFormsModule,
     FormsModule,
     DatePipe,
-    NgClass
+    NgClass,
+    RouterLink,
+    RouterLinkActive,
+    NgbCollapse
   ],
   templateUrl: './opened-tickets.html',
   styleUrl: './opened-tickets.css'
@@ -39,19 +43,16 @@ export class OpenedTickets implements OnInit {
   categorias?: Categoria[];
   motivos?: Motivo[];
   subStatusList?: SubStatus[];
-  selectedMotivo: Motivo | undefined;
-  selectedCategoria: Categoria | undefined;
-  selectedSubStatus: SubStatus | undefined;
+  selectedMotivo?: Motivo;
+  selectedCategoria?: Categoria;
+  selectedSubStatus?: SubStatus;
   enteredNumTicket?: number;
   enteredAssuntoTicket?: string;
   enteredResponsavel?: string;
+  errorMessage = '';
+  isCollapsed = true;
 
   ngOnInit(): void {
-    this.isLoadingTickets = true;
-    this.isLoadingCategorias = true;
-    this.isLoadingMotivos = true;
-    this.isLoadingStatus = true;
-
     this.loadCategorias();
     this.loadMotivos();
     this.loadStatus();
@@ -59,6 +60,8 @@ export class OpenedTickets implements OnInit {
   }
 
   private loadCategorias() {
+    this.isLoadingCategorias = true;
+    this.errorMessage = ''
     this.categoriaService.getAll()
       .subscribe({
         next: (response) => {
@@ -66,6 +69,9 @@ export class OpenedTickets implements OnInit {
           this.isLoadingCategorias = false;
         },
         error: (error) => {
+          this.errorMessage = error.message;
+        },
+        complete: () => {
           this.isLoadingCategorias = false;
         }
       })
@@ -73,13 +79,19 @@ export class OpenedTickets implements OnInit {
   }
 
   private loadMotivos() {
+    this.isLoadingMotivos = true;
+    this.errorMessage = ""
     this.motivoService.getAll()
       .subscribe({
         next: (response) => {
           this.motivos = response;
           this.isLoadingMotivos = false;
+
         },
         error: (error) => {
+          this.errorMessage = error.message;
+        },
+        complete: () => {
           this.isLoadingMotivos = false;
         }
       })
@@ -87,32 +99,41 @@ export class OpenedTickets implements OnInit {
   }
 
   private loadStatus() {
+    this.isLoadingStatus = true;
+    this.errorMessage = ""
     this.subStatusService.getAll()
       .subscribe({
         next: (response) => {
-          console.log()
           this.subStatusList = response;
           this.isLoadingStatus = false;
         },
         error: (error) => {
+          this.errorMessage = error.message;
+        },
+        complete: () => {
           this.isLoadingStatus = false;
         }
       })
   }
 
-  private loadTickets() {
-    this.ticketService.getAllMyTickets("ABERTO")
+  loadTickets() {
+    this.isLoadingTickets = true;
+    this.errorMessage = ""
+    this.ticketService.getAllMyTickets("ABERTO", this.enteredNumTicket, this.enteredAssuntoTicket,
+      this.enteredResponsavel, this.selectedSubStatus, this.selectedMotivo, this.selectedCategoria)
       .subscribe({
         next: (response) => {
-          console.log(response);
           this.tickets = response;
           this.isLoadingTickets = false;
         },
         error: (error) => {
-          console.log(error)
+          this.errorMessage = error.message;
+          this.isLoadingTickets = false;
         }
       })
   }
 
-
+  limparCampos() {
+    throw new Error("Method not implemented.");
+  }
 }

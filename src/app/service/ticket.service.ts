@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, pipe, throwError} from 'rxjs';
 import {CreateTicketRequest, Ticket} from '../model/ticket.model';
+import {SubStatus} from '../model/sub-status.model';
+import {Motivo} from '../model/motivo.model';
+import {Categoria} from '../model/categoria.model';
 
 @Injectable({providedIn: 'root'})
 export class TicketService {
@@ -16,13 +19,27 @@ export class TicketService {
     )
   }
 
-  getAllMyTickets(status: string): Observable<Ticket[]>{
+  getAllMyTickets(status: string,
+                  ticketId?: number,
+                  assunto?: string,
+                  responsavel?: string,
+                  subStatus?: SubStatus,
+                  motivo?: Motivo,
+                  categoria?: Categoria): Observable<Ticket[]>{
+
+    //Adicionando os parametros dinamicamente, conforme preenchido na tela.
+    let params: any = { status };
+    if (ticketId != null) params.ticketId = ticketId;
+    if (assunto) params.assunto = assunto;
+    if (responsavel) params.responsavel = responsavel;
+    if (subStatus?.id != null) params.subStatus = subStatus.id;
+    if (motivo?.id != null) params.motivoId = motivo.id;
+    if (categoria?.id != null) params.categoriaId = categoria.id;
+
     return this.client.get<Ticket[]>(
       `${this.apiUrl}/my-tickets`,
       {
-        params: {
-          status: status
-        }
+        params: params
       })
       .pipe(
         catchError(err => this.handleError(err))
@@ -54,7 +71,7 @@ export class TicketService {
       default:
         errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
     }
-
+    console.log(error)
     return throwError(() => ({message: errorMessage}));
   }
 }

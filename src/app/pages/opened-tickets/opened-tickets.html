@@ -5,102 +5,153 @@
 
 <div class="container-fluid">
   <div class="card border-0 p-4 card-tickets-list">
-    <form class="mb-3">
-      <div class="row g-3">
-        <div class="col-md-6 col-lg-2">
-          <label class="form-label">Número do ticket</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="0000"
-            name="numTicket"
-            [(ngModel)]="enteredNumTicket"/>
-        </div>
-        <div class="col-md-6 col-lg-2">
-          <label class="form-label">Assunto</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Assunto do ticket"
-            name="assunto"
-            [(ngModel)]="enteredAssuntoTicket"/>
-        </div>
+    <div class="d-flex gap-2 mb-3 flex-grow">
+      <button
+        class="btn btn-primary d-flex justify-content-center align-items-center gap-1 m-0"
+        (click)="collapse.toggle()"
+        [attr.aria-expanded]="!isCollapsed">
+        <span class="material-symbols-outlined fs-5">
+          @if(isCollapsed){
+            keyboard_arrow_down
+          } @else {
+            keyboard_arrow_up
+          }
+        </span>
+        <span>Filtros</span>
+      </button>
+      <a class="btn btn-success d-flex justify-content-center align-items-center gap-1"
+         routerLink="../new"
+         routerLinkActive="active">
+        <span class="material-symbols-outlined fs-5">add_box</span>
+        <span>Novo Ticket</span>
+      </a>
+    </div>
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+      <form class="mb-3">
+        <!-- Mensagem de erro -->
+        @if (errorMessage) {
+          <div class="alert alert-danger w-100 mb-3" role="alert">
+            <h4 class="mb-1 fw-bold">Erro:</h4>
+            {{ errorMessage }}
+          </div>
+        }
+        <div class="row g-3">
+          <div class="col-md-6 col-lg-2">
+            <label class="form-label">Número do ticket</label>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="0000"
+              name="numTicket"
+              [(ngModel)]="enteredNumTicket"/>
+          </div>
+          <div class="col-md-6 col-lg-2">
+            <label class="form-label">Assunto</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Assunto do ticket"
+              name="assunto"
+              [(ngModel)]="enteredAssuntoTicket"/>
+          </div>
 
-        <div class="col-md-6 col-lg-2">
-          <label class="form-label">Responsável</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Nome do responsável"
-            name="responsavel"
-            [(ngModel)]="enteredResponsavel"/>
-        </div>
+          <div class="col-md-6 col-lg-2">
+            <label class="form-label">Responsável</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nome do responsável"
+              name="responsavel"
+              [(ngModel)]="enteredResponsavel"/>
+          </div>
 
-        <div class="col-md-6 col-lg-2">
-          <label class="form-label">Sub-Status</label>
-          <select
-            class="form-select"
-            name="sub-status"
-            [(ngModel)]="selectedSubStatus">
-            @if (subStatusList?.length){
-              @for (subStatus of subStatusList; track subStatus.id){
-                <option [ngValue]="subStatus">{{ subStatus.descricao }}</option>
+          <div class="col-md-6 col-lg-2">
+            <label class="form-label">Sub-Status</label>
+            <select
+              class="form-select"
+              name="sub-status"
+              [(ngModel)]="selectedSubStatus">
+              @if (subStatusList?.length){
+                @for (subStatus of subStatusList; track subStatus.id){
+                  <option [ngValue]="subStatus">{{ subStatus.descricao }}</option>
+                }
               }
-            }
-          </select>
-        </div>
+            </select>
+          </div>
 
-        <div class="col-md-6 col-lg-2">
-          <label class="form-label">Motivo</label>
-          <select
-            id="motivo"
-            class="form-select"
-            name="motivo"
-            [(ngModel)]="selectedMotivo">
-            @if(motivos?.length){
-              @for (motivo of motivos; track motivo.id) {
-                <option [ngValue]="motivo">
-                  {{ motivo.descricao }}
-                </option>
+          <div class="col-md-6 col-lg-2">
+            <label class="form-label">Motivo</label>
+            <select
+              id="motivo"
+              class="form-select"
+              name="motivo"
+              [(ngModel)]="selectedMotivo">
+              @if(motivos?.length){
+                @for (motivo of motivos; track motivo.id) {
+                  <option [ngValue]="motivo">
+                    {{ motivo.descricao }}
+                  </option>
+                }
               }
-            }
-          </select>
-        </div>
+            </select>
+          </div>
 
-        <div class="col-md-6 col-lg-2">
-          <label class="form-label">Categoria</label>
-          <label for="categoria" class="form-label mb-1">Categoria</label>
-          <select
-            id="categoria"
-            class="form-select"
-            name="categoria"
-            [(ngModel)]="selectedCategoria">
-            @if(categorias?.length){
-              @for (categoria of categorias; track categoria.id) {
-                <option [ngValue]="categoria">
-                  {{ categoria.descricao }}
-                </option>
+          <div class="col-md-6 col-lg-2">
+            <label class="form-label">Categoria</label>
+            <label for="categoria" class="form-label mb-1">Categoria</label>
+            <select
+              id="categoria"
+              class="form-select"
+              name="categoria"
+              [(ngModel)]="selectedCategoria">
+              @if(categorias?.length){
+                @for (categoria of categorias; track categoria.id) {
+                  <option [ngValue]="categoria">
+                    {{ categoria.descricao }}
+                  </option>
+                }
               }
-            }
-          </select>
-        </div>
-      </div>
+            </select>
+          </div>
 
-      <div class="d-flex gap-2 mt-3 mb-4 flex-grow">
-        <button class="btn btn-primary d-flex justify-content-center align-items-center gap-1">
-          <span class="material-symbols-outlined fs-5">search</span>
-          <span>Filtrar</span>
-        </button>
-        <button class="btn btn-secondary d-flex justify-content-center align-items-center gap-1">
-          <span class="material-symbols-outlined fs-5">ink_eraser</span>
-          <span>Limpar Filtros</span>
-        </button>
-        <button class="btn btn-success d-flex justify-content-center align-items-center gap-1 ms-auto">
-          <span class="material-symbols-outlined fs-5">add_box</span>
-          <span>Novo Ticket</span>
-        </button>
-      </div>
-    </form>
+          <div class="col-md-6 col-lg-3">
+            <label class="form-label">Data de Abertura</label>
+            <div class="input-group">
+              <input type="date" class="form-control" aria-label="Data inicial de abertura">
+              <span class="input-group-text">a</span>
+              <input type="date" class="form-control" aria-label="Data final de abertura">
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <label class="form-label">Data de Fechamento</label>
+            <div class="input-group">
+              <input type="date" class="form-control" aria-label="Data inicial de fechamento">
+              <span class="input-group-text">a</span>
+              <input type="date" class="form-control" aria-label="Data final de fechamento">
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-3 mb-4 flex-grow">
+          <div class="d-flex ms-auto gap-2">
+            <button
+              class="btn btn-secondary d-flex justify-content-center align-items-center gap-1"
+              (click)="limparCampos()">
+              <span class="material-symbols-outlined fs-5">ink_eraser</span>
+              <span>Limpar Filtros</span>
+            </button>
+            <button
+              class="btn btn-primary d-flex justify-content-center align-items-center gap-1"
+              (click)="loadTickets()">
+              <span class="material-symbols-outlined fs-5">search</span>
+              <span>Filtrar</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
     <div class="card border-0 card-table">
       <div class="table-responsive">
         <table class="table align-middle">
