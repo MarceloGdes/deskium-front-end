@@ -63,9 +63,9 @@ export class Home {
     }
     this.navItems.push({
         id: 2,
-        name: 'Tickets Abertos',
+        name: 'Meus Tickets',
         icon: 'confirmation_number',
-        route: 'opened',
+        route: 'my-tickets',
         tabs: [
           {
             id: 1,
@@ -75,20 +75,7 @@ export class Home {
           }
         ]
       })
-    this.navItems.push({
-        id: 3,
-        name: 'Tickets Fechados',
-        icon: 'select_check_box',
-        route: 'closed',
-        tabs: [
-          {
-            id: 1,
-            content: null,
-            title: 'Tickets Fechados',
-            closable: false
-          }
-        ]
-      })
+
 
     this.isLoading = false;
   }

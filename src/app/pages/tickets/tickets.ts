@@ -16,7 +16,7 @@ import {Status} from '../../model/status.model';
 import {StatusService} from '../../service/status.service';
 
 @Component({
-  selector: 'app-opened-tickets',
+  selector: 'app-tickets',
   imports: [
     LoadingOverlay,
     ReactiveFormsModule,
@@ -27,10 +27,10 @@ import {StatusService} from '../../service/status.service';
     RouterLinkActive,
     NgbCollapse
   ],
-  templateUrl: './opened-tickets.html',
-  styleUrl: './opened-tickets.css'
+  templateUrl: './tickets.html',
+  styleUrl: './tickets.css'
 })
-export class OpenedTickets implements OnInit {
+export class Tickets implements OnInit {
   private ticketService = inject(TicketService);
   private categoriaService = inject(CategoriaService);
   private motivoService = inject(MotivoService);

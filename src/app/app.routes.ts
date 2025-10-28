@@ -3,7 +3,8 @@ import {Login} from './pages/login/login';
 import {NewTicket} from './pages/new-ticket/new-ticket';
 import {App} from './app';
 import {Home} from './pages/home/home';
-import {OpenedTickets} from './pages/opened-tickets/opened-tickets';
+import {Tickets} from './pages/tickets/tickets';
+import {Ticket} from './pages/ticket/ticket';
 
 //Rotas
 //https://angular.dev/guide/routing/define-routes
@@ -17,19 +18,19 @@ export const routes: Routes = [
     path: 'tickets',
     component: Home,
     children: [
-      { path: '', redirectTo: 'opened', pathMatch: 'full' },
+      { path: '', redirectTo: 'my-tickets', pathMatch: 'full' },
       {
         path: 'new',
         component: NewTicket
       },
       {
-        path: 'opened',
-        component: OpenedTickets
+        path: 'my-tickets',
+        component: Tickets
       },
-      // {
-      //   path: 'closed',
-      //   component:
-      // }
+      {
+        path: ':id',
+        component: Ticket
+      }
     ]
   },
   { path: '**', redirectTo: 'tickets' }
