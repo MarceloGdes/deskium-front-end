@@ -12,6 +12,8 @@ import {DatePipe, NgClass} from '@angular/common';
 import {SubStatusService} from '../../service/sub-status.service';
 import {SubStatus} from '../../model/sub-status.model';
 import {RouterLink, RouterLinkActive} from '@angular/router';
+import {Status} from '../../model/status.model';
+import {StatusService} from '../../service/status.service';
 
 @Component({
   selector: 'app-opened-tickets',
@@ -33,30 +35,36 @@ export class OpenedTickets implements OnInit {
   private categoriaService = inject(CategoriaService);
   private motivoService = inject(MotivoService);
   private subStatusService = inject(SubStatusService);
+  private statusService = inject(StatusService);
 
   isLoadingTickets = false;
   isLoadingCategorias = false;
   isLoadingMotivos = false;
   isLoadingStatus = false;
+  isLoadingSubStatus = false;
 
   tickets: Ticket[] = [];
   categorias?: Categoria[];
   motivos?: Motivo[];
   subStatusList?: SubStatus[];
+  statusList?: Status[];
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
   selectedSubStatus?: SubStatus;
+  selectedStatus?: Status;
   enteredNumTicket?: number;
   enteredAssuntoTicket?: string;
   enteredResponsavel?: string;
   errorMessage = '';
   isCollapsed = true;
 
+
   ngOnInit(): void {
     this.loadCategorias();
     this.loadMotivos();
-    this.loadStatus();
+    this.loadSubStatus();
     this.loadTickets();
+    this.loadStatus()
   }
 
   private loadCategorias() {
@@ -98,8 +106,8 @@ export class OpenedTickets implements OnInit {
 
   }
 
-  private loadStatus() {
-    this.isLoadingStatus = true;
+  private loadSubStatus() {
+    this.isLoadingSubStatus = true;
     this.errorMessage = ""
     this.subStatusService.getAll()
       .subscribe({
@@ -116,10 +124,29 @@ export class OpenedTickets implements OnInit {
       })
   }
 
+  private loadStatus() {
+    this.isLoadingStatus = true;
+    this.errorMessage = ""
+    this.statusService.getAll()
+      .subscribe({
+        next: (response) => {
+          this.statusList = response;
+          this.selectedStatus = this.statusList[0]
+          this.isLoadingStatus = false;
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+        },
+        complete: () => {
+          this.isLoadingStatus = false;
+        }
+      })
+  }
+
   loadTickets() {
     this.isLoadingTickets = true;
     this.errorMessage = ""
-    this.ticketService.getAllMyTickets("ABERTO", this.enteredNumTicket, this.enteredAssuntoTicket,
+    this.ticketService.getAllMyTickets(this.selectedStatus?.id || "ABERTO", this.enteredNumTicket, this.enteredAssuntoTicket,
       this.enteredResponsavel, this.selectedSubStatus, this.selectedMotivo, this.selectedCategoria)
       .subscribe({
         next: (response) => {
@@ -133,7 +160,13 @@ export class OpenedTickets implements OnInit {
       })
   }
 
-  limparCampos() {
-    throw new Error("Method not implemented.");
+  onLimparCampos() {
+    this.selectedMotivo = undefined;
+    this.selectedCategoria = undefined;
+    this.selectedSubStatus = undefined;
+    this.enteredNumTicket = undefined;
+    this.enteredAssuntoTicket = undefined;
+    this.enteredResponsavel = undefined;
+    this.selectedStatus = undefined;
   }
 }

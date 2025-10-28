@@ -66,6 +66,20 @@
           </div>
 
           <div class="col-md-6 col-lg-2">
+            <label class="form-label">Status</label>
+            <select
+              class="form-select"
+              name="sub-status"
+              [(ngModel)]="selectedStatus">
+              @if (statusList?.length){
+                @for (status of statusList; track status.id){
+                  <option [ngValue]="status">{{ status.descricao }}</option>
+                }
+              }
+            </select>
+          </div>
+
+          <div class="col-md-6 col-lg-2">
             <label class="form-label">Sub-Status</label>
             <select
               class="form-select"
@@ -137,7 +151,7 @@
           <div class="d-flex ms-auto gap-2">
             <button
               class="btn btn-secondary d-flex justify-content-center align-items-center gap-1"
-              (click)="limparCampos()">
+              (click)="onLimparCampos()">
               <span class="material-symbols-outlined fs-5">ink_eraser</span>
               <span>Limpar Filtros</span>
             </button>
