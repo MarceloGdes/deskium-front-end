@@ -12,7 +12,7 @@ export interface CreateTicketRequest {
   arquivos: Arquivo[] | undefined
 }
 
-export interface Ticket {
+export interface TicketModel {
   id: number;
   criadoEm: Date;
   titulo: string;

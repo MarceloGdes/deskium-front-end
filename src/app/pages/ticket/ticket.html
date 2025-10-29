@@ -1,0 +1,237 @@
+<div class="container-fluid">
+  <div class="row g-3">
+    <!-- Card Solicitante -->
+    <div class="col-md-3">
+      <div class="card p-3 card-requester">
+        <div class="border-bottom mt-2 mb-3">
+          <h2 class="fw-semibold fs-5">
+            Ticket
+            <span class="fw-bold" id="ticket-id">#10015</span>
+          </h2>
+          <h3 class="fw-medium fs-6">
+            Problema ao gerar o faturamento dos clientes.
+          </h3>
+        </div>
+
+        <div
+          class="d-flex justify-content-between align-items-center mb-1"
+        >
+          <p class="fw-medium mb-0">Data de Abertura:</p>
+          <span class="">30/08/2025</span>
+        </div>
+
+        <div
+          class="d-flex justify-content-between align-items-center mb-4"
+        >
+          <p class="fw-medium mb-0">Data de Fechamento:</p>
+          <span class=""></span>
+        </div>
+
+        <div class="mb-2">
+          <p class="mb-0 fw-medium">Analista responsável</p>
+          <input class="form-control ticket-info-value" type="text" value="Marcelo Guedes"
+                 aria-label="Marcelo Guedes" disabled readonly />
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label fw-normal mb-0 fw-medium">Motivo</label>
+          <select class="form-control ticket-info-value" disabled readonly>
+            <option>Emissão de NFSe</option>
+          </select>
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label fw-normal mb-0 fw-medium">Categoria</label>
+          <select class="form-control ticket-info-value" disabled readonly>
+            <option>Dúvida</option>
+            <option>Erro do sistema</option>
+          </select>
+        </div>
+
+
+        <div class="mb-2">
+          <p class="mb-0 fw-medium">Sub-Status</p>
+          <input class="form-control ticket-info-value" type="text" value="Aguardando meu retorno"
+                 aria-label="Resolvido" disabled readonly />
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Ticket -->
+<!--    <div class="col-md-9">-->
+<!--      <div class="card p-3 card-actions">-->
+<!--        <div class="card p-3 mb-4 card-new-action">-->
+<!--          <div-->
+<!--            class="d-flex justify-content-between align-items-center mb-1"-->
+<!--          >-->
+<!--            <h5>Nova Ação</h5>-->
+<!--          </div>-->
+
+<!--          <form action="">-->
+<!--            <div class="mb-3 form-group">-->
+<!--              <div id="editor" class="form-control"></div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Arquivos anexados &ndash;&gt;-->
+<!--            <div class="mb-3 d-flex">-->
+<!--              <div>-->
+<!--                <span class="form-label">Arquivos</span>-->
+<!--                <div class="d-flex flex-wrap gap-2">-->
+<!--                            <span-->
+<!--                              class="badge bg-light text-dark border d-flex align-itens-center gap-2 align-items-center"-->
+<!--                            >-->
+<!--                              <span>print.png</span>-->
+<!--                              <button-->
+<!--                                type="button"-->
+<!--                                class="btn-close btn-delete-attachment"-->
+<!--                                aria-label="Close"-->
+<!--                              ></button>-->
+<!--                            </span>-->
+<!--                  <span-->
+<!--                    class="badge bg-light text-dark border d-flex align-itens-center gap-2 align-items-center"-->
+<!--                  >-->
+<!--                              <span>print.png</span>-->
+<!--                              <button-->
+<!--                                type="button"-->
+<!--                                class="btn-close btn-delete-attachment"-->
+<!--                                aria-label="Close"-->
+<!--                              ></button>-->
+<!--                            </span>-->
+<!--                  <span-->
+<!--                    class="badge bg-light text-dark border d-flex align-itens-center gap-2 align-items-center"-->
+<!--                  >-->
+<!--                              <span>print.png</span>-->
+<!--                              <button-->
+<!--                                type="button"-->
+<!--                                class="btn-close btn-delete-attachment"-->
+<!--                                aria-label="Close"-->
+<!--                              ></button>-->
+<!--                            </span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Botões &ndash;&gt;-->
+<!--            <div class="d-flex justify-content-between">-->
+<!--              <div class="d-flex">-->
+<!--                <label-->
+<!--                  for="file-upload"-->
+<!--                  class="btn btn-secondary d-flex gap-2 p-2 me-3 border-0"-->
+<!--                >-->
+<!--                            <span class="material-symbols-outlined fs-4"-->
+<!--                            >upload</span-->
+<!--                            >-->
+<!--                  Anexar Arquivo-->
+<!--                </label>-->
+<!--                <input id="file-upload" type="file" hidden />-->
+<!--              </div>-->
+<!--              <div class="d-flex flex-row align-items-center gap-3">-->
+<!--                <button-->
+<!--                  class="btn btn-primary p-2 border-0 m-0 ms-auto"-->
+<!--                  type="submit"-->
+<!--                >-->
+<!--                  Adicionar Ação-->
+<!--                </button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--        <div class="card mb-3">-->
+<!--          <div class="card-header d-flex justify-content-between card-header-support">-->
+<!--            <span class="fw-medium">Marcelo Guedes <span>em 06/09/2025 às 13:20</span></span>-->
+<!--            <span class="fw-medium">Ação 04</span>-->
+<!--          </div>-->
+<!--          <div class="card-body">-->
+
+<!--          </div>-->
+<!--          <div class="card-footer">-->
+<!--            <ul class="list-unstyled d-flex gap-2 c mt-2 mb-2 attachments">-->
+<!--              <li class="border rounded p-1 d-flex align-items-center gap-2 bg-light">-->
+<!--                <div class="d-flex align-items-center">-->
+<!--                  <span class="material-symbols-outlined fs-5 w-100">draft</span>-->
+<!--                  <span>print.png</span>-->
+<!--                </div>-->
+
+<!--              </li>-->
+<!--              <li class="border rounded p-1 d-flex align-items-center gap-2 bg-light">-->
+<!--                <span class="material-symbols-outlined fs-5">draft</span>-->
+<!--                print.png-->
+<!--              </li>-->
+<!--              <li class="border rounded p-1 d-flex align-items-center gap-2 bg-light">-->
+<!--                <span class="material-symbols-outlined fs-5">draft</span>-->
+<!--                print.png-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="card mb-3">-->
+<!--          <div class="card-header d-flex justify-content-between card-header-requester">-->
+<!--            <span class="fw-medium">Marcia Silva (Você) <span>em 06/09/2025 às 12:00</span></span>-->
+<!--            <span class="fw-medium">Ação 03</span>-->
+<!--          </div>-->
+<!--          <div class="card-body">-->
+<!--            <p class="card-text">-->
+<!--              Bom dia, Marcelo. Estou bem também!-->
+<!--              <br>-->
+<!--              <br>-->
+<!--              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel sapien ac metus finibus tincidunt. Vivamus a diam nec ipsum facilisis tempus. Suspendisse at semper justo, vitae ultricies arcu.-->
+<!--              <br>-->
+<!--              <br>-->
+<!--              Integer ut felis non libero dictum fermentum. Proin at nunc in neque laoreet sodales. Aenean ac lacus vel lectus suscipit porta. Donec consequat, mauris eget porttitor elementum, neque massa porta lorem, a ultrices sapien ligula nec orci.-->
+<!--              <br>-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="card mb-3">-->
+<!--          <div class="card-header d-flex justify-content-between card-header-support">-->
+<!--            <span class="fw-medium">Marcelo Guedes <span>em 06/09/2025 às 09:34</span></span>-->
+<!--            <span class="fw-medium">Ação 02</span>-->
+<!--          </div>-->
+<!--          <div class="card-body">-->
+<!--            <p class="card-text">-->
+<!--              Bom dia, Marcia! Estou bem e você?-->
+<!--              <br>-->
+<!--              <br>-->
+<!--              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel sapien ac metus finibus tincidunt. Vivamus a diam nec ipsum facilisis tempus. Suspendisse at semper justo, vitae ultricies arcu.-->
+<!--              <br>-->
+<!--              <br>-->
+<!--              Integer ut felis non libero dictum fermentum. Proin at nunc in neque laoreet sodales?-->
+<!--              <br>-->
+<!--              <br>-->
+<!--              Atenciosamente,-->
+<!--              <br>-->
+<!--              Marcelo Guedes-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="card mb-3">-->
+<!--          <div class="card-header d-flex justify-content-between card-header-requester">-->
+<!--            <span class="fw-medium">Marcia Silva (Você) <span>em 05/09/2025 às 17:54</span></span>-->
+<!--            <span class="fw-medium">Ação 01</span>-->
+<!--          </div>-->
+<!--          <div class="card-body">-->
+<!--            <p class="card-text">-->
+<!--              Boa tarde, tudo bem?-->
+<!--              <br>-->
+<!--              <br>-->
+<!--              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel sapien ac metus finibus tincidunt. Vivamus a diam nec ipsum facilisis tempus. Suspendisse at semper justo, vitae ultricies arcu.-->
+<!--            </p>-->
+<!--            <img src="./images/image.png" alt="image" class="img-fluid">-->
+<!--          </div>-->
+<!--          <div class="card-footer">-->
+<!--            <ul class="list-unstyled d-flex gap-2 c mt-2 mb-2 attachments">-->
+<!--              <li class="border rounded p-1 d-flex align-items-center gap-2 bg-light">-->
+<!--                <span class="material-symbols-outlined fs-5">draft</span>-->
+<!--                EnvioLoteRps.xml-->
+<!--              </li>-->
+<!--              <li class="border rounded p-1 d-flex align-items-center gap-2 bg-light">-->
+<!--                <span class="material-symbols-outlined fs-5">draft</span>-->
+<!--                ConsultaLoteRps.xml-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+  </div>
+</div>

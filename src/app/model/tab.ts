@@ -3,10 +3,10 @@ export interface NavItem {
   name: string;
   icon: string;
   route: string;
-  tabs: NavModel[];
+  tabs: Tab[];
 }
 
-export interface NavModel {
+export interface Tab {
   id: number;
   title: string;
   content: any;

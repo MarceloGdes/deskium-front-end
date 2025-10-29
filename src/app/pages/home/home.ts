@@ -1,9 +1,9 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Navbar} from '../../layout/navbar/navbar';
 import {AuthService} from '../../service/auth/auth.service';
 import {AuthenticatedUser} from '../../model/login.model';
-import {NavItem} from '../../model/nav.model';
+import {NavItem, Tab} from '../../model/tab';
 import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
 
 @Component({
@@ -16,16 +16,17 @@ import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overla
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home {
+export class Home implements OnInit {
   private authService = inject(AuthService);
   isLoading = false;
   user: AuthenticatedUser | undefined
   navItems: NavItem[];
 
   constructor() {
-    this.isLoading = true;
     this.navItems = []
+  }
 
+  ngOnInit(): void {
     this.isLoading = true;
     this.loadUser()
   }
@@ -38,6 +39,14 @@ export class Home {
           this.loadComponents(this.user)
         }
       })
+  }
+
+  addTab(navItemId: number, tab: Tab){
+
+  }
+
+  get navItens(){
+    return this.navItems;
   }
 
   private loadComponents(user: AuthenticatedUser | undefined){
@@ -70,7 +79,7 @@ export class Home {
           {
             id: 1,
             content: null,
-            title: 'Tickets Abertos',
+            title: 'Meus tickets',
             closable: false
           }
         ]

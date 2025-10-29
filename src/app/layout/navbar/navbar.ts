@@ -1,8 +1,8 @@
 import {Component, inject, Input, TemplateRef} from '@angular/core';
 import {NgbNav, NgbNavItem, NgbNavOutlet, NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
-import {NavItem, NavModel} from '../../model/nav.model';
+import {NavItem, Tab} from '../../model/tab';
 import {NgClass} from '@angular/common';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router';
 import {AuthService} from '../../service/auth/auth.service';
 
 @Component({
@@ -18,10 +18,14 @@ import {AuthService} from '../../service/auth/auth.service';
   styleUrl: './navbar.css'
 })
 export class Navbar {
-  tabs: NavModel[] | undefined;
+  tabs: Tab[] | undefined;
   @Input({required:true}) navItems: NavItem[] | undefined;
   // counter = this.tab.length + 1;
   active = 1;
+
+  constructor(route: ActivatedRoute) {
+
+  }
 
 
   private offcanvasService = inject(NgbOffcanvas);
@@ -48,7 +52,7 @@ export class Navbar {
     this.authService.logout();
   }
 
-  onRouterLinkActive(isActive: boolean, tabs: NavModel[]) {
+  onRouterLinkActive(isActive: boolean, tabs: Tab[]) {
     console.log(isActive);
     if(isActive) {
       this.tabs = tabs;

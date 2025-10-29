@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, pipe, throwError} from 'rxjs';
-import {CreateTicketRequest, Ticket} from '../model/ticket.model';
+import {CreateTicketRequest, TicketModel} from '../model/ticket.model';
 import {SubStatus} from '../model/sub-status.model';
 import {Motivo} from '../model/motivo.model';
 import {Categoria} from '../model/categoria.model';
@@ -12,11 +12,18 @@ export class TicketService {
 
   constructor(private client: HttpClient) {}
 
-  create(request: CreateTicketRequest): Observable<Ticket>{
-    return this.client.post<Ticket>(this.apiUrl, request)
+  create(request: CreateTicketRequest): Observable<TicketModel>{
+    return this.client.post<TicketModel>(this.apiUrl, request)
     .pipe(
       catchError(err => this.handleError(err))
     )
+  }
+
+  getById(id: number): Observable<TicketModel>{
+    return this.client.get<TicketModel>(`${this.apiUrl}/${id}`)
+      .pipe(
+        catchError(err => this.handleError(err))
+      )
   }
 
   getAllMyTickets(status: string,
@@ -25,7 +32,7 @@ export class TicketService {
                   responsavel?: string,
                   subStatus?: SubStatus,
                   motivo?: Motivo,
-                  categoria?: Categoria): Observable<Ticket[]>{
+                  categoria?: Categoria): Observable<TicketModel[]>{
 
     //Adicionando os parametros dinamicamente, conforme preenchido na tela.
     let params: any = { status };
@@ -36,7 +43,7 @@ export class TicketService {
     if (motivo?.id != null) params.motivoId = motivo.id;
     if (categoria?.id != null) params.categoriaId = categoria.id;
 
-    return this.client.get<Ticket[]>(
+    return this.client.get<TicketModel[]>(
       `${this.apiUrl}/my-tickets`,
       {
         params: params

@@ -1,0 +1,67 @@
+/* Cards */
+.card-requester, .card-actions, .card-tickets-list, .accordion-item {
+  border: 1px solid var(--line);
+  background: var(--antiflash-white);
+  box-shadow: var(--shadow);
+
+}
+
+.card-requester, .card-actions{
+  height: calc(100vh - 70px);
+  overflow: auto;
+}
+
+.ticket-info-value {
+  background-color: #eaeaea88 !important;
+}
+
+table,
+tbody,
+th,
+td {
+  background-color: var(--antiflash-white) !important;
+}
+
+table,
+tbody,
+td {
+  height: 3.7rem;
+  vertical-align: middle;
+}
+
+.card-new-action {
+  background-color: #ffffff81;
+}
+
+
+.ql-toolbar.ql-snow {
+  padding: .375rem .75rem;
+  border-radius: var(--bs-border-radius);
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#editor {
+  border-top: none;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  min-height: 10em;
+  height: fit-content;
+  max-height: 25em;
+;
+}
+
+
+.card-header-support {
+  background-color: #1c2541;
+  color: var(--antiflash-white);
+}
+
+.card-header-requester {
+  background-color: #3d74a7;
+  color: var(--antiflash-white);
+}
+
+.btn-primary {
+  background-color: var(--verdigris);
+}

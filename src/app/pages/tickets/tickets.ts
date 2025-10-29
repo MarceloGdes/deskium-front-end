@@ -3,7 +3,7 @@ import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overla
 import {TicketService} from '../../service/ticket.service';
 import {CategoriaService} from '../../service/categoria.service';
 import {MotivoService} from '../../service/motivo.service';
-import {Ticket} from '../../model/ticket.model';
+import {TicketModel} from '../../model/ticket.model';
 import {Categoria} from '../../model/categoria.model';
 import {Motivo} from '../../model/motivo.model';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -43,7 +43,7 @@ export class Tickets implements OnInit {
   isLoadingStatus = false;
   isLoadingSubStatus = false;
 
-  tickets: Ticket[] = [];
+  tickets: TicketModel[] = [];
   categorias?: Categoria[];
   motivos?: Motivo[];
   subStatusList?: SubStatus[];
