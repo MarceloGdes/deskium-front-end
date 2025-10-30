@@ -19,7 +19,7 @@ export class TicketService {
     )
   }
 
-  getById(id: number): Observable<TicketModel>{
+  getById(id: string): Observable<TicketModel>{
     return this.client.get<TicketModel>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(err => this.handleError(err))

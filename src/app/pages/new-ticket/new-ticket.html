@@ -3,131 +3,132 @@
   <app-loading-overlay></app-loading-overlay>
 }
 
-<div class="row g-3">
-  <!-- Card Solicitante -->
-  <div class="col-md-4">
-    <div class="card p-3">
-      <h2 class="fw-semibold fs-5 mb-4">Solicitante</h2>
-      <span class="material-symbols-outlined icon">person</span>
-      <div class="requester mb-3">
-        <p class="name fw-semibold fs-6 mb-0">
-          {{solicitante?.nomeCompleto}}
-        </p>
-        <p class="company">
-          {{solicitante?.empresa?.razaoSocial}}
-        </p>
-      </div>
+<div class="container-fluid">
+  <div class="row g-3">
+    <!-- Card Solicitante -->
+    <div class="col-md-4">
+      <div class="card p-3">
+        <h2 class="fw-semibold fs-5 mb-4">Solicitante</h2>
+        <span class="material-symbols-outlined icon">person</span>
+        <div class="requester mb-3">
+          <p class="name fw-semibold fs-6 mb-0">
+            {{solicitante?.nomeCompleto}}
+          </p>
+          <p class="company">
+            {{solicitante?.empresa?.razaoSocial}}
+          </p>
+        </div>
 
-      <div class="mb-3">
-        <p class="fw-semibold mb-1">E-mail</p>
-        <div class="pe-2 ps-2 pb-3 pt-3 rounded border ticket-info-value mb-2">
-          {{solicitante?.email}}
-        </div>
-        <div class="note">
-          Você irá receber atualizações do ticket nesse e-mail.
-        </div>
-      </div>
-
-      <div>
-        <p class="fw-semibold mb-1">Telefones</p>
-        <div class="pe-2 ps-2 pb-3 pt-3 rounded border mb-2 ticket-info-value">
-          {{solicitante?.telefone}}
-        </div>
-        @if(solicitante?.celular){
-          <div class="pe-2 ps-2 pb-3 pt-3 rounded border mb-2 ticket-info-value">
-            {{solicitante?.celular}}
+        <div class="mb-3">
+          <p class="fw-semibold mb-1">E-mail</p>
+          <div class="pe-2 ps-2 pb-3 pt-3 rounded border ticket-info-value mb-2">
+            {{solicitante?.email}}
           </div>
-        }
-        <div class="note">
-          O analista responsável poderá entrar em contato com você por
-          este(s) número(s).
+          <div class="note">
+            Você irá receber atualizações do ticket nesse e-mail.
+          </div>
+        </div>
+
+        <div>
+          <p class="fw-semibold mb-1">Telefones</p>
+          <div class="pe-2 ps-2 pb-3 pt-3 rounded border mb-2 ticket-info-value">
+            {{solicitante?.telefone}}
+          </div>
+          @if(solicitante?.celular){
+            <div class="pe-2 ps-2 pb-3 pt-3 rounded border mb-2 ticket-info-value">
+              {{solicitante?.celular}}
+            </div>
+          }
+          <div class="note">
+            O analista responsável poderá entrar em contato com você por
+            este(s) número(s).
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Card Ticket -->
-  <div class="col-md-8" >
-    <div class="card p-3">
-      <!-- Mensagem de erro -->
-      @if (errorMessage) {
-        <div class="alert alert-danger w-100 mb-3" role="alert">
-          <h4 class="mb-1 fw-bold">Erro:</h4>
-          {{ errorMessage }}
-        </div>
-      }
-      <h2 class="fw-semibold fs-5 mb-4">Dados do Ticket</h2>
+    <!-- Card Ticket -->
+    <div class="col-md-8" >
+      <div class="card p-3">
+        <!-- Mensagem de erro -->
+        @if (errorMessage) {
+          <div class="alert alert-danger w-100 mb-3" role="alert">
+            <h4 class="mb-1 fw-bold">Erro:</h4>
+            {{ errorMessage }}
+          </div>
+        }
+        <h2 class="fw-semibold fs-5 mb-4">Dados do Ticket</h2>
 
-      <form (ngSubmit)="onSubmit()">
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label for="motivo" class="form-label mb-1">Motivo</label>
-            <select
-              id="motivo"
-              class="form-select"
-              name="motivo"
-              [(ngModel)]="selectedMotivo">
-              @for (motivo of motivos; track motivo.id) {
-                <option [ngValue]="motivo">
-                  {{ motivo.descricao }}
-                </option>
-              }
-            </select>
+        <form (ngSubmit)="onSubmit()">
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="motivo" class="form-label mb-1">Motivo</label>
+              <select
+                id="motivo"
+                class="form-select"
+                name="motivo"
+                [(ngModel)]="selectedMotivo">
+                @for (motivo of motivos; track motivo.id) {
+                  <option [ngValue]="motivo">
+                    {{ motivo.descricao }}
+                  </option>
+                }
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="categoria" class="form-label mb-1">Categoria</label>
+              <select
+                id="categoria"
+                class="form-select"
+                name="categoria"
+                [(ngModel)]="selectedCategoria">
+                @for (categoria of categorias; track categoria.id) {
+                  <option [ngValue]="categoria">
+                    {{ categoria.descricao }}
+                  </option>
+                }
+              </select>
+            </div>
           </div>
-          <div class="col-md-6">
-            <label for="categoria" class="form-label mb-1">Categoria</label>
-            <select
-              id="categoria"
-              class="form-select"
-              name="categoria"
-              [(ngModel)]="selectedCategoria">
-              @for (categoria of categorias; track categoria.id) {
-                <option [ngValue]="categoria">
-                  {{ categoria.descricao }}
-                </option>
-              }
-            </select>
+          <div class="mb-3">
+            <label for="titulo" class="form-label mb1">Título</label>
+            <input
+              id="titulo"
+              type="text"
+              class="form-control"
+              placeholder="Preencha o título do seu ticket."
+              name="titulo"
+              [(ngModel)]="enteredTitulo"
+            />
           </div>
-        </div>
-        <div class="mb-3">
-          <label for="titulo" class="form-label mb1">Título</label>
-          <input
-            id="titulo"
-            type="text"
-            class="form-control"
-            placeholder="Preencha o título do seu ticket."
-            name="titulo"
-            [(ngModel)]="enteredTitulo"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="descricao" class="form-label mb-1"
-          >Descrição do ticket</label
-          >
-          <quill-editor
-            [(ngModel)]="enteredDescricao"
-            name="descricao"
-            class="form-control p-0"
-            placeholder="O que você precisa?"
-            [modules]="{
+          <div class="mb-3">
+            <label for="descricao" class="form-label mb-1"
+            >Descrição do ticket</label
+            >
+            <quill-editor
+              [(ngModel)]="enteredDescricao"
+              name="descricao"
+              class="form-control p-0"
+              placeholder="O que você precisa?"
+              [modules]="{
               toolbar: [
                 ['bold', 'italic', 'underline'],
               ],
               clipboard: false
             }"
-            theme="snow">
-          </quill-editor>
-        </div>
-        <div class="border-top pt-3">
-          <div class="mb-3 d-flex">
-            <div>
-              <span class="form-label">Arquivos</span>
+              theme="snow">
+            </quill-editor>
+          </div>
+          <div class="border-top pt-3">
+            <div class="mb-3 d-flex">
+              <div>
+                <span class="form-label">Arquivos</span>
 
-              <!-- Lista de arquivos anexados -->
-              <div class="d-flex flex-wrap gap-2 mt-2">
-                @for (file of anexos; track file.name) {
-                  <span
-                    class="badge bg-light text-dark border d-flex align-items-center gap-2">
+                <!-- Lista de arquivos anexados -->
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                  @for (file of anexos; track file.name) {
+                    <span
+                      class="badge bg-light text-dark border d-flex align-items-center gap-2">
                     <span>{{ file.name }}</span>
                     <button
                       type="button"
@@ -136,44 +137,45 @@
                       (click)="removerAnexo(file)"
                     ></button>
                   </span>
-                }
+                  }
 
-                @empty {
-                  <span class="text-muted fst-italic">Nenhum arquivo anexado</span>
-                }
+                  @empty {
+                    <span class="text-muted fst-italic">Nenhum arquivo anexado</span>
+                  }
+                </div>
               </div>
             </div>
+
+
+            <div class="d-flex justify-content-between mt-3">
+              <label for="file-upload" class="btn btn-secondary d-flex align-items-center gap-2">
+                <span class="material-symbols-outlined">upload</span>
+                Anexar Arquivo
+              </label>
+              <input
+                id="file-upload"
+                type="file"
+                hidden
+                multiple
+                accept=".png,.jpg,.jpeg,.pdf"
+                [disabled]="isLoading"
+                (change)="onFilesSelected($event)"/>
+
+              <button
+                class="btn btn-primary"
+                type="submit"
+                [disabled]="isLoading">
+                @if (isLoading) {
+                  Carregando...
+                } @else {
+                  Abrir Ticket
+                }
+              </button>
+            </div>
           </div>
-
-
-          <div class="d-flex justify-content-between mt-3">
-            <label for="file-upload" class="btn btn-secondary d-flex align-items-center gap-2">
-              <span class="material-symbols-outlined">upload</span>
-              Anexar Arquivo
-            </label>
-
-            <input
-              id="file-upload"
-              type="file"
-              hidden
-              multiple
-              accept=".png,.jpg,.jpeg,.pdf"
-              [disabled]="isLoading"
-              (change)="onFilesSelected($event)"/>
-
-            <button
-              class="btn btn-primary"
-              type="submit"
-              [disabled]="isLoading">
-              @if (isLoading) {
-                Carregando...
-              } @else {
-                Abrir Ticket
-              }
-            </button>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>
+

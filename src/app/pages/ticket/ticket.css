@@ -1,32 +1,14 @@
 /* Cards */
-.card-requester, .card-actions, .card-tickets-list, .accordion-item {
+.card-requester, .card-actions{
   border: 1px solid var(--line);
   background: var(--antiflash-white);
   box-shadow: var(--shadow);
-
-}
-
-.card-requester, .card-actions{
-  height: calc(100vh - 70px);
+  height: calc(100vh - 75px);
   overflow: auto;
-}
 
+}
 .ticket-info-value {
   background-color: #eaeaea88 !important;
-}
-
-table,
-tbody,
-th,
-td {
-  background-color: var(--antiflash-white) !important;
-}
-
-table,
-tbody,
-td {
-  height: 3.7rem;
-  vertical-align: middle;
 }
 
 .card-new-action {

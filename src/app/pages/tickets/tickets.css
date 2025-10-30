@@ -1,11 +1,11 @@
 .card-table {
   background-color: var(--antiflash-white);
-  max-height: calc(100vh - 85px);
+  max-height: calc(100vh - 75px);
   overflow: hidden;
 }
 
 .card-tickets-list {
-  height: calc(100vh - 85px);
+  height: calc(100vh - 75px);
   border: 1px solid var(--line);
   background: var(--antiflash-white);
   box-shadow: var(--shadow);

@@ -4,7 +4,7 @@
   border: 1px solid var(--line);
   background: var(--antiflash-white);
   box-shadow: var(--shadow);
-  height: calc(100vh - 70px);
+  height: calc(100vh - 75px);
   overflow: auto;
 }
 
