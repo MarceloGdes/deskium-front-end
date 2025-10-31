@@ -10,6 +10,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ErrorOverlay} from '../../layout/shared/error-overlay/error-overlay';
 import {QuillEditorComponent} from 'ngx-quill';
 import {Arquivo} from '../../model/arquivo.model';
+import {Acao} from './acao/acao';
 
 @Component({
   selector: 'app-ticket',
@@ -18,7 +19,8 @@ import {Arquivo} from '../../model/arquivo.model';
     FormsModule,
     LoadingOverlay,
     ErrorOverlay,
-    QuillEditorComponent
+    QuillEditorComponent,
+    Acao
   ],
   templateUrl: './ticket.html',
   styleUrl: './ticket.css'
@@ -71,7 +73,7 @@ export class Ticket implements OnInit {
   }
 
   removerAnexo(file: File) {
-
+    this.anexos = this.anexos.filter(f => f !== file);
   }
 
   onFilesSelected(event: Event) {

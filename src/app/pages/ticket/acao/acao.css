@@ -1,0 +1,18 @@
+.card-header-support {
+  background-color: #1c2541;
+  color: var(--antiflash-white);
+}
+
+.card-header-requester {
+  background-color: #3d74a7;
+  color: var(--antiflash-white);
+}
+
+.btn-primary {
+  background-color: var(--verdigris);
+}
+
+img {
+  max-width: 100% !important;
+  height: auto !important;
+}

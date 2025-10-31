@@ -28,7 +28,7 @@ export interface TicketModel {
   categoria?: Categoria;
   subStatus: SubStatus;
   prioridade?: string;
-  acoes?: Acao[];
+  acoes?: AcaoModel[];
 }
 
 
@@ -40,7 +40,7 @@ export interface Suporte {
   ativo: boolean;
 }
 
-export interface Acao {
+export interface AcaoModel {
   numAcao: number;
   criadoEm: string;
   acaoInterna: boolean;
@@ -50,4 +50,5 @@ export interface Acao {
   autor: string;
   html: string;
   origemAcao: string;
+  anexos?: Arquivo[]
 }

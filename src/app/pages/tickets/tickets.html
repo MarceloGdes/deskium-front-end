@@ -20,7 +20,7 @@
         <span>Filtros</span>
       </button>
       <a class="btn btn-success d-flex justify-content-center align-items-center gap-1"
-         routerLink="/new"
+         routerLink="../new"
          routerLinkActive="active">
         <span class="material-symbols-outlined fs-5">add_box</span>
         <span>Novo Ticket</span>
@@ -204,7 +204,7 @@
                 <td >{{ ticket.categoria?.descricao }}</td>
                 <td >{{ ticket.suporte.nomeCompleto }}</td>
                 <!--Date pipe para formatar a data -->
-                <td >{{ ticket.criadoEm | date:'short' }}</td>
+                <td >{{ ticket.criadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
               </tr>
             }
           </tbody>

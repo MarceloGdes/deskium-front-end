@@ -100,6 +100,7 @@ export class NewTicket implements OnInit{
   }
 
   private saveTicket(fileNames?: Arquivo[] ){
+    console.log(this.enteredDescricao)
     this.ticketService.create({
       titulo: this.enteredTitulo,
       descricaoHtml: this.enteredDescricao,

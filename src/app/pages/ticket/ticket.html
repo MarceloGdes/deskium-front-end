@@ -25,7 +25,7 @@
         >
           <p class="fw-medium">Data de Abertura:</p>
           <span class="">
-            {{ ticket?.criadoEm | date:'short' }}
+            {{ ticket?.criadoEm | date:'dd/MM/yyyy HH:mm' }}
           </span>
         </div>
 
@@ -36,7 +36,7 @@
             <p class="fw-medium mb-1">Data de Fechamento:</p>
             <span class="">
               <!--Date pipe do Angular para formatar a data -->
-              {{ ticket?.dataResolucao | date: 'short'}}
+              {{ ticket?.dataResolucao | date:'dd/MM/yyyy HH:mm' }}
             </span>
           </div>
         }
@@ -98,9 +98,8 @@
                 placeholder="O que você precisa?"
                 [modules]="{
                   toolbar: [
-                    ['bold', 'italic', 'underline'],
-                  ],
-                    clipboard: false,
+                    ['bold', 'italic', 'underline', 'image'],
+                  ]
                 }"
                 theme="snow">
               </quill-editor>
@@ -158,6 +157,9 @@
             </div>
           </form>
         </div>
+        @for (acao of ticket?.acoes; track acao.numAcao) {
+          <app-acao [acao]="acao"></app-acao>
+        }
       </div>
     </div>
   </div>
