@@ -184,7 +184,10 @@
             @for (ticket of tickets; track ticket.id) {
               <tr class="border-bottom">
                 <td >
-                  <a class="link-primary" href="">
+                  <a
+                    class="link-primary"
+                    routerLink="../{{ticket.id}}"
+                    routerLinkActive>
                     #{{ ticket.id }}
                   </a>
                 </td>

@@ -111,16 +111,16 @@
                 <span class="form-label">Arquivos</span>
                 <div class="d-flex flex-wrap gap-2 mt-3">
                   @for (file of anexos; track file.name) {
-                    <span
-                      class="badge bg-light text-dark border d-flex align-items-center gap-2">
-                    <span>{{ file.name }}</span>
-                    <button
-                      type="button"
-                      class="btn-close btn-delete-attachment"
-                      aria-label="Remover"
-                      (click)="removerAnexo(file)"
-                    ></button>
-                  </span>
+                    <span class="badge bg-light text-dark border d-flex align-items-center gap-2">
+                      <span class="material-symbols-outlined fs-5 w-100">draft</span>
+                      <span>{{ file.name }}</span>
+                      <button
+                        type="button"
+                        class="btn-close btn-delete-attachment"
+                        aria-label="Remover"
+                        (click)="removerAnexo(file)">
+                      </button>
+                    </span>
                   }
                   @empty {
                     <span class="text-muted fst-italic">Nenhum arquivo anexado</span>

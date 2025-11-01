@@ -9,16 +9,26 @@
   </div>
   @if(acao?.anexos){
     <div class="card-footer">
-      <ul class="list-unstyled d-flex gap-2 c mt-2 mb-2 attachments">
+<!--      <ul class="list-unstyled d-flex gap-2 c mt-2 mb-2 attachments">-->
+<!--        @for (anexo of acao?.anexos; track anexo.fileName) {-->
+<!--          <li class="border rounded p-1 d-flex align-items-center gap-2 bg-light">-->
+<!--            <div class="d-flex align-items-center">-->
+<!--              <span class="material-symbols-outlined fs-5 w-100">draft</span>-->
+<!--              <span>{{ anexo.fileName }}</span>-->
+<!--            </div>-->
+<!--          </li>-->
+<!--        }-->
+<!--      </ul>-->
+
+      <div class="d-flex flex-wrap gap-2 mt-3">
         @for (anexo of acao?.anexos; track anexo.fileName) {
-          <li class="border rounded p-1 d-flex align-items-center gap-2 bg-light">
-            <div class="d-flex align-items-center">
-              <span class="material-symbols-outlined fs-5 w-100">draft</span>
-              <span>{{ anexo.fileName }}</span>
-            </div>
-          </li>
+          <span class="badge bg-light text-dark border d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined fs-5 w-100">draft</span>
+          <!--Removendo o UUID na apresentação para o usuário-->
+            <span>{{ anexo.fileName.split('_')[1] }}</span>
+          </span>
         }
-      </ul>
+      </div>
     </div>
   }
 </div>
