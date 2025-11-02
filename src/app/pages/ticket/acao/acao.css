@@ -8,6 +8,11 @@
   color: var(--antiflash-white);
 }
 
+.card-header-support.intern-action {
+  background-color: #334546;
+  color: var(--antiflash-white);
+}
+
 .btn-primary {
   background-color: var(--verdigris);
 }

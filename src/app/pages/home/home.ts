@@ -2,9 +2,9 @@ import {Component, inject, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Navbar} from '../../layout/navbar/navbar';
 import {AuthService} from '../../service/auth/auth.service';
-import {AuthenticatedUser} from '../../model/login.model';
 import {NavItem, Tab} from '../../model/tab';
 import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
+import {UsuarioModel} from '../../model/usuario.model';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +19,7 @@ import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overla
 export class Home implements OnInit {
   private authService = inject(AuthService);
   isLoading = false;
-  user: AuthenticatedUser | undefined
+  user?: UsuarioModel
   navItems: NavItem[];
 
   constructor() {
@@ -49,8 +49,7 @@ export class Home implements OnInit {
     return this.navItems;
   }
 
-  private loadComponents(user: AuthenticatedUser | undefined){
-    console.log(user)
+  private loadComponents(user: UsuarioModel | undefined){
     switch (user?.tipoUsuario){
       case 'SOLICITANTE':
         this.navItems.push(

@@ -1,6 +1,19 @@
 <div class="card mb-3">
-  <div class="card-header d-flex justify-content-between card-header-support">
-    <span class="fw-medium">{{ acao?.autor }} <span>em {{ acao?.criadoEm | date:'dd/MM/yyyy HH:mm' }}</span></span>
+  <div
+    class="card-header d-flex justify-content-between"
+    [ngClass]="{
+      'card-header-support': acao?.autor?.tipoUsuario === 'SUPORTE',
+      'card-header-requester': acao?.autor?.tipoUsuario === 'SOLICITANTE',
+      'intern-action': acao?.acaoInterna
+    }">
+    <span class="fw-medium">
+      {{ acao?.autor?.nomeCompleto }}
+      <span>em {{ acao?.criadoEm | date:'dd/MM/yyyy HH:mm' }}
+      </span>
+    </span>
+    @if (acao?.acaoInterna){
+      <span class="fw-medium fst-italic">Ação interna</span>
+    }
     <span class="fw-medium">Ação {{acao?.numAcao}}</span>
   </div>
   <div class="card-body">
@@ -11,7 +24,9 @@
     <div class="card-footer">
       <div class="d-flex flex-wrap gap-2 mt-3">
         @for (anexo of acao?.anexos; track anexo.fileName) {
-          <span class="badge bg-light text-dark border d-flex align-items-center gap-2">
+          <span
+            class="badge bg-light text-dark border d-flex align-items-center gap-2"
+            (click)="onVisualizeAnexo(anexo.fileName)">
             <span class="material-symbols-outlined fs-5 w-100">draft</span>
           <!--Removendo o UUID na apresentação para o usuário-->
           <!-- Primeiro divide em partes pelo "_".

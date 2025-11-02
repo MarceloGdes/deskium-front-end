@@ -71,7 +71,8 @@ export class TicketService {
           errMsg = errMsg
             .replace('motivoId', 'Motivo')
             .replace('descricaoHtml', 'Descrição')
-            .replace('titulo', 'Título');
+            .replace('titulo', 'Título')
+            .replace('html', 'Descrição');
 
           errors.push(errMsg);
         }
@@ -86,7 +87,6 @@ export class TicketService {
       default:
         errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
     }
-    console.log(error)
     return throwError(() => ({message: errorMessage}));
   }
 }

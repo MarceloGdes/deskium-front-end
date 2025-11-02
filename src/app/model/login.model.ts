@@ -6,9 +6,3 @@ export interface LoginRequest{
 export interface LoginResponse {
   token: string
 }
-
-export interface AuthenticatedUser {
-  nomeCompleto: string,
-  email: string,
-  tipoUsuario: string
-}

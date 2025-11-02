@@ -3,6 +3,7 @@ import {Categoria} from './categoria.model';
 import {Solicitante} from './solicitante.model';
 import {Arquivo} from './arquivo.model';
 import {SubStatus} from './sub-status.model';
+import {UsuarioModel} from './usuario.model';
 
 export interface CreateTicketRequest {
   titulo: string,
@@ -47,7 +48,7 @@ export interface AcaoModel {
   dataAtendimento: string | null;
   inicioAtendimento: string | null;
   fimAtendimento: string | null;
-  autor: string;
+  autor: UsuarioModel;
   html: string;
   origemAcao: string;
   anexos?: Arquivo[]

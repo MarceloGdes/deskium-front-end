@@ -9,13 +9,13 @@
     <div class="col-md-3">
       <div class="card p-3 card-requester">
         <div class="border-bottom mt-2 mb-3">
-          <h2 class="fw-semibold fs-6 mb-2">
+          <h2 class="fs-5 fw-bold mb-2">
             Ticket
-            <span class="fw-bold" id="ticket-id">
+            <span class="" id="ticket-id">
                #{{ ticket?.id }}
             </span>
           </h2>
-          <h3 class="fw-medium fs-5 mb-2">
+          <h3 class="fw-bolder mb-2">
             {{ ticket?.titulo }}
           </h3>
         </div>
@@ -24,9 +24,10 @@
           class="d-flex justify-content-between align-items-center mb-4"
         >
           <p class="fw-medium">Data de Abertura:</p>
-          <span class="">
+          <!--Date pipe do Angular para formatar a data -->
+          <p>
             {{ ticket?.criadoEm | date:'dd/MM/yyyy HH:mm' }}
-          </span>
+          </p>
         </div>
 
         @if(ticket?.dataResolucao){
@@ -34,10 +35,10 @@
             class="d-flex justify-content-between align-items-center mb-4"
           >
             <p class="fw-medium mb-1">Data de Fechamento:</p>
-            <span class="">
+            <p>
               <!--Date pipe do Angular para formatar a data -->
               {{ ticket?.dataResolucao | date:'dd/MM/yyyy HH:mm' }}
-            </span>
+            </p>
           </div>
         }
 
@@ -82,6 +83,13 @@
 
     <div class="col-md-9">
       <div class="card p-3 card-actions">
+        <!-- Mensagem de erro -->
+        @if (errorMessage) {
+          <div class="alert alert-danger w-100 mb-3" role="alert">
+            <h4 class="mb-1 fw-bold">Erro:</h4>
+            {{ errorMessage }}
+          </div>
+        }
         <div class="card p-3 mb-4 card-new-action">
           <div
             class="d-flex justify-content-between align-items-center mb-1"
@@ -118,7 +126,7 @@
                         type="button"
                         class="btn-close btn-delete-attachment"
                         aria-label="Remover"
-                        (click)="removerAnexo(file)">
+                        (click)="onRemoveAnexo(file)">
                       </button>
                     </span>
                   }

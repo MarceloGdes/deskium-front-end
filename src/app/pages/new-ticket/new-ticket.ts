@@ -99,13 +99,13 @@ export class NewTicket implements OnInit{
     }
   }
 
-  private saveTicket(fileNames?: Arquivo[] ){
+  private saveTicket(anexos?: Arquivo[] ){
     this.ticketService.create({
       titulo: this.enteredTitulo,
       descricaoHtml: this.enteredDescricao,
       motivoId: this.selectedMotivo?.id,
       categoriaId: this.selectedCategoria?.id,
-      arquivos: fileNames
+      arquivos: anexos
     })
     .subscribe({
       next: response =>{
@@ -114,9 +114,24 @@ export class NewTicket implements OnInit{
         this.router.navigate(['../my-tickets']);
       },
       error: error=> {
+        //Remove os arquivos preeviamente armazenados em caso de erro
+        if(anexos){
+          this.deleteUploadedAnexos(anexos);
+        }
         this.errorMessage = error.message;
         this.isLoading = false
       }
+    })
+  }
+
+  private deleteUploadedAnexos(anexo: Arquivo[]){
+    anexo.forEach(a => {
+      this.arquivoService.removeByFileNames(a.fileName)
+        .subscribe({
+          error: err => {
+            console.log(err)
+          }
+        })
     })
   }
 

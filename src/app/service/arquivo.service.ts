@@ -23,6 +23,15 @@ export class ArquivoService {
       )
   }
 
+  removeByFileNames(fileName: string): Observable<any> {
+    return this.client.delete(`${this.apiUrl}/${fileName}`)
+  }
+
+  viewFileByFileName(fileName: string) {
+    const url = `${this.apiUrl}/arquivos/${fileName}`;
+    window.open(url, '_blank',);
+  }
+
   private handleError(error: any): Observable<never>{
     let errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
 

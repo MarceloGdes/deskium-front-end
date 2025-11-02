@@ -98,10 +98,31 @@ export class Ticket implements OnInit {
       .subscribe({
         next: (response) => {
           this.loadTicket(this.ticketId);
+          this.enteredDescricao = "";
+          this.anexos = [];
+        },
+        error: err => {
+          //Remove os arquivos preeviamente armazenados em caso de erro
+          if(anexos){
+            this.deleteUploadedAnexos(anexos);
+          }
+          this.errorMessage = err.message
+          this.isLoading = false;
         }
       })
     }
 
+  }
+
+  private deleteUploadedAnexos(anexo: Arquivo[]){
+    anexo.forEach(a => {
+      this.arquivoService.removeByFileNames(a.fileName)
+        .subscribe({
+          error: err => {
+            console.log(err)
+          }
+        })
+    })
   }
 
   private loadTicket(id: string) {
@@ -117,7 +138,7 @@ export class Ticket implements OnInit {
       })
   }
 
-  removerAnexo(file: File) {
+  onRemoveAnexo(file: File) {
     this.anexos = this.anexos.filter(f => f !== file);
   }
 

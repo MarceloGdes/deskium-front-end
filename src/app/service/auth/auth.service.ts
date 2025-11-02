@@ -1,8 +1,9 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {AuthenticatedUser, LoginRequest, LoginResponse} from '../../model/login.model';
+import {LoginRequest, LoginResponse} from '../../model/login.model';
 import {catchError, Observable, tap, throwError} from 'rxjs';
 import {Router} from '@angular/router';
+import {UsuarioModel} from '../../model/usuario.model';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -25,8 +26,8 @@ export class AuthService {
     );
   }
 
-  getAuthenticatedUser(): Observable<AuthenticatedUser> {
-    return this.client.get<AuthenticatedUser>(this.apiUrl)
+  getAuthenticatedUser(): Observable<UsuarioModel> {
+    return this.client.get<UsuarioModel>(this.apiUrl)
   }
 
   private saveToken(token: string){
