@@ -52,3 +52,9 @@ export interface AcaoModel {
   origemAcao: string;
   anexos?: Arquivo[]
 }
+
+export interface AddAcaoModel {
+  acaoInterna: boolean,
+  html: string,
+  anexos?: Arquivo[]
+}

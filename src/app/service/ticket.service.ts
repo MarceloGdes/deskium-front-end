@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, pipe, throwError} from 'rxjs';
-import {CreateTicketRequest, TicketModel} from '../model/ticket.model';
+import {AddAcaoModel, CreateTicketRequest, TicketModel} from '../model/ticket.model';
 import {SubStatus} from '../model/sub-status.model';
 import {Motivo} from '../model/motivo.model';
 import {Categoria} from '../model/categoria.model';
@@ -53,6 +53,13 @@ export class TicketService {
       )
   }
 
+  addAcao(ticketId: string, acao: AddAcaoModel): Observable<any>{
+    return this.client.post<AddAcaoModel>(`${this.apiUrl}/${ticketId}/acoes`, acao)
+      .pipe(
+        catchError(err => this.handleError(err))
+      )
+  }
+
   private handleError(error: any): Observable<never>{
     let errorMessage = ''
 
@@ -70,11 +77,12 @@ export class TicketService {
         }
 
         errorMessage = errors.join('; ');
-
         break;
+
       case 500:
         errorMessage = 'Erro no servidor. Tente mais tarde.';
         break;
+
       default:
         errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
     }

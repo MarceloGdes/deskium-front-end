@@ -100,7 +100,6 @@ export class NewTicket implements OnInit{
   }
 
   private saveTicket(fileNames?: Arquivo[] ){
-    console.log(this.enteredDescricao)
     this.ticketService.create({
       titulo: this.enteredTitulo,
       descricaoHtml: this.enteredDescricao,
@@ -108,17 +107,17 @@ export class NewTicket implements OnInit{
       categoriaId: this.selectedCategoria?.id,
       arquivos: fileNames
     })
-      .subscribe({
-        next: response =>{
-          console.log(response)
-          this.isLoading = false;
-          this.router.navigate(['/opened']);
-        },
-        error: error=> {
-          this.errorMessage = error.message;
-          this.isLoading = false
-        }
-      })
+    .subscribe({
+      next: response =>{
+        console.log(response)
+        this.isLoading = false;
+        this.router.navigate(['../my-tickets']);
+      },
+      error: error=> {
+        this.errorMessage = error.message;
+        this.isLoading = false
+      }
+    })
   }
 
   private loadMotivos() {

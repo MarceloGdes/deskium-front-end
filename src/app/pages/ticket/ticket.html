@@ -89,7 +89,7 @@
             <h5 class="fs-5 fw-medium">Nova Ação</h5>
           </div>
 
-          <form action="">
+          <form (ngSubmit)="onSubmit()">
             <div class="mb-3 form-group">
               <quill-editor
                 [(ngModel)]="enteredDescricao"
@@ -150,7 +150,7 @@
                 <button
                   class="btn btn-primary p-2 border-0 m-0 ms-auto"
                   type="submit"
-                >
+                  [disabled]="isLoading">
                   Adicionar Ação
                 </button>
               </div>

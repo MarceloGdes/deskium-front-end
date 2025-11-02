@@ -6,11 +6,12 @@ import {FormsModule} from '@angular/forms';
 import {Motivo} from '../../model/motivo.model';
 import {Categoria} from '../../model/categoria.model';
 import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorOverlay} from '../../layout/shared/error-overlay/error-overlay';
 import {QuillEditorComponent} from 'ngx-quill';
 import {Arquivo} from '../../model/arquivo.model';
 import {Acao} from './acao/acao';
+import {ArquivoService} from '../../service/arquivo.service';
 
 @Component({
   selector: 'app-ticket',
@@ -18,7 +19,6 @@ import {Acao} from './acao/acao';
     DatePipe,
     FormsModule,
     LoadingOverlay,
-    ErrorOverlay,
     QuillEditorComponent,
     Acao
   ],
@@ -27,38 +27,81 @@ import {Acao} from './acao/acao';
 })
 export class Ticket implements OnInit {
   private ticketService = inject(TicketService);
+  private arquivoService = inject(ArquivoService)
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   errorMessage?: string;
 
-  private ticketId?: string;
+  private ticketId = "";
   ticket?: TicketModel;
 
   isLoading = false;
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
-  enteredDescricao?: string;
+  enteredDescricao = "";
+  acaoInterna = false;
   anexos: File[] = [];
 
-
-  constructor(route: ActivatedRoute) {
-   //Resgata o id passado na rota.
-
-  }
 
   ngOnInit(): void {
     //Recupera o id da rota e carrega o ticket
     this.isLoading = true;
     this.route.params.subscribe({
       next: (value) => {
-        //Pega o valor da key id do objeto Params
+        //Pega o valor da chave "id" do objeto Params
         //[key: string]
         this.ticketId = value['id'];
-        if (this.ticketId) {
-          this.loadTicket(this.ticketId);
-        }
+        this.loadTicket(this.ticketId);
+      },
+      error: (error) => {
+        console.log(error);
+        this.router.navigate(['../my-tickets'])
       }
     })
+  }
+
+  onSubmit() {
+    this.errorMessage = '';
+
+    if(this.enteredDescricao === ""){
+      this.errorMessage = 'Descrição não preenchida';
+      return;
+    }
+
+    this.isLoading = true;
+
+    if(this.anexos.length > 0){
+      this.arquivoService.uploadFile(this.anexos)
+        .subscribe({
+          next: response => {
+            this.addAcao(response);
+          },
+          error: err => {
+            this.errorMessage = err.message;
+            this.isLoading = false
+            return
+          }
+        })
+    }else {
+      this.addAcao();
+    }
+  }
+
+  private addAcao(anexos?: Arquivo[]) {
+    if(this.ticketId){
+      this.ticketService.addAcao(this.ticketId, {
+        acaoInterna: this.acaoInterna,
+        html: this.enteredDescricao,
+        anexos: anexos
+      })
+      .subscribe({
+        next: (response) => {
+          this.loadTicket(this.ticketId);
+        }
+      })
+    }
+
   }
 
   private loadTicket(id: string) {
@@ -68,7 +111,9 @@ export class Ticket implements OnInit {
           this.ticket = response;
           this.isLoading = false;
         },
-        error: err => {}
+        error: err => {
+          this.router.navigate(['../'])
+        }
       })
   }
 

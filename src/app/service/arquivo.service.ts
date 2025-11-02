@@ -13,9 +13,8 @@ export class ArquivoService {
     const formData = new FormData();
 
     // enviando os arquivo no como multipart/form-data
-    // Adicionando cada arquivo com a chave "file"
     files.forEach(file => {
-      formData.append('file', file);
+      formData.append('files', file);
     })
 
     return this.client.post<Arquivo[]>(this.apiUrl, formData)
