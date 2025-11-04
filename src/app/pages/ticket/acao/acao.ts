@@ -18,16 +18,8 @@ export class Acao {
   private arquivoService = inject(ArquivoService);
 
   onVisualizeAnexo(fileName: string) {
-    this.arquivoService.getFileByFileName(fileName)
-      .subscribe({
-        next: blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = fileName;
-          a.click();
-          window.URL.revokeObjectURL(url);
-        }
-      })
+    var url = this.arquivoService.getFileViewURL(fileName)
+
+    window.open(url, '_blank');
   }
 }

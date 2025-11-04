@@ -27,11 +27,8 @@ export class ArquivoService {
     return this.client.delete(`${this.apiUrl}/${fileName}`)
   }
 
-  getFileByFileName(fileName: string): Observable<Blob> {
-    return this.client.get<Blob>(`${this.apiUrl}/arquivos/${fileName}`)
-      .pipe(
-        catchError(error => this.handleError(error))
-      )
+  getFileViewURL(fileName: string): string {
+    return `${this.apiUrl}/${fileName}`;
   }
 
   private handleError(error: any): Observable<never>{
