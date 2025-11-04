@@ -26,14 +26,14 @@
         @for (anexo of acao?.anexos; track anexo.fileName) {
           <a (click)="onVisualizeAnexo(anexo.fileName)">
             <span class="badge bg-light text-dark border d-flex align-items-center gap-2">
-                <span class="material-symbols-outlined fs-5 w-100">draft</span>
-                  <!--Removendo o UUID na apresentação para o usuário-->
-                  <!-- Primeiro divide em partes pelo "_".
-                  Depois ignora a primeir aposição do Array e junta tudo novamente-->
+              <span class="material-symbols-outlined fs-5 w-100">draft</span>
+                <!--Removendo o UUID na apresentação para o usuário-->
+                <!-- Primeiro divide em partes pelo "_".
+                Depois ignora a primeir aposição do Array e junta tudo novamente-->
 
-                <span class="link-body-emphasis">
-                    {{ anexo.fileName.split('_').slice(1).join('_')}}
-                </span>
+              <span class="link-body-emphasis">
+                  {{ anexo.fileName.split('_').slice(1).join('_')}}
+              </span>
             </span>
           </a>
         }
