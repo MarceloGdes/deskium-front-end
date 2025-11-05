@@ -7,7 +7,6 @@ import {Motivo} from '../../model/motivo.model';
 import {Categoria} from '../../model/categoria.model';
 import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ErrorOverlay} from '../../layout/shared/error-overlay/error-overlay';
 import {QuillEditorComponent} from 'ngx-quill';
 import {Arquivo} from '../../model/arquivo.model';
 import {Acao} from './acao/acao';

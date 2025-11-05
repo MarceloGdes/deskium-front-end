@@ -167,52 +167,25 @@
     </div>
 
     <div class="card border-0 card-table">
-      <div class="table-responsive">
-        <table class="table align-middle">
-          <thead>
-          <tr>
-            <th scope="col" class="fw-medium">Ticket</th>
-            <th scope="col" class="fw-medium">Título</th>
-            <th scope="col" class="fw-medium">Sub-Status</th>
-            <th scope="col" class="fw-medium">Motivo</th>
-            <th scope="col" class="fw-medium">Categoria</th>
-            <th scope="col" class="fw-medium">Responsável</th>
-            <th scope="col" class="fw-medium">Data de Abertura</th>
-          </tr>
-          </thead>
-          <tbody>
-            @for (ticket of tickets; track ticket.id) {
-              <tr class="border-bottom">
-                <td >
-                  <a
-                    class="link-primary"
-                    routerLink="../{{ticket.id}}"
-                    routerLinkActive>
-                    #{{ ticket.id }}
-                  </a>
-                </td>
-                <td >{{ ticket.titulo }}</td>
-                <td class="td-substatus">
-                  <span
-                    class="badge"
-                    [ngClass]="{
-                      'bg-warning text-dark': ticket.subStatus.id === 'AGUARDANDO_RETORNO',
-                      'bg-success text-white': ticket.subStatus.id === 'EM_ATENDIMENTO',
-                      'bg-primary text-white': ticket.subStatus.id === 'NOVO'
-                    }">
-                    {{ ticket.subStatus.descricao }}
-                  </span>
-                </td>
-                <td >{{ ticket.motivo.descricao }}</td>
-                <td >{{ ticket.categoria?.descricao }}</td>
-                <td >{{ ticket.suporte.nomeCompleto }}</td>
-                <!--Date pipe para formatar a data -->
-                <td >{{ ticket.criadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
+<!--      -->
+      <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <li ngbNavItem>
+          <button ngbNavLink>Novos</button>
+          <ng-template ngbNavContent>
+            <app-tickets-table [tickets]="ticketsNovos" ></app-tickets-table>
+          </ng-template>
+        </li>
+        <li ngbNavItem>
+          <button ngbNavLink>Em atendimento</button>
+          <ng-template ngbNavContent>Second content</ng-template>
+        </li>
+        <li ngbNavItem>
+          <button ngbNavLink>Aguardando retorno</button>
+          <ng-template ngbNavContent>Second content</ng-template>
+        </li>
+      </ul>
+
+      <div [ngbNavOutlet]="nav"></div>
     </div>
   </div>
 </div>

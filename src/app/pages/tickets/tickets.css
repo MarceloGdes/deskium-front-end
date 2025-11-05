@@ -11,16 +11,3 @@
   box-shadow: var(--shadow);
 }
 
-table,
-tbody,
-th,
-td {
-  background-color: var(--antiflash-white) !important;
-}
-
-table,
-tbody,
-td {
-  height: 3.7rem;
-  vertical-align: middle;
-}

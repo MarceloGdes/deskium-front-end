@@ -30,7 +30,7 @@ export class TicketService {
                   ticketId?: number,
                   assunto?: string,
                   responsavel?: string,
-                  subStatus?: SubStatus,
+                  subStatusId?: string,
                   motivo?: Motivo,
                   categoria?: Categoria): Observable<TicketModel[]>{
 
@@ -39,7 +39,7 @@ export class TicketService {
     if (ticketId != null) params.ticketId = ticketId;
     if (assunto) params.assunto = assunto;
     if (responsavel) params.responsavel = responsavel;
-    if (subStatus?.id != null) params.subStatus = subStatus.id;
+    if (subStatusId != null) params.subStatus = subStatusId;
     if (motivo?.id != null) params.motivoId = motivo.id;
     if (categoria?.id != null) params.categoriaId = categoria.id;
 

@@ -36,25 +36,33 @@ export class Home implements OnInit {
       .subscribe({
         next: (response) => {
           this.user = response
+          localStorage.setItem('tipo_usuario', this.user.tipoUsuario)
           this.loadComponents(this.user)
         }
       })
   }
 
-  addTab(navItemId: number, tab: Tab){
-
-  }
-
-  get navItens(){
-    return this.navItems;
-  }
-
   private loadComponents(user: UsuarioModel | undefined){
+    this.navItems.push({
+      id: 1,
+      name: 'Meus Tickets',
+      icon: 'confirmation_number',
+      route: 'my-tickets',
+      tabs: [
+        {
+          id: 1,
+          content: null,
+          title: 'Meus tickets',
+          closable: false
+        }
+      ]
+    })
+
     switch (user?.tipoUsuario){
       case 'SOLICITANTE':
         this.navItems.push(
           {
-            id: 1,
+            id: 2,
             name: 'Novo Ticket',
             icon: 'add_box',
             route: 'new',
@@ -68,23 +76,25 @@ export class Home implements OnInit {
             ]
           }
         )
-    }
-    this.navItems.push({
-        id: 2,
-        name: 'Meus Tickets',
-        icon: 'confirmation_number',
-        route: 'my-tickets',
-        tabs: [
+        break;
+      case 'SUPORTE':
+        this.navItems.push(
           {
-            id: 1,
-            content: null,
-            title: 'Meus tickets',
-            closable: false
+            id: 2,
+            name: 'Todos os Tickets',
+            icon: 'all_inbox',
+            route: 'all-tickets',
+            tabs: [
+              {
+                id: 1,
+                content: null,
+                title: 'Todos os Tickets',
+                closable: false
+              }
+            ]
           }
-        ]
-      })
-
-
+        )
+    }
     this.isLoading = false;
   }
 

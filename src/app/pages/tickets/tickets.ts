@@ -7,13 +7,21 @@ import {TicketModel} from '../../model/ticket.model';
 import {Categoria} from '../../model/categoria.model';
 import {Motivo} from '../../model/motivo.model';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgbCollapse, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbCollapse,
+  NgbNav,
+  NgbNavContent,
+  NgbNavItem,
+  NgbNavLinkButton, NgbNavOutlet,
+  NgbPagination
+} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe, NgClass} from '@angular/common';
 import {SubStatusService} from '../../service/sub-status.service';
 import {SubStatus} from '../../model/sub-status.model';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {Status} from '../../model/status.model';
 import {StatusService} from '../../service/status.service';
+import {TicketsTable} from './tickets-table/tickets-table';
 
 @Component({
   selector: 'app-tickets',
@@ -21,11 +29,15 @@ import {StatusService} from '../../service/status.service';
     LoadingOverlay,
     ReactiveFormsModule,
     FormsModule,
-    DatePipe,
-    NgClass,
     RouterLink,
     RouterLinkActive,
-    NgbCollapse
+    NgbCollapse,
+    NgbNav,
+    NgbNavItem,
+    NgbNavLinkButton,
+    NgbNavContent,
+    NgbNavOutlet,
+    TicketsTable
   ],
   templateUrl: './tickets.html',
   styleUrl: './tickets.css'
@@ -44,6 +56,7 @@ export class Tickets implements OnInit {
   isLoadingSubStatus = false;
 
   tickets: TicketModel[] = [];
+  ticketsNovos: TicketModel[] = [];
   categorias?: Categoria[];
   motivos?: Motivo[];
   subStatusList?: SubStatus[];
@@ -59,12 +72,13 @@ export class Tickets implements OnInit {
   isCollapsed = true;
 
 
+
   ngOnInit(): void {
     this.loadCategorias();
     this.loadMotivos();
     this.loadSubStatus();
+    this.loadStatus();
     this.loadTickets();
-    this.loadStatus()
   }
 
   private loadCategorias() {
@@ -143,14 +157,15 @@ export class Tickets implements OnInit {
       })
   }
 
-  loadTickets() {
+  loadTickets(){
     this.isLoadingTickets = true;
     this.errorMessage = ""
+
     this.ticketService.getAllMyTickets(this.selectedStatus?.id || "ABERTO", this.enteredNumTicket, this.enteredAssuntoTicket,
-      this.enteredResponsavel, this.selectedSubStatus, this.selectedMotivo, this.selectedCategoria)
+      this.enteredResponsavel, "NOVO", this.selectedMotivo, this.selectedCategoria)
       .subscribe({
         next: (response) => {
-          this.tickets = response;
+          this.ticketsNovos = response;
           this.isLoadingTickets = false;
         },
         error: (error) => {
