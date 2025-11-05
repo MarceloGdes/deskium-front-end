@@ -186,7 +186,7 @@ export class NewTicket implements OnInit{
     if (!input.files) return;
 
     const maxSize = 5 * 1024 * 1024; // 5 MB
-    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf'];
+    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg'];
 
 
     for (let file of input.files) {
