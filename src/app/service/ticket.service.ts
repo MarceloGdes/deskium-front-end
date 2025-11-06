@@ -26,25 +26,28 @@ export class TicketService {
       )
   }
 
-  getAllMyTickets(status: string,
-                  ticketId?: number,
-                  assunto?: string,
-                  responsavel?: string,
-                  subStatusId?: string,
-                  motivo?: Motivo,
-                  categoria?: Categoria): Observable<TicketModel[]>{
+  getTickets(status: string,
+             allTickets: boolean,
+             ticketId?: number,
+             assunto?: string,
+             responsavel?: string,
+             subStatusId?: string,
+             motivo?: Motivo,
+             categoria?: Categoria,
+             solicitante?: string): Observable<TicketModel[]>{
 
     //Adicionando os parametros dinamicamente, conforme preenchido na tela.
-    let params: any = { status };
+    let params: any = { status, allTickets };
     if (ticketId != null) params.ticketId = ticketId;
     if (assunto) params.assunto = assunto;
     if (responsavel) params.responsavel = responsavel;
+    if (solicitante) params.solicitante = solicitante;
     if (subStatusId != null) params.subStatus = subStatusId;
     if (motivo?.id != null) params.motivoId = motivo.id;
     if (categoria?.id != null) params.categoriaId = categoria.id;
 
     return this.client.get<TicketModel[]>(
-      `${this.apiUrl}/my-tickets`,
+      this.apiUrl,
       {
         params: params
       })

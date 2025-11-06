@@ -22,6 +22,8 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 import {Status} from '../../model/status.model';
 import {StatusService} from '../../service/status.service';
 import {TicketsTable} from './tickets-table/tickets-table';
+import {AuthService} from '../../service/auth/auth.service';
+import {UsuarioModel} from '../../model/usuario.model';
 
 @Component({
   selector: 'app-tickets',
@@ -46,20 +48,21 @@ export class Tickets implements OnInit {
   private ticketService = inject(TicketService);
   private categoriaService = inject(CategoriaService);
   private motivoService = inject(MotivoService);
-  private subStatusService = inject(SubStatusService);
   private statusService = inject(StatusService);
+  private authService = inject(AuthService);
 
   isLoadingTickets = false;
   isLoadingCategorias = false;
   isLoadingMotivos = false;
   isLoadingStatus = false;
-  isLoadingSubStatus = false;
+  isLoadingUsuario = false;
 
-  tickets: TicketModel[] = [];
+  usuario?: UsuarioModel;
+  ticketsAtendimento: TicketModel[] = [];
   ticketsNovos: TicketModel[] = [];
+  ticketsAguardo: TicketModel[] = [];
   categorias?: Categoria[];
   motivos?: Motivo[];
-  subStatusList?: SubStatus[];
   statusList?: Status[];
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
@@ -70,13 +73,12 @@ export class Tickets implements OnInit {
   enteredResponsavel?: string;
   errorMessage = '';
   isCollapsed = true;
-
-
+  enteredSolicitante?: string;
 
   ngOnInit(): void {
+    this.loadUsuario()
     this.loadCategorias();
     this.loadMotivos();
-    this.loadSubStatus();
     this.loadStatus();
     this.loadTickets();
   }
@@ -92,8 +94,6 @@ export class Tickets implements OnInit {
         },
         error: (error) => {
           this.errorMessage = error.message;
-        },
-        complete: () => {
           this.isLoadingCategorias = false;
         }
       })
@@ -112,30 +112,10 @@ export class Tickets implements OnInit {
         },
         error: (error) => {
           this.errorMessage = error.message;
-        },
-        complete: () => {
           this.isLoadingMotivos = false;
         }
       })
 
-  }
-
-  private loadSubStatus() {
-    this.isLoadingSubStatus = true;
-    this.errorMessage = ""
-    this.subStatusService.getAll()
-      .subscribe({
-        next: (response) => {
-          this.subStatusList = response;
-          this.isLoadingStatus = false;
-        },
-        error: (error) => {
-          this.errorMessage = error.message;
-        },
-        complete: () => {
-          this.isLoadingStatus = false;
-        }
-      })
   }
 
   private loadStatus() {
@@ -150,27 +130,47 @@ export class Tickets implements OnInit {
         },
         error: (error) => {
           this.errorMessage = error.message;
-        },
-        complete: () => {
           this.isLoadingStatus = false;
         }
       })
   }
 
-  loadTickets(){
-    this.isLoadingTickets = true;
+  private loadUsuario() {
+    this.isLoadingUsuario = true;
     this.errorMessage = ""
 
-    this.ticketService.getAllMyTickets(this.selectedStatus?.id || "ABERTO", this.enteredNumTicket, this.enteredAssuntoTicket,
-      this.enteredResponsavel, "NOVO", this.selectedMotivo, this.selectedCategoria)
+    this.authService.getAuthenticatedUser()
       .subscribe({
         next: (response) => {
-          this.ticketsNovos = response;
+          this.usuario = response;
+          this.isLoadingUsuario = false;
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.isLoadingUsuario = false;
+          this.authService.logout()
+        }
+      })
+  }
+
+  loadTickets(){
+    this.errorMessage = ""
+    this.isLoadingTickets = true;
+
+    this.ticketService.getTickets(this.selectedStatus?.id || "ABERTO", false, this.enteredNumTicket,
+      this.enteredAssuntoTicket, this.enteredResponsavel, undefined, this.selectedMotivo,
+      this.selectedCategoria, this.enteredSolicitante)
+      .subscribe({
+        next: (response) => {
+          // Separação por substatus
+          this.ticketsNovos = response.filter(t => t.subStatus?.id === 'NOVO');
+          this.ticketsAtendimento = response.filter(t => t.subStatus?.id === 'EM_ATENDIMENTO');
+          this.ticketsAguardo = response.filter(t => t.subStatus?.id === 'AGUARDANDO_RETORNO');
+
           this.isLoadingTickets = false;
         },
         error: (error) => {
           this.errorMessage = error.message;
-          this.isLoadingTickets = false;
         }
       })
   }

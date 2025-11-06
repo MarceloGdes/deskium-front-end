@@ -18,7 +18,6 @@ import {UsuarioModel} from '../../model/usuario.model';
 })
 export class Home implements OnInit {
   private authService = inject(AuthService);
-  isLoading = false;
   user?: UsuarioModel
   navItems: NavItem[];
 
@@ -27,7 +26,6 @@ export class Home implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isLoading = true;
     this.loadUser()
   }
 
@@ -36,8 +34,10 @@ export class Home implements OnInit {
       .subscribe({
         next: (response) => {
           this.user = response
-          localStorage.setItem('tipo_usuario', this.user.tipoUsuario)
           this.loadComponents(this.user)
+        },
+        error: (error) => {
+          this.authService.logout()
         }
       })
   }
@@ -95,7 +95,6 @@ export class Home implements OnInit {
           }
         )
     }
-    this.isLoading = false;
   }
 
 }

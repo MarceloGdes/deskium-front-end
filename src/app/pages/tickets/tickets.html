@@ -1,5 +1,5 @@
 <!-- Overlay de carregamento -->
-@if(isLoadingTickets || isLoadingCategorias || isLoadingMotivos){
+@if(isLoadingTickets || isLoadingCategorias || isLoadingMotivos || isLoadingStatus || isLoadingUsuario){
   <app-loading-overlay></app-loading-overlay>
 }
 
@@ -19,12 +19,16 @@
         </span>
         <span>Filtros</span>
       </button>
-      <a class="btn btn-success d-flex justify-content-center align-items-center gap-1"
-         routerLink="../new"
-         routerLinkActive="active">
-        <span class="material-symbols-outlined fs-5">add_box</span>
-        <span>Novo Ticket</span>
-      </a>
+
+      @if(usuario?.tipoUsuario == "SOLICITANTE"){
+        <a class="btn btn-success d-flex justify-content-center align-items-center gap-1"
+           routerLink="../new"
+           routerLinkActive="active">
+          <span class="material-symbols-outlined fs-5">add_box</span>
+          <span>Novo Ticket</span>
+        </a>
+      }
+
     </div>
     <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
       <form class="mb-3">
@@ -56,13 +60,25 @@
           </div>
 
           <div class="col-md-6 col-lg-2">
-            <label class="form-label">Responsável</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Nome do responsável"
-              name="responsavel"
-              [(ngModel)]="enteredResponsavel"/>
+            @if(usuario?.tipoUsuario == "SOLICITANTE"){
+              <label class="form-label">Responsável</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Nome do responsável"
+                name="responsavel"
+                [(ngModel)]="enteredResponsavel"/>
+
+            } @else {
+              <label class="form-label">Solicitante</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Nome do solicitante"
+                name="responsavel"
+                [(ngModel)]="enteredSolicitante"/>
+            }
+
           </div>
 
           <div class="col-md-6 col-lg-2">
@@ -74,20 +90,6 @@
               @if (statusList?.length){
                 @for (status of statusList; track status.id){
                   <option [ngValue]="status">{{ status.descricao }}</option>
-                }
-              }
-            </select>
-          </div>
-
-          <div class="col-md-6 col-lg-2">
-            <label class="form-label">Sub-Status</label>
-            <select
-              class="form-select"
-              name="sub-status"
-              [(ngModel)]="selectedSubStatus">
-              @if (subStatusList?.length){
-                @for (subStatus of subStatusList; track subStatus.id){
-                  <option [ngValue]="subStatus">{{ subStatus.descricao }}</option>
                 }
               }
             </select>
@@ -172,16 +174,20 @@
         <li ngbNavItem>
           <button ngbNavLink>Novos</button>
           <ng-template ngbNavContent>
-            <app-tickets-table [tickets]="ticketsNovos" ></app-tickets-table>
+            <app-tickets-table [tickets]="ticketsNovos"></app-tickets-table>
           </ng-template>
         </li>
         <li ngbNavItem>
           <button ngbNavLink>Em atendimento</button>
-          <ng-template ngbNavContent>Second content</ng-template>
+          <ng-template ngbNavContent>
+            <app-tickets-table [tickets]="ticketsAtendimento"></app-tickets-table>
+          </ng-template>
         </li>
         <li ngbNavItem>
           <button ngbNavLink>Aguardando retorno</button>
-          <ng-template ngbNavContent>Second content</ng-template>
+          <ng-template ngbNavContent>
+            <app-tickets-table [tickets]="ticketsAguardo"></app-tickets-table>
+          </ng-template>
         </li>
       </ul>
 
