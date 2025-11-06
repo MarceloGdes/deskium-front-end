@@ -86,7 +86,7 @@
             <select
               class="form-select"
               name="sub-status"
-              [(ngModel)]="selectedStatus">
+              [(ngModel)]="auxSelectedStatus">
               @if (statusList?.length){
                 @for (status of statusList; track status.id){
                   <option [ngValue]="status">{{ status.descricao }}</option>
@@ -113,7 +113,6 @@
           </div>
 
           <div class="col-md-6 col-lg-2">
-            <label class="form-label">Categoria</label>
             <label for="categoria" class="form-label mb-1">Categoria</label>
             <select
               id="categoria"
@@ -130,23 +129,23 @@
             </select>
           </div>
 
-          <div class="col-md-6 col-lg-3">
-            <label class="form-label">Data de Abertura</label>
-            <div class="input-group">
-              <input type="date" class="form-control" aria-label="Data inicial de abertura">
-              <span class="input-group-text">a</span>
-              <input type="date" class="form-control" aria-label="Data final de abertura">
-            </div>
-          </div>
+<!--          <div class="col-md-6 col-lg-3">-->
+<!--            <label class="form-label">Data de Abertura</label>-->
+<!--            <div class="input-group">-->
+<!--              <input type="date" class="form-control" aria-label="Data inicial de abertura">-->
+<!--              <span class="input-group-text">a</span>-->
+<!--              <input type="date" class="form-control" aria-label="Data final de abertura">-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <div class="col-md-6 col-lg-3">
-            <label class="form-label">Data de Fechamento</label>
-            <div class="input-group">
-              <input type="date" class="form-control" aria-label="Data inicial de fechamento">
-              <span class="input-group-text">a</span>
-              <input type="date" class="form-control" aria-label="Data final de fechamento">
-            </div>
-          </div>
+<!--          <div class="col-md-6 col-lg-3">-->
+<!--            <label class="form-label">Data de Fechamento</label>-->
+<!--            <div class="input-group">-->
+<!--              <input type="date" class="form-control" aria-label="Data inicial de fechamento">-->
+<!--              <span class="input-group-text">a</span>-->
+<!--              <input type="date" class="form-control" aria-label="Data final de fechamento">-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
 
         <div class="d-flex gap-2 mt-3 mb-4 flex-grow">
@@ -169,26 +168,46 @@
     </div>
 
     <div class="card border-0 card-table">
-<!--      -->
       <ul ngbNav #nav="ngbNav" class="nav-tabs mb-2">
         <li ngbNavItem>
-          <button ngbNavLink>Novos</button>
+          <button ngbNavLink>Todos os tickets</button>
           <ng-template ngbNavContent>
-            <app-tickets-table [tickets]="ticketsNovos"></app-tickets-table>
+            <app-tickets-table
+              [tickets]="allTickets"
+              [tipoUsuario]="usuario?.tipoUsuario"
+              [statusId]="selectedStatus?.id"></app-tickets-table>
           </ng-template>
         </li>
-        <li ngbNavItem>
-          <button ngbNavLink>Em atendimento</button>
-          <ng-template ngbNavContent>
-            <app-tickets-table [tickets]="ticketsAtendimento"></app-tickets-table>
-          </ng-template>
-        </li>
-        <li ngbNavItem>
-          <button ngbNavLink>Aguardando retorno</button>
-          <ng-template ngbNavContent>
-            <app-tickets-table [tickets]="ticketsAguardo"></app-tickets-table>
-          </ng-template>
-        </li>
+        @if(selectedStatus?.id == 'ABERTO'){
+          <li ngbNavItem>
+            <button ngbNavLink>Novos</button>
+            <ng-template ngbNavContent>
+              <app-tickets-table
+                [tickets]="ticketsNovos"
+                [tipoUsuario]="usuario?.tipoUsuario"
+                [statusId]="selectedStatus?.id"></app-tickets-table>
+            </ng-template>
+          </li>
+          <li ngbNavItem>
+            <button ngbNavLink>Em atendimento</button>
+            <ng-template ngbNavContent>
+              <app-tickets-table
+                [tickets]="ticketsAtendimento"
+                [tipoUsuario]="usuario?.tipoUsuario"
+                [statusId]="selectedStatus?.id"></app-tickets-table>
+            </ng-template>
+          </li>
+          <li ngbNavItem>
+            <button ngbNavLink>Aguardando retorno</button>
+            <ng-template ngbNavContent>
+              <app-tickets-table
+                [tickets]="ticketsAguardo"
+                [tipoUsuario]="usuario?.tipoUsuario"
+                [statusId]="selectedStatus?.id"></app-tickets-table>
+            </ng-template>
+          </li>
+        }
+
       </ul>
 
       <div [ngbNavOutlet]="nav"></div>

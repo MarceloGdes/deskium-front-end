@@ -56,23 +56,29 @@ export class Tickets implements OnInit {
   isLoadingMotivos = false;
   isLoadingStatus = false;
   isLoadingUsuario = false;
+  errorMessage = '';
+  isCollapsed = true;
 
   usuario?: UsuarioModel;
+
   ticketsAtendimento: TicketModel[] = [];
   ticketsNovos: TicketModel[] = [];
   ticketsAguardo: TicketModel[] = [];
+  allTickets: TicketModel[] = [];
+
   categorias?: Categoria[];
   motivos?: Motivo[];
   statusList?: Status[];
+
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
   selectedSubStatus?: SubStatus;
   selectedStatus?: Status;
+  //Variavel auxiliar, para que a tela tenha o layout alterado apenas quando o loadTickets setar selectedStatus;
+  auxSelectedStatus?: Status;
   enteredNumTicket?: number;
   enteredAssuntoTicket?: string;
   enteredResponsavel?: string;
-  errorMessage = '';
-  isCollapsed = true;
   enteredSolicitante?: string;
 
   ngOnInit(): void {
@@ -125,7 +131,7 @@ export class Tickets implements OnInit {
       .subscribe({
         next: (response) => {
           this.statusList = response;
-          this.selectedStatus = this.statusList[0]
+          this.selectedStatus = this.statusList.find(s => s.id === 'ABERTO')
           this.isLoadingStatus = false;
         },
         error: (error) => {
@@ -156,12 +162,17 @@ export class Tickets implements OnInit {
   loadTickets(){
     this.errorMessage = ""
     this.isLoadingTickets = true;
+    //Apenas altera o layout da pagina ao clicar no botão filtrar.
+    this.selectedStatus = this.auxSelectedStatus;
 
     this.ticketService.getTickets(this.selectedStatus?.id || "ABERTO", false, this.enteredNumTicket,
       this.enteredAssuntoTicket, this.enteredResponsavel, undefined, this.selectedMotivo,
       this.selectedCategoria, this.enteredSolicitante)
       .subscribe({
         next: (response) => {
+          //Todos os tickets, para quando for selecionado tickets com status de resolvido ou fechado.
+          this.allTickets = response;
+
           // Separação por substatus
           this.ticketsNovos = response.filter(t => t.subStatus?.id === 'NOVO');
           this.ticketsAtendimento = response.filter(t => t.subStatus?.id === 'EM_ATENDIMENTO');
@@ -171,6 +182,7 @@ export class Tickets implements OnInit {
         },
         error: (error) => {
           this.errorMessage = error.message;
+          this.isLoadingTickets = false;
         }
       })
   }

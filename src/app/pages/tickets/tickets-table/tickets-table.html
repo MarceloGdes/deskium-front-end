@@ -4,11 +4,26 @@
     <tr>
       <th scope="col" class="fw-medium">Ticket</th>
       <th scope="col" class="fw-medium">Título</th>
-      <th scope="col" class="fw-medium">Sub-Status</th>
+      @if(statusId === 'ABERTO'){
+        <th scope="col" class="fw-medium">Sub-Status</th>
+      }
       <th scope="col" class="fw-medium">Motivo</th>
       <th scope="col" class="fw-medium">Categoria</th>
-      <th scope="col" class="fw-medium">Responsável</th>
+      @if(tipoUsuario == 'SUPORTE'|| 'GESTOR_SUPORTE'){
+        <th scope="col" class="fw-medium">Prioridade</th>
+      }
+
+      @if (tipoUsuario == 'SOLICITANTE'){
+        <th scope="col" class="fw-medium">Responsável</th>
+      } @else {
+        <th scope="col" class="fw-medium">Solicitante</th>
+      }
+
       <th scope="col" class="fw-medium">Data de Abertura</th>
+
+      @if(statusId !== 'ABERTO'){
+        <th scope="col" class="fw-medium">Data de Fechamento</th>
+      }
     </tr>
     </thead>
     <tbody>
@@ -23,7 +38,8 @@
             </a>
           </td>
           <td >{{ ticket.titulo }}</td>
-          <td class="td-substatus">
+          @if(statusId === 'ABERTO'){
+            <td class="td-substatus">
                   <span
                     class="badge"
                     [ngClass]="{
@@ -33,12 +49,25 @@
                     }">
                     {{ ticket.subStatus.descricao }}
                   </span>
-          </td>
+            </td>
+          }
+
           <td >{{ ticket.motivo.descricao }}</td>
           <td >{{ ticket.categoria?.descricao }}</td>
-          <td >{{ ticket.suporte.nomeCompleto }}</td>
+          @if(tipoUsuario == 'SUPORTE'|| 'GESTOR_SUPORTE'){
+            <td >{{ ticket.prioridade }}</td>
+          }
+          @if (tipoUsuario == 'SOLICITANTE'){
+            <td>{{ ticket.suporte.nomeCompleto }}</td>
+          } @else {
+            <td>{{ ticket.solicitante.nomeCompleto }}</td>
+          }
           <!--Date pipe para formatar a data -->
           <td >{{ ticket.criadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
+
+          @if(statusId !== 'ABERTO'){
+            <td >{{ ticket.dataResolucao | date:'dd/MM/yyyy HH:mm' }}</td>
+          }
         </tr>
       }
     </tbody>
