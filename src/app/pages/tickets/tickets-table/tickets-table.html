@@ -9,7 +9,8 @@
       }
       <th scope="col" class="fw-medium">Motivo</th>
       <th scope="col" class="fw-medium">Categoria</th>
-      @if(tipoUsuario == 'SUPORTE'|| 'GESTOR_SUPORTE'){
+
+      @if (tipoUsuario == 'SUPORTE' || tipoUsuario == 'GESTOR_SUPORTE'){
         <th scope="col" class="fw-medium">Prioridade</th>
       }
 
@@ -52,9 +53,9 @@
             </td>
           }
 
-          <td >{{ ticket.motivo.descricao }}</td>
-          <td >{{ ticket.categoria?.descricao }}</td>
-          @if(tipoUsuario == 'SUPORTE'|| 'GESTOR_SUPORTE'){
+          <td>{{ ticket.motivo.descricao }}</td>
+          <td>{{ ticket.categoria?.descricao }}</td>
+          @if(tipoUsuario == 'SUPORTE'|| tipoUsuario == 'GESTOR_SUPORTE'){
             <td >{{ ticket.prioridade }}</td>
           }
           @if (tipoUsuario == 'SOLICITANTE'){

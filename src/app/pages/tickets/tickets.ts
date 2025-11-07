@@ -131,7 +131,8 @@ export class Tickets implements OnInit {
       .subscribe({
         next: (response) => {
           this.statusList = response;
-          this.selectedStatus = this.statusList.find(s => s.id === 'ABERTO')
+          this.selectedStatus = this.statusList.find(s => s.id === 'ABERTO');
+          this.auxSelectedStatus = this.selectedStatus;
           this.isLoadingStatus = false;
         },
         error: (error) => {
@@ -150,6 +151,7 @@ export class Tickets implements OnInit {
         next: (response) => {
           this.usuario = response;
           this.isLoadingUsuario = false;
+          console.log(this.usuario);
         },
         error: (error) => {
           this.errorMessage = error.message;
