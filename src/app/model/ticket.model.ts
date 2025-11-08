@@ -4,6 +4,7 @@ import {Solicitante} from './solicitante.model';
 import {Arquivo} from './arquivo.model';
 import {SubStatus} from './sub-status.model';
 import {UsuarioModel} from './usuario.model';
+import {Status} from './status.model';
 
 export interface CreateTicketRequest {
   titulo: string,
@@ -22,7 +23,7 @@ export interface TicketModel {
   previsaoPrimeiraResposta?: string;
   dataPrimeiraResposta?: string;
   horasApontadas?: number;
-  status: string;
+  status: Status;
   solicitante: Solicitante;
   suporte: Suporte;
   motivo: Motivo;

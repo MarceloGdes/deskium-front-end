@@ -1,5 +1,5 @@
 <!-- Overlay de carregamento -->
-@if(isLoading){
+@if(isLoadingTicket){
   <app-loading-overlay></app-loading-overlay>
 }
 
@@ -48,34 +48,76 @@
                  aria-label="{{ticket?.suporte?.nomeCompleto}}" disabled readonly />
         </div>
 
+        @if (usuario?.tipoUsuario != 'SOLICITANTE'){
+          <div class="mb-2">
+            <p class="mb-1 fw-medium">Solicitante</p>
+            <input class="form-control ticket-info-value" type="text" value="{{ticket?.solicitante?.nomeCompleto}}"
+                   aria-label="{{ticket?.solicitante?.nomeCompleto}}" disabled readonly />
+          </div>
+        }
+
         <div class="mb-2">
-          <label class="form-label fw-normal mb-1 fw-medium">Motivo</label>
+          <label class="form-label">Motivo</label>
           <select
-            class="form-control ticket-info-value"
-            disabled
-            readonly
+            id="motivo"
+            class="form-select"
             name="motivo"
-            >
-            <option>{{ ticket?.motivo?.descricao }}</option>
+            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !==  'ABERTO'"
+            [ngClass]="{
+             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
+            }"
+            [(ngModel)]="selectedMotivo">
+            @if(motivos?.length){
+              @for (motivo of motivos; track motivo.id) {
+                <option [ngValue]="motivo">
+                  {{ motivo.descricao }}
+                </option>
+              }
+            }
           </select>
         </div>
 
         <div class="mb-2">
-          <label class="form-label fw-normal mb-1 fw-medium">Categoria</label>
+          <label for="categoria" class="form-label">Categoria</label>
           <select
-            class="form-control ticket-info-value"
-            disabled
-            readonly
-            name="categoria">
-            <option>{{ ticket?.categoria?.descricao }}</option>
+            id="categoria"
+            class="form-select"
+            name="categoria"
+            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE'"
+            [ngClass]="{
+             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
+            }"
+            [(ngModel)]="selectedCategoria">
+            @if(categorias?.length){
+              @for (categoria of categorias; track categoria.id) {
+                <option [ngValue]="categoria">
+                  {{ categoria.descricao }}
+                </option>
+              }
+            }
           </select>
         </div>
 
 
         <div class="mb-2">
-          <p class="mb-1 fw-medium">Sub-Status</p>
-          <input class="form-control ticket-info-value" type="text" value="Aguardando meu retorno"
-                 aria-label="Resolvido" disabled readonly />
+          <label for="subStatus" class="form-label">SubStatus</label>
+          <select
+            id="subStatus"
+            class="form-select"
+            name="subStatus"
+            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE'"
+            [ngClass]="{
+             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
+            }"
+            [(ngModel)]="selectedSubStatus">
+            @if(subStatusList?.length){
+              @for (subStatus of subStatusList; track subStatus.id) {
+                <option [ngValue]="subStatus">
+                  {{ subStatus.descricao }}
+                </option>
+              }
+            }
+          </select>
         </div>
       </div>
     </div>
@@ -150,7 +192,7 @@
                   hidden
                   multiple
                   accept=".png, .jpg, .jpeg, .pdf, .mp3"
-                  [disabled]="isLoading"
+                  [disabled]="isLoadingTicket"
                   (change)="onFilesSelected($event)"/>
 
               </div>
@@ -158,7 +200,7 @@
                 <button
                   class="btn btn-primary p-2 border-0 m-0 ms-auto"
                   type="submit"
-                  [disabled]="isLoading">
+                  [disabled]="isLoadingTicket">
                   Adicionar Ação
                 </button>
               </div>

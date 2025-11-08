@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {TicketService} from '../../service/ticket.service';
 import {TicketModel} from '../../model/ticket.model';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgClass} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Motivo} from '../../model/motivo.model';
 import {Categoria} from '../../model/categoria.model';
@@ -11,6 +11,14 @@ import {QuillEditorComponent} from 'ngx-quill';
 import {Arquivo} from '../../model/arquivo.model';
 import {Acao} from './acao/acao';
 import {ArquivoService} from '../../service/arquivo.service';
+import {AuthService} from '../../service/auth/auth.service';
+import {UsuarioModel} from '../../model/usuario.model';
+import {CategoriaService} from '../../service/categoria.service';
+import {MotivoService} from '../../service/motivo.service';
+import {StatusService} from '../../service/status.service';
+import {Status} from '../../model/status.model';
+import {SubStatus} from '../../model/sub-status.model';
+import {SubStatusService} from '../../service/sub-status.service';
 
 @Component({
   selector: 'app-ticket',
@@ -19,14 +27,20 @@ import {ArquivoService} from '../../service/arquivo.service';
     FormsModule,
     LoadingOverlay,
     QuillEditorComponent,
-    Acao
+    Acao,
+    NgClass
   ],
   templateUrl: './ticket.html',
   styleUrl: './ticket.css'
 })
 export class Ticket implements OnInit {
   private ticketService = inject(TicketService);
-  private arquivoService = inject(ArquivoService)
+  private arquivoService = inject(ArquivoService);
+  private authService = inject(AuthService);
+  private categoriaService = inject(CategoriaService);
+  private motivoService = inject(MotivoService);
+  private statusService = inject(StatusService);
+  private subStatusService = inject(SubStatusService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -34,18 +48,34 @@ export class Ticket implements OnInit {
 
   private ticketId = "";
   ticket?: TicketModel;
+  usuario?: UsuarioModel;
 
-  isLoading = false;
+  isLoadingTicket = false;
+  isLoadingUsuario = false;
+  isLoadingMotivos = false;
+  isLoadingCategorias = false;
+  isLoadingSubStatus = false;
+  isLoadingStatus = false;
+
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
+  selectedSubStatus?: SubStatus;
   enteredDescricao = "";
   acaoInterna = false;
+
   anexos: File[] = [];
+  motivos?: Motivo[];
+  categorias?: Categoria[];
+  statusList?: Status[];
+  subStatusList?: SubStatus[];
+
 
 
   ngOnInit(): void {
     //Recupera o id da rota e carrega o ticket
-    this.isLoading = true;
+    this.isLoadingTicket = true;
+    this.loadUsuario();
+
     this.route.params.subscribe({
       next: (value) => {
         //Pega o valor da chave "id" do objeto Params
@@ -56,37 +86,9 @@ export class Ticket implements OnInit {
       error: (error) => {
         console.log(error);
         this.router.navigate(['../my-tickets'])
-      }
+      },
     })
   }
-
-  onSubmit() {
-    this.errorMessage = '';
-
-    if(this.enteredDescricao === ""){
-      this.errorMessage = 'Descrição não preenchida';
-      return;
-    }
-
-    this.isLoading = true;
-
-    if(this.anexos.length > 0){
-      this.arquivoService.uploadFile(this.anexos)
-        .subscribe({
-          next: response => {
-            this.addAcao(response);
-          },
-          error: err => {
-            this.errorMessage = err.message;
-            this.isLoading = false
-            return
-          }
-        })
-    }else {
-      this.addAcao();
-    }
-  }
-
   private addAcao(anexos?: Arquivo[]) {
     if(this.ticketId){
       this.ticketService.addAcao(this.ticketId, {
@@ -106,7 +108,7 @@ export class Ticket implements OnInit {
             this.deleteUploadedAnexos(anexos);
           }
           this.errorMessage = err.message
-          this.isLoading = false;
+          this.isLoadingTicket = false;
         }
       })
     }
@@ -129,12 +131,117 @@ export class Ticket implements OnInit {
       .subscribe({
         next: (response) => {
           this.ticket = response;
-          this.isLoading = false;
+          console.log(this.ticket);
+          //chamando os métodos aqui por conta dos observables sincronos
+          this.loadMotivos();
+          this.loadCategorias();
+          this.loadSubStatus();
+          this.isLoadingTicket = false;
         },
         error: err => {
           this.router.navigate(['../'])
         }
       })
+  }
+
+  private loadUsuario() {
+    this.isLoadingUsuario = true;
+    this.errorMessage = ""
+
+    this.authService.getAuthenticatedUser()
+      .subscribe({
+        next: (response) => {
+          this.usuario = response;
+          this.isLoadingUsuario = false;
+          console.log(this.usuario);
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.isLoadingUsuario = false;
+          this.authService.logout()
+        }
+      })
+  }
+
+  private loadMotivos() {
+    this.isLoadingMotivos = true;
+    this.errorMessage = ""
+    this.motivoService.getAll()
+      .subscribe({
+        next: (response) => {
+          this.motivos = response;
+          this.selectedMotivo = this.motivos.find(m => m.id == this.ticket?.motivo.id)
+          this.isLoadingMotivos = false;
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.isLoadingMotivos = false;
+        }
+      })
+
+  }
+
+  private loadCategorias() {
+    this.isLoadingCategorias = true;
+    this.errorMessage = ''
+    this.categoriaService.getAll()
+      .subscribe({
+        next: (response) => {
+          this.categorias = response;
+          this.selectedCategoria = this.categorias.find(c => c.id === this.ticket?.categoria?.id)
+          this.isLoadingCategorias = false;
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.isLoadingCategorias = false;
+        }
+      })
+
+  }
+
+  private loadSubStatus() {
+    this.isLoadingSubStatus = true;
+    this.errorMessage = ''
+    this.subStatusService.getAll()
+      .subscribe({
+        next: (response) => {
+          this.subStatusList = response;
+          this.selectedSubStatus = this.subStatusList.find(c => c.id === this.ticket?.subStatus?.id)
+          this.isLoadingSubStatus = false;
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.isLoadingSubStatus = false;
+        }
+      })
+
+  }
+
+  onSubmit() {
+    this.errorMessage = '';
+
+    if(this.enteredDescricao === ""){
+      this.errorMessage = 'Descrição não preenchida';
+      return;
+    }
+
+    this.isLoadingTicket = true;
+
+    if(this.anexos.length > 0){
+      this.arquivoService.uploadFile(this.anexos)
+        .subscribe({
+          next: response => {
+            this.addAcao(response);
+          },
+          error: err => {
+            this.errorMessage = err.message;
+            this.isLoadingTicket = false
+            return
+          }
+        })
+    }else {
+      this.addAcao();
+    }
   }
 
   onRemoveAnexo(file: File) {
