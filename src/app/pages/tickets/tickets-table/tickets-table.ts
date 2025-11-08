@@ -14,13 +14,8 @@ import {TicketModel} from '../../../model/ticket.model';
   templateUrl: './tickets-table.html',
   styleUrl: './tickets-table.css'
 })
-export class TicketsTable implements OnInit {
-
+export class TicketsTable {
   @Input({required:true}) tickets?: TicketModel[];
   @Input({required:true}) tipoUsuario?: string;
   @Input({required:true}) statusId?: string;
-
-  ngOnInit(): void {
-    console.log(this.tipoUsuario);
-  }
 }

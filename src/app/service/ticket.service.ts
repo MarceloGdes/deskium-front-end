@@ -34,17 +34,25 @@ export class TicketService {
              subStatusId?: string,
              motivo?: Motivo,
              categoria?: Categoria,
-             solicitante?: string): Observable<TicketModel[]>{
+             solicitante?: string,
+             dataAberturaInicio?: string,
+             dataAberturaFim?: string,
+             dataFechamentoInicio?: string,
+             dataFechamentoFim?: string): Observable<TicketModel[]>{
 
     //Adicionando os parametros dinamicamente, conforme preenchido na tela.
     let params: any = { status, allTickets };
-    if (ticketId != null) params.ticketId = ticketId;
+    if (ticketId) params.ticketId = ticketId;
     if (assunto) params.assunto = assunto;
     if (responsavel) params.responsavel = responsavel;
     if (solicitante) params.solicitante = solicitante;
-    if (subStatusId != null) params.subStatus = subStatusId;
-    if (motivo?.id != null) params.motivoId = motivo.id;
-    if (categoria?.id != null) params.categoriaId = categoria.id;
+    if (subStatusId) params.subStatus = subStatusId;
+    if (motivo?.id) params.motivoId = motivo.id;
+    if (categoria?.id) params.categoriaId = categoria.id;
+    if (dataAberturaInicio) params.dataAberturaInicio = `${dataAberturaInicio}T00:00:00`;
+    if (dataAberturaFim) params.dataAberturaFim = `${dataAberturaFim}T23:59:59`;
+    if (dataFechamentoInicio) params.dataFechamentoInicio = `${dataFechamentoInicio}T00:00:00`;
+    if (dataFechamentoFim) params.dataFechamentoFim = `${dataFechamentoFim}T23:59:59`;
 
     return this.client.get<TicketModel[]>(
       this.apiUrl,

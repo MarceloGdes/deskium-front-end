@@ -80,6 +80,10 @@ export class Tickets implements OnInit {
   enteredAssuntoTicket?: string;
   enteredResponsavel?: string;
   enteredSolicitante?: string;
+  enteredDataAberturaInicial?: string;
+  enteredDataAberturaFinal?: string;
+  enteredDataFechamentoInicial?: string;
+  enteredDataFechamentoFinal?: string;
 
   ngOnInit(): void {
     this.loadUsuario()
@@ -164,29 +168,43 @@ export class Tickets implements OnInit {
   loadTickets(){
     this.errorMessage = ""
     this.isLoadingTickets = true;
-    //Apenas altera o layout da pagina ao clicar no botão filtrar.
-    this.selectedStatus = this.auxSelectedStatus;
 
-    this.ticketService.getTickets(this.selectedStatus?.id || "ABERTO", false, this.enteredNumTicket,
-      this.enteredAssuntoTicket, this.enteredResponsavel, undefined, this.selectedMotivo,
-      this.selectedCategoria, this.enteredSolicitante)
-      .subscribe({
-        next: (response) => {
-          //Todos os tickets, para quando for selecionado tickets com status de resolvido ou fechado.
-          this.allTickets = response;
+    this.ticketService.getTickets(
+      this.auxSelectedStatus?.id || "ABERTO",
+      false,
+      this.enteredNumTicket,
+      this.enteredAssuntoTicket,
+      this.enteredResponsavel,
+      undefined,
+      this.selectedMotivo,
+      this.selectedCategoria,
+      this.enteredSolicitante,
+      this.enteredDataAberturaInicial,
+      this.enteredDataAberturaFinal,
+      this.enteredDataFechamentoInicial,
+      this.enteredDataFechamentoFinal
+    )
+    .subscribe({
+      next: (response) => {
+        //Todos os tickets, para quando for selecionado tickets com status de resolvido ou fechado.
+        this.allTickets = response;
 
-          // Separação por substatus
-          this.ticketsNovos = response.filter(t => t.subStatus?.id === 'NOVO');
-          this.ticketsAtendimento = response.filter(t => t.subStatus?.id === 'EM_ATENDIMENTO');
-          this.ticketsAguardo = response.filter(t => t.subStatus?.id === 'AGUARDANDO_RETORNO');
+        // Separação por substatus
+        this.ticketsNovos = response.filter(t => t.subStatus?.id === 'NOVO');
+        this.ticketsAtendimento = response.filter(t => t.subStatus?.id === 'EM_ATENDIMENTO');
+        this.ticketsAguardo = response.filter(t => t.subStatus?.id === 'AGUARDANDO_RETORNO');
 
-          this.isLoadingTickets = false;
-        },
-        error: (error) => {
-          this.errorMessage = error.message;
-          this.isLoadingTickets = false;
-        }
-      })
+        //Apenas altera o layout da pagina ao clicar no botão filtrar.
+        //this.selectedStatus é passado no input do componente table-tickets
+        this.selectedStatus = this.auxSelectedStatus;
+
+        this.isLoadingTickets = false;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        this.isLoadingTickets = false;
+      }
+    })
   }
 
   onLimparCampos() {
@@ -197,5 +215,9 @@ export class Tickets implements OnInit {
     this.enteredAssuntoTicket = undefined;
     this.enteredResponsavel = undefined;
     this.selectedStatus = undefined;
+    this.enteredDataAberturaInicial = undefined;
+    this.enteredDataAberturaFinal = undefined;
+    this.enteredDataFechamentoInicial = undefined;
+    this.enteredDataFechamentoFinal = undefined;
   }
 }

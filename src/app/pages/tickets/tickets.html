@@ -129,23 +129,42 @@
             </select>
           </div>
 
-<!--          <div class="col-md-6 col-lg-3">-->
-<!--            <label class="form-label">Data de Abertura</label>-->
-<!--            <div class="input-group">-->
-<!--              <input type="date" class="form-control" aria-label="Data inicial de abertura">-->
-<!--              <span class="input-group-text">a</span>-->
-<!--              <input type="date" class="form-control" aria-label="Data final de abertura">-->
-<!--            </div>-->
-<!--          </div>-->
+          <div class="col-md-6 col-lg-3">
+            <label class="form-label">Data de Abertura</label>
+            <div class="input-group">
+              <input
+                type="date"
+                class="form-control"
+                aria-label="Data inicial de abertura"
+                name="dataAberturaInicial"
+                [(ngModel)]="enteredDataAberturaInicial">
+              <span class="input-group-text">a</span>
+              <input
+                type="date"
+                class="form-control"
+                aria-label="Data final de abertura"
+                name="dataAberturaFinal"
+                [(ngModel)]="enteredDataAberturaFinal">
+            </div>
+          </div>
 
-<!--          <div class="col-md-6 col-lg-3">-->
-<!--            <label class="form-label">Data de Fechamento</label>-->
-<!--            <div class="input-group">-->
-<!--              <input type="date" class="form-control" aria-label="Data inicial de fechamento">-->
-<!--              <span class="input-group-text">a</span>-->
-<!--              <input type="date" class="form-control" aria-label="Data final de fechamento">-->
-<!--            </div>-->
-<!--          </div>-->
+          <div class="col-md-6 col-lg-3">
+            <label class="form-label">Data de Fechamento</label>
+            <div class="input-group">
+              <input
+                type="date"
+                class="form-control"
+                aria-label="Data inicial de fechamento"
+                name="dataFechamentoInicial"
+                [(ngModel)]="enteredDataFechamentoInicial">
+              <span class="input-group-text">a</span>
+              <input
+                type="date"
+                class="form-control"
+                name="dataFechamentoFinal"
+                [(ngModel)]="enteredDataFechamentoFinal">
+            </div>
+          </div>
         </div>
 
         <div class="d-flex gap-2 mt-3 mb-4 flex-grow">
