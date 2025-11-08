@@ -9,3 +9,20 @@
   box-shadow: var(--shadow);
 }
 
+.btn-primary {
+  background-color: #318fe7;
+  color: var(--antiflash-white);
+}
+
+.nav-link-sub-status {
+  color: var(--verdigris) !important;
+  padding: 0.7rem;
+}
+
+.nav-link-sub-status.active {
+  background-color: var(--antiflash-white) !important;
+  color: var(--oxford-blue) !important;
+}
+
+
+

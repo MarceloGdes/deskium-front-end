@@ -189,7 +189,7 @@
     <div class="card border-0 card-table">
       <ul ngbNav #nav="ngbNav" class="nav-tabs mb-2">
         <li ngbNavItem>
-          <button ngbNavLink>Todos os tickets</button>
+          <button ngbNavLink class="nav-link-sub-status">Todos os tickets</button>
           <ng-template ngbNavContent>
             <app-tickets-table
               [tickets]="allTickets"
@@ -199,7 +199,7 @@
         </li>
         @if(selectedStatus?.id == 'ABERTO'){
           <li ngbNavItem>
-            <button ngbNavLink>Novos</button>
+            <button ngbNavLink class="nav-link-sub-status">Novos</button>
             <ng-template ngbNavContent>
               <app-tickets-table
                 [tickets]="ticketsNovos"
@@ -208,7 +208,7 @@
             </ng-template>
           </li>
           <li ngbNavItem>
-            <button ngbNavLink>Em atendimento</button>
+            <button ngbNavLink class="nav-link-sub-status">Em atendimento</button>
             <ng-template ngbNavContent>
               <app-tickets-table
                 [tickets]="ticketsAtendimento"
@@ -217,7 +217,7 @@
             </ng-template>
           </li>
           <li ngbNavItem>
-            <button ngbNavLink>Aguardando retorno</button>
+            <button ngbNavLink class="nav-link-sub-status">Aguardando retorno</button>
             <ng-template ngbNavContent>
               <app-tickets-table
                 [tickets]="ticketsAguardo"
