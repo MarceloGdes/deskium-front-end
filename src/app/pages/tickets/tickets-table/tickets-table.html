@@ -50,7 +50,14 @@
           <td>{{ ticket.motivo.descricao }}</td>
           <td>{{ ticket.categoria?.descricao }}</td>
           @if(tipoUsuario == 'SUPORTE'|| tipoUsuario == 'GESTOR_SUPORTE'){
-            <td >{{ ticket.prioridade }}</td>
+            <td>
+              <span
+                class="badge text-dark"
+                [style]="'background-color: ' + ticket.prioridade?.corHex +' !important;'"
+              >
+                {{ ticket.prioridade?.descricao }}
+              </span>
+            </td>
           }
           <!--Date pipe para formatar a data -->
           <td >{{ ticket.criadoEm | date:'dd/MM/yyyy HH:mm' }}</td>

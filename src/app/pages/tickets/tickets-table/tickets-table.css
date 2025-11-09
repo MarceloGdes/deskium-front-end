@@ -11,3 +11,8 @@ td {
   height: 3.7rem;
   vertical-align: middle;
 }
+
+.badge {
+  width: 75%;
+  height: auto;
+}
