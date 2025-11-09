@@ -47,3 +47,18 @@
 .btn-primary {
   background-color: var(--verdigris);
 }
+
+.modal-content-bg {
+  background-color: black !important;
+}
+
+.form-check-input {
+  border-color: #5f5f5f;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='gray'/%3e%3c/svg%3e") !important;
+}
+
+.form-check-input:checked {
+  background-color: #318fe7 !important;
+  border-color: #318fe7 !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e") !important;
+}

@@ -318,6 +318,6 @@ export class Ticket implements OnInit {
   }
 
   openModal(content: TemplateRef<any>, size: string) {
-    this.modalService.open(content, { size: size });
+    this.modalService.open(content, { size: size, modalDialogClass: '.modal-content-bg'});
   }
 }
