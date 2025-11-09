@@ -180,9 +180,8 @@ export class NewTicket implements OnInit{
       })
   }
 
-  onFilesSelected(event: Event) {
-    //Type Assertion - Declarando que esse evento generico vem de um input de arquivo.
-    const input = event.target as HTMLInputElement;
+  onFilesSelected(event: any) {
+    const input = event.target
     if (!input.files) return;
 
     const maxSize = 5 * 1024 * 1024; // 5 MB

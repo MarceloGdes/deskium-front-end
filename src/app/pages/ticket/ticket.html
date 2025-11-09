@@ -72,7 +72,8 @@
             [ngClass]="{
              'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
             }"
-            [(ngModel)]="selectedMotivo">
+            [(ngModel)]="selectedMotivo"
+            (ngModelChange)="onUpdateTicket()">
             @if(motivos?.length){
               @for (motivo of motivos; track motivo.id) {
                 <option [ngValue]="motivo">
@@ -93,7 +94,8 @@
             [ngClass]="{
              'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
             }"
-            [(ngModel)]="selectedCategoria">
+            [(ngModel)]="selectedCategoria"
+            (ngModelChange)="onUpdateTicket()">
             @if(categorias?.length){
               @for (categoria of categorias; track categoria.id) {
                 <option [ngValue]="categoria">
@@ -115,7 +117,8 @@
             [ngClass]="{
              'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
             }"
-            [(ngModel)]="selectedSubStatus">
+            [(ngModel)]="selectedSubStatus"
+            (ngModelChange)="onUpdateTicket()">
             @if(subStatusList?.length){
               @for (subStatus of subStatusList; track subStatus.id) {
                 <option [ngValue]="subStatus">
@@ -137,7 +140,8 @@
               [ngClass]="{
                 'ticket-info-value': ticket?.status?.id !== 'ABERTO'
               }"
-              [(ngModel)]="selectedPrioridade">
+              [(ngModel)]="selectedPrioridade"
+              (ngModelChange)="onUpdateTicket()">
               @if(prioridades?.length){
                 @for (prioridade of prioridades; track prioridade.id) {
                   <option [ngValue]="prioridade">
@@ -244,6 +248,7 @@
   </div>
 
   <!-- Solicitante Modal Template -->
+<!--  https://ng-bootstrap.github.io/#/components/modal/examples-->
   <ng-template #solicitanteModal let-modal>
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="requesterInfosModalLabel">

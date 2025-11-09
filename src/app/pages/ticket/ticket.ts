@@ -96,33 +96,34 @@ export class Ticket implements OnInit {
       },
     })
   }
+
   private addAcao(anexos?: Arquivo[]) {
-    if(this.ticketId){
+    if (this.ticketId) {
       this.ticketService.addAcao(this.ticketId, {
         acaoInterna: this.acaoInterna,
         html: this.enteredDescricao,
         anexos: anexos
       })
-      .subscribe({
-        next: (response) => {
-          this.loadTicket(this.ticketId);
-          this.enteredDescricao = "";
-          this.anexos = [];
-        },
-        error: err => {
-          //Remove os arquivos preeviamente armazenados em caso de erro
-          if(anexos){
-            this.deleteUploadedAnexos(anexos);
+        .subscribe({
+          next: (response) => {
+            this.loadTicket(this.ticketId);
+            this.enteredDescricao = "";
+            this.anexos = [];
+          },
+          error: err => {
+            //Remove os arquivos preeviamente armazenados em caso de erro
+            if (anexos) {
+              this.deleteUploadedAnexos(anexos);
+            }
+            this.errorMessage = err.message
+            this.isLoadingTicket = false;
           }
-          this.errorMessage = err.message
-          this.isLoadingTicket = false;
-        }
-      })
+        })
     }
 
   }
 
-  private deleteUploadedAnexos(anexo: Arquivo[]){
+  private deleteUploadedAnexos(anexo: Arquivo[]) {
     anexo.forEach(a => {
       this.arquivoService.removeByFileNames(a.fileName)
         .subscribe({
@@ -138,7 +139,6 @@ export class Ticket implements OnInit {
       .subscribe({
         next: (response) => {
           this.ticket = response;
-          console.log(this.ticket);
           //chamando os métodos aqui por conta dos observables sincronos
           this.loadMotivos();
           this.loadCategorias();
@@ -161,7 +161,6 @@ export class Ticket implements OnInit {
         next: (response) => {
           this.usuario = response;
           this.isLoadingUsuario = false;
-          console.log(this.usuario);
         },
         error: (error) => {
           this.errorMessage = error.message;
@@ -246,14 +245,14 @@ export class Ticket implements OnInit {
   onSubmit() {
     this.errorMessage = '';
 
-    if(this.enteredDescricao === ""){
+    if (this.enteredDescricao === "") {
       this.errorMessage = 'Descrição não preenchida';
       return;
     }
 
     this.isLoadingTicket = true;
 
-    if(this.anexos.length > 0){
+    if (this.anexos.length > 0) {
       this.arquivoService.uploadFile(this.anexos)
         .subscribe({
           next: response => {
@@ -265,18 +264,37 @@ export class Ticket implements OnInit {
             return
           }
         })
-    }else {
+    } else {
       this.addAcao();
     }
+  }
+
+  onUpdateTicket() {
+    this.isLoadingTicket = true;
+
+    this.ticketService.update(this.ticketId, {
+      categoriaId: this.selectedCategoria?.id,
+      motivoId: this.selectedMotivo!.id,
+      subStatusId: this.selectedSubStatus!.id,
+      prioridadeId: this.selectedPrioridade?.id
+    })
+      .subscribe({
+        next: (response) => {
+          this.isLoadingTicket = false;
+        },
+        error: err => {
+          this.errorMessage = err.message;
+          this.isLoadingTicket = false;
+        }
+      })
   }
 
   onRemoveAnexo(file: File) {
     this.anexos = this.anexos.filter(f => f !== file);
   }
 
-  onFilesSelected(event: Event) {
-    //Type Assertion - Declarando que esse evento generico vem de um input de arquivo.
-    const input = event.target as HTMLInputElement;
+  onFilesSelected(event: any) {
+    const input = event.target
     if (!input.files) return;
 
     const maxSize = 5 * 1024 * 1024; // 5 MB

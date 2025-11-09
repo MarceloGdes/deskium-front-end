@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, pipe, throwError} from 'rxjs';
-import {AddAcaoModel, CreateTicketRequest, TicketModel} from '../model/ticket.model';
+import {AddAcaoModel, CreateTicketRequest, TicketModel, UpdateTicketModel} from '../model/ticket.model';
 import {SubStatus} from '../model/sub-status.model';
 import {Motivo} from '../model/motivo.model';
 import {Categoria} from '../model/categoria.model';
@@ -61,14 +61,21 @@ export class TicketService {
       })
       .pipe(
         catchError(err => this.handleError(err))
-      )
+      );
+  }
+
+  update(ticketId: string, request: UpdateTicketModel): Observable<any>{
+    return this.client.put(`${this.apiUrl}/${ticketId}`, request)
+      .pipe(
+        catchError(err => this.handleError(err))
+      );
   }
 
   addAcao(ticketId: string, acao: AddAcaoModel): Observable<any>{
     return this.client.post<AddAcaoModel>(`${this.apiUrl}/${ticketId}/acoes`, acao)
       .pipe(
         catchError(err => this.handleError(err))
-      )
+      );
   }
 
   private handleError(error: any): Observable<never>{

@@ -34,6 +34,12 @@ export interface TicketModel {
   acoes?: AcaoModel[];
 }
 
+export interface UpdateTicketModel {
+  motivoId: number,
+  categoriaId?: number,
+  subStatusId: string,
+  prioridadeId?: number
+}
 
 export interface Suporte {
   id: number;
