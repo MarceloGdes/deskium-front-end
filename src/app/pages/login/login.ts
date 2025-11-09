@@ -4,6 +4,7 @@ import {FormBuilder,FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from '../../service/auth/auth.service';
 import {Router} from '@angular/router';
 import {routes} from '../../app.routes';
+import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
 
 
 @Component({
@@ -12,6 +13,7 @@ import {routes} from '../../app.routes';
   imports: [
     ReactiveFormsModule,
     FormsModule,
+    LoadingOverlay,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
