@@ -19,6 +19,8 @@ import {StatusService} from '../../service/status.service';
 import {Status} from '../../model/status.model';
 import {SubStatus} from '../../model/sub-status.model';
 import {SubStatusService} from '../../service/sub-status.service';
+import {Prioridade} from '../../model/prioridade.model';
+import {PrioridadeService} from '../../service/prioridade.service';
 
 @Component({
   selector: 'app-ticket',
@@ -41,6 +43,7 @@ export class Ticket implements OnInit {
   private motivoService = inject(MotivoService);
   private statusService = inject(StatusService);
   private subStatusService = inject(SubStatusService);
+  private prioridadeService = inject(PrioridadeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -56,10 +59,12 @@ export class Ticket implements OnInit {
   isLoadingCategorias = false;
   isLoadingSubStatus = false;
   isLoadingStatus = false;
+  isLoadingPrioridades = false;
 
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
   selectedSubStatus?: SubStatus;
+  selectedPrioridade?: Prioridade;
   enteredDescricao = "";
   acaoInterna = false;
 
@@ -68,8 +73,7 @@ export class Ticket implements OnInit {
   categorias?: Categoria[];
   statusList?: Status[];
   subStatusList?: SubStatus[];
-
-
+  prioridades?: Prioridade[];
 
   ngOnInit(): void {
     //Recupera o id da rota e carrega o ticket
@@ -136,6 +140,7 @@ export class Ticket implements OnInit {
           this.loadMotivos();
           this.loadCategorias();
           this.loadSubStatus();
+          this.loadPrioridades()
           this.isLoadingTicket = false;
         },
         error: err => {
@@ -206,12 +211,30 @@ export class Ticket implements OnInit {
       .subscribe({
         next: (response) => {
           this.subStatusList = response;
-          this.selectedSubStatus = this.subStatusList.find(c => c.id === this.ticket?.subStatus?.id)
+          this.selectedSubStatus = this.subStatusList.find(s => s.id === this.ticket?.subStatus?.id)
           this.isLoadingSubStatus = false;
         },
         error: (error) => {
           this.errorMessage = error.message;
           this.isLoadingSubStatus = false;
+        }
+      })
+
+  }
+
+  private loadPrioridades() {
+    this.isLoadingPrioridades = true;
+    this.errorMessage = ''
+    this.prioridadeService.getAll()
+      .subscribe({
+        next: (response) => {
+          this.prioridades = response;
+          this.selectedPrioridade = this.prioridades.find(p => p.id === this.ticket?.prioridade?.id)
+          this.isLoadingPrioridades = false;
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.isLoadingPrioridades = false;
         }
       })
 

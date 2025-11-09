@@ -57,7 +57,7 @@
         }
 
         <div class="mb-2">
-          <label class="form-label">Motivo</label>
+          <label class="form-label mb-1">Motivo</label>
           <select
             id="motivo"
             class="form-select"
@@ -77,13 +77,13 @@
           </select>
         </div>
 
-        <div class="mb-2">
-          <label for="categoria" class="form-label">Categoria</label>
+        <div class="mb-3">
+          <label for="categoria" class="form-label mb-1">Categoria</label>
           <select
             id="categoria"
             class="form-select"
             name="categoria"
-            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE'"
+            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !==  'ABERTO'"
             [ngClass]="{
              'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
             }"
@@ -99,13 +99,13 @@
         </div>
 
 
-        <div class="mb-2">
-          <label for="subStatus" class="form-label">SubStatus</label>
+        <div class="mb-3">
+          <label for="subStatus" class="form-label mb-1">SubStatus</label>
           <select
             id="subStatus"
             class="form-select"
             name="subStatus"
-            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE'"
+            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !==  'ABERTO'"
             [ngClass]="{
              'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
             }"
@@ -119,10 +119,33 @@
             }
           </select>
         </div>
+
+        @if(usuario?.tipoUsuario !== 'SOLICITANTE'){
+          <div class="mb-3">
+            <label for="prioridade" class="form-label mb-1">Prioridade</label>
+            <select
+              id="prioridade"
+              class="form-select"
+              name="prioridade"
+              [disabled]="ticket?.status?.id !==  'ABERTO'"
+              [ngClass]="{
+                'ticket-info-value': ticket?.status?.id !== 'ABERTO'
+              }"
+              [(ngModel)]="selectedPrioridade">
+              @if(prioridades?.length){
+                @for (prioridade of prioridades; track prioridade.id) {
+                  <option [ngValue]="prioridade">
+                    {{ prioridade.descricao }}
+                  </option>
+                }
+              }
+            </select>
+          </div>
+        }
       </div>
     </div>
 
-
+    <!-- Card Ações -->
     <div class="col-md-9">
       <div class="card p-3 card-actions">
         <!-- Mensagem de erro -->
@@ -213,4 +236,6 @@
       </div>
     </div>
   </div>
+
+
 </div>

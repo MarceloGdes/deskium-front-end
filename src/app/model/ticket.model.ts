@@ -5,6 +5,7 @@ import {Arquivo} from './arquivo.model';
 import {SubStatus} from './sub-status.model';
 import {UsuarioModel} from './usuario.model';
 import {Status} from './status.model';
+import {Prioridade} from './prioridade.model';
 
 export interface CreateTicketRequest {
   titulo: string,
@@ -29,7 +30,7 @@ export interface TicketModel {
   motivo: Motivo;
   categoria?: Categoria;
   subStatus: SubStatus;
-  prioridade?: string;
+  prioridade?: Prioridade;
   acoes?: AcaoModel[];
 }
 
