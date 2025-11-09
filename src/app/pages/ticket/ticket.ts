@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, TemplateRef} from '@angular/core';
 import {TicketService} from '../../service/ticket.service';
 import {TicketModel} from '../../model/ticket.model';
 import {DatePipe, NgClass} from '@angular/common';
@@ -21,6 +21,7 @@ import {SubStatus} from '../../model/sub-status.model';
 import {SubStatusService} from '../../service/sub-status.service';
 import {Prioridade} from '../../model/prioridade.model';
 import {PrioridadeService} from '../../service/prioridade.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-ticket',
@@ -44,6 +45,8 @@ export class Ticket implements OnInit {
   private statusService = inject(StatusService);
   private subStatusService = inject(SubStatusService);
   private prioridadeService = inject(PrioridadeService);
+
+  private modalService = inject(NgbModal);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -294,5 +297,9 @@ export class Ticket implements OnInit {
       this.anexos.push(file)
     }
 
+  }
+
+  openModal(content: TemplateRef<any>, size: string) {
+    this.modalService.open(content, { size: size });
   }
 }

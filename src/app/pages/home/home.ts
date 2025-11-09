@@ -11,7 +11,6 @@ import {UsuarioModel} from '../../model/usuario.model';
   imports: [
     Navbar,
     RouterOutlet,
-    LoadingOverlay,
   ],
   templateUrl: './home.html',
   styleUrl: './home.css'

@@ -50,9 +50,15 @@
 
         @if (usuario?.tipoUsuario != 'SOLICITANTE'){
           <div class="mb-2">
-            <p class="mb-1 fw-medium">Solicitante</p>
-            <input class="form-control ticket-info-value" type="text" value="{{ticket?.solicitante?.nomeCompleto}}"
-                   aria-label="{{ticket?.solicitante?.nomeCompleto}}" disabled readonly />
+            <p class="mb-0 fw-medium">Solicitante</p>
+            <div class="form-control rounded border ticket-info-value">
+              <a
+                class="link-dark link-underline-opacity-25 pointer-event"
+                (click)="openModal(solicitanteModal, 'xl')"
+              >
+                {{ ticket?.solicitante?.nomeCompleto }}
+              </a>
+            </div>
           </div>
         }
 
@@ -237,5 +243,159 @@
     </div>
   </div>
 
-
+  <!-- Solicitante Modal Template -->
+  <ng-template #solicitanteModal let-modal>
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="requesterInfosModalLabel">
+        Informações do Solicitante
+      </h1>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-4">
+        <h5 class="fs-5 mb-2 fw-medium">Empresa</h5>
+        <div class="row mb-2">
+          <div class="col-md-3">
+            <label  class="mb-1" for="cnpjEmpresa">CNPJ</label>
+            <input
+              name="cnpjEmpresa"
+              class="form-control ticket-info-value"
+              type="text"
+              [value]="ticket?.solicitante?.empresa?.cnpj"
+              disabled
+              readonly
+            />
+          </div>
+          <div class="col">
+            <label  class="mb-1" for="razaoSocial">Razão Social</label>
+            <input
+              name="razaoSocial"
+              class="form-control ticket-info-value"
+              type="text"
+              [value]="ticket?.solicitante?.empresa?.razaoSocial"
+              disabled
+              readonly
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label  class="mb-1" for="emailInstitucional">E-mail</label>
+            <input
+              name="emailInstitucional"
+              class="form-control ticket-info-value"
+              type="text"
+              [value]="ticket?.solicitante?.empresa?.email"
+              disabled
+              readonly
+            />
+          </div>
+          <div class="col mb-2">
+            <label  class="mb-1" for="telefoneEmpresa">Telefone</label>
+            <input
+              name="telefoneEmpresa"
+              class="form-control ticket-info-value"
+              type="tel"
+              [value]="ticket?.solicitante?.empresa?.telefone"
+              disabled
+              readonly
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label  class="mb-1" for="observacoes">Observações</label>
+            <textarea
+              class="form-control ticket-info-value mh"
+              disabled
+              [value]="ticket?.solicitante?.empresa?.observacoes">
+            </textarea>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h5  class="fs-5 mb-2 fw-medium">Solicitante</h5>
+        <div class="row mb-2">
+          <div class="col">
+            <label  class="mb-1" for="nomeSolicitante">Nome</label>
+            <input
+              name="nomeSolicitante"
+              class="form-control ticket-info-value"
+              type="text"
+              [value]="ticket?.solicitante?.nomeCompleto"
+              disabled
+              readonly
+            />
+          </div>
+          <div class="col-md-3">
+            <label  class="mb-1" for="cargoSolicitante">Cargo</label>
+            <input
+              name="cargoSolicitante"
+              class="form-control ticket-info-value"
+              type="text"
+              [value]="ticket?.solicitante?.cargo"
+              disabled
+              readonly
+            />
+          </div>
+          <div class="col-md-3">
+            <label  class="mb-1" for="setorSolicitante">Setor</label>
+            <input
+              name="setorSolicitante"
+              class="form-control ticket-info-value"
+              type="text"
+              [value]="ticket?.solicitante?.setor"
+              disabled
+              readonly
+            />
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">
+            <label  class="mb-1" for="emailSolicitante">E-mail</label>
+            <input
+              name="emailSolicitante"
+              class="form-control ticket-info-value"
+              type="text"
+              [value]="ticket?.solicitante?.email"
+              disabled
+              readonly
+            />
+          </div>
+          <div class="col-md-3">
+            <label  class="mb-1" for="telefoneSolicitante">Telefone</label>
+            <input
+              name="telefoneSolicitante"
+              class="form-control ticket-info-value"
+              type="tel"
+              [value]="ticket?.solicitante?.telefone"
+              disabled
+              readonly
+            />
+          </div>
+          <div class="col-md-3">
+            <label  class="mb-1" for="celularSolicitante">Celular</label>
+            <input
+              name="celularSolicitante"
+              class="form-control ticket-info-value"
+              type="tel"
+              [value]="ticket?.solicitante?.celular"
+              disabled
+              readonly
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label  class="mb-1" for="observacoes">Observações</label>
+            <textarea
+              class="form-control ticket-info-value mh"
+              disabled
+              [value]="ticket?.solicitante?.observacoes">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>
