@@ -64,6 +64,7 @@ export interface AcaoModel {
 
 export interface AddAcaoModel {
   acaoInterna: boolean,
+  statusId: string;
   html: string,
   anexos?: Arquivo[]
 }

@@ -68,6 +68,7 @@ export class Ticket implements OnInit {
   selectedCategoria?: Categoria;
   selectedSubStatus?: SubStatus;
   selectedPrioridade?: Prioridade;
+  selectedStatus?: Status;
   enteredDescricao = "";
   acaoInterna = false;
 
@@ -77,6 +78,7 @@ export class Ticket implements OnInit {
   statusList?: Status[];
   subStatusList?: SubStatus[];
   prioridades?: Prioridade[];
+
 
   ngOnInit(): void {
     //Recupera o id da rota e carrega o ticket
@@ -101,6 +103,7 @@ export class Ticket implements OnInit {
     if (this.ticketId) {
       this.ticketService.addAcao(this.ticketId, {
         acaoInterna: this.acaoInterna,
+        statusId: this.selectedStatus!.id,
         html: this.enteredDescricao,
         anexos: anexos
       })
@@ -139,11 +142,13 @@ export class Ticket implements OnInit {
       .subscribe({
         next: (response) => {
           this.ticket = response;
+          console.log(response)
           //chamando os métodos aqui por conta dos observables sincronos
           this.loadMotivos();
           this.loadCategorias();
           this.loadSubStatus();
-          this.loadPrioridades()
+          this.loadPrioridades();
+          this.loadStatus();
           this.isLoadingTicket = false;
         },
         error: err => {
@@ -237,6 +242,24 @@ export class Ticket implements OnInit {
         error: (error) => {
           this.errorMessage = error.message;
           this.isLoadingPrioridades = false;
+        }
+      })
+
+  }
+
+  private loadStatus() {
+    this.isLoadingStatus = true;
+    this.errorMessage = ''
+    this.statusService.getAll()
+      .subscribe({
+        next: (response) => {
+          this.statusList = response;
+          this.selectedStatus = this.statusList.find(s => s.id === this.ticket?.status?.id)
+          this.isLoadingStatus = false;
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.isLoadingStatus = false;
         }
       })
 

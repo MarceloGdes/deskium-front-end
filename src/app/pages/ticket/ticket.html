@@ -1,5 +1,6 @@
 <!-- Overlay de carregamento -->
-@if(isLoadingTicket){
+@if(isLoadingTicket || isLoadingStatus || isLoadingPrioridades || isLoadingSubStatus || isLoadingCategorias ||
+  isLoadingMotivos || isLoadingUsuario){
   <app-loading-overlay></app-loading-overlay>
 }
 
@@ -106,28 +107,29 @@
           </select>
         </div>
 
-
-        <div class="mb-3">
-          <label for="subStatus" class="form-label mb-1">SubStatus</label>
-          <select
-            id="subStatus"
-            class="form-select"
-            name="subStatus"
-            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !==  'ABERTO'"
-            [ngClass]="{
-             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
+        @if (ticket?.status?.id === 'ABERTO') {
+          <div class="mb-3">
+            <label for="subStatus" class="form-label mb-1">SubStatus</label>
+            <select
+              id="subStatus"
+              class="form-select"
+              name="subStatus"
+              [disabled]="usuario?.tipoUsuario === 'SOLICITANTE'"
+              [ngClass]="{
+             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE'
             }"
-            [(ngModel)]="selectedSubStatus"
-            (ngModelChange)="onUpdateTicket()">
-            @if(subStatusList?.length){
-              @for (subStatus of subStatusList; track subStatus.id) {
-                <option [ngValue]="subStatus">
-                  {{ subStatus.descricao }}
-                </option>
+              [(ngModel)]="selectedSubStatus"
+              (ngModelChange)="onUpdateTicket()">
+              @if(subStatusList?.length){
+                @for (subStatus of subStatusList; track subStatus.id) {
+                  <option [ngValue]="subStatus">
+                    {{ subStatus.descricao }}
+                  </option>
+                }
               }
-            }
-          </select>
-        </div>
+            </select>
+          </div>
+        }
 
         @if(usuario?.tipoUsuario !== 'SOLICITANTE'){
           <div class="mb-3">
@@ -165,46 +167,54 @@
             {{ errorMessage }}
           </div>
         }
-        <div class="card p-3 mb-4 card-new-action">
-          <div class="d-flex justify-content-between align-content-center p-0 mb-2">
-            <h5 class="fs-5 fw-medium">Nova Ação</h5>
 
-            @if (usuario?.tipoUsuario != 'SOLICITANTE'){
-              <div class="form-check form-switch d-flex align-items-center justify-content-center gap-2">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="switchCheckDefault"
-                  name="acaoInterna"
-                  [(ngModel)]="acaoInterna"
-                />
-                <label class="form-check-label p-0" for="switchCheckDefault">Ação interna</label>
-              </div>
-            }
+        @if (ticket?.status?.id !== 'ABERTO') {
+          <div class="alert alert-secondary w-100 mb-3" role="alert">
+            <p  class="mb-0">Este ticket está {{ticket?.status?.descricao}} e não pode ser alterado.</p>
           </div>
-          <form (ngSubmit)="onSubmit()">
-            <div class="mb-3 form-group">
-              <quill-editor
-                [(ngModel)]="enteredDescricao"
-                name="descricao"
-                class="form-control p-0"
-                placeholder="O que você precisa?"
-                [modules]="{
+        }
+
+        @if (ticket?.status?.id === 'ABERTO') {
+          <div class="card p-3 mb-4 card-new-action">
+            <div class="d-flex justify-content-between align-content-center p-0 mb-2">
+              <h5 class="fs-5 fw-medium">Nova Ação</h5>
+
+              @if (usuario?.tipoUsuario != 'SOLICITANTE'){
+                <div class="form-check form-switch d-flex align-items-center justify-content-center gap-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="switchCheckDefault"
+                    name="acaoInterna"
+                    [(ngModel)]="acaoInterna"
+                  />
+                  <label class="form-check-label p-0" for="switchCheckDefault">Ação interna</label>
+                </div>
+              }
+            </div>
+            <form (ngSubmit)="onSubmit()">
+              <div class="mb-3 form-group">
+                <quill-editor
+                  [(ngModel)]="enteredDescricao"
+                  name="descricao"
+                  class="form-control p-0"
+                  placeholder="O que você precisa?"
+                  [modules]="{
                   toolbar: [
                     ['bold', 'italic', 'underline', 'image'],
                   ]
                 }"
-                theme="snow">
-              </quill-editor>
-            </div>
+                  theme="snow">
+                </quill-editor>
+              </div>
 
-            <!-- Arquivos anexados -->
-            <div class="mb-3 d-flex">
-              <div>
-                <span class="form-label">Arquivos</span>
-                <div class="d-flex flex-wrap gap-2 mt-3">
-                  @for (file of anexos; track file.name) {
-                    <span class="badge bg-light text-dark border d-flex align-items-center gap-2">
+              <!-- Arquivos anexados -->
+              <div class="mb-3 d-flex">
+                <div>
+                  <span class="form-label">Arquivos</span>
+                  <div class="d-flex flex-wrap gap-2 mt-3">
+                    @for (file of anexos; track file.name) {
+                      <span class="badge bg-light text-dark border d-flex align-items-center gap-2">
                       <span class="material-symbols-outlined fs-5 w-100">draft</span>
                       <span>{{ file.name }}</span>
                       <button
@@ -214,42 +224,63 @@
                         (click)="onRemoveAnexo(file)">
                       </button>
                     </span>
-                  }
-                  @empty {
-                    <span class="text-muted fst-italic">Nenhum arquivo anexado</span>
-                  }
+                    }
+                    @empty {
+                      <span class="text-muted fst-italic">Nenhum arquivo anexado</span>
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Botões -->
-            <div class="d-flex justify-content-between">
-              <div class="d-flex">
-                <label for="file-upload" class="btn btn-secondary d-flex align-items-center gap-2">
-                  <span class="material-symbols-outlined">upload</span>
-                  Anexar Arquivo
-                </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  hidden
-                  multiple
-                  accept=".png, .jpg, .jpeg, .pdf, .mp3"
-                  [disabled]="isLoadingTicket"
-                  (change)="onFilesSelected($event)"/>
+              <!-- Botões -->
+              <div class="d-flex justify-content-between">
+                <div class="d-flex">
+                  <label for="file-upload" class="btn btn-secondary d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined">upload</span>
+                    Anexar Arquivo
+                  </label>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    hidden
+                    multiple
+                    accept=".png, .jpg, .jpeg, .pdf, .mp3"
+                    [disabled]="isLoadingTicket"
+                    (change)="onFilesSelected($event)"/>
 
+                </div>
+                <div class="d-flex flex-row align-items-center gap-2">
+                  <div>
+                    @if(usuario?.tipoUsuario !== 'SOLICITANTE'){
+                      <select
+                        id="status"
+                        class="form-select"
+                        name="status"
+                        [(ngModel)]="selectedStatus">
+                        @if(statusList?.length){
+                          @for (status of statusList; track status.id) {
+                            <option [ngValue]="status">
+                              {{ status.descricao }}
+                            </option>
+                          }
+                        }
+                      </select>
+                    }
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary p-2 "
+                      type="submit"
+                      [disabled]="isLoadingTicket">
+                      Adicionar Ação
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="d-flex flex-row align-items-center gap-3">
-                <button
-                  class="btn btn-primary p-2 border-0 m-0 ms-auto"
-                  type="submit"
-                  [disabled]="isLoadingTicket">
-                  Adicionar Ação
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        }
+
         @for (acao of ticket?.acoes; track acao.numAcao) {
           <app-acao [acao]="acao"></app-acao>
         }
