@@ -11,10 +11,12 @@
       <span>em {{ acao?.criadoEm | date:'dd/MM/yyyy HH:mm' }}
       </span>
     </span>
-    @if (acao?.acaoInterna){
-      <span class="fw-medium fst-italic">Ação interna</span>
-    }
-    <span class="fw-medium">Ação {{acao?.numAcao}}</span>
+    <div>
+      @if (acao?.acaoInterna){
+        <span class="fw-light fst-italic">Ação interna - </span>
+      }
+      <span class="fw-medium">Ação {{acao?.numAcao}}</span>
+    </div>
   </div>
   <div class="card-body">
     <p class="card-text" [innerHTML]="acao?.html">
