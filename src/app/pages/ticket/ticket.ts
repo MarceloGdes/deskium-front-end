@@ -99,44 +99,6 @@ export class Ticket implements OnInit {
     })
   }
 
-  private addAcao(anexos?: Arquivo[]) {
-    if (this.ticketId) {
-      this.ticketService.addAcao(this.ticketId, {
-        acaoInterna: this.acaoInterna,
-        statusId: this.selectedStatus!.id,
-        html: this.enteredDescricao,
-        anexos: anexos
-      })
-        .subscribe({
-          next: (response) => {
-            this.loadTicket(this.ticketId);
-            this.enteredDescricao = "";
-            this.anexos = [];
-          },
-          error: err => {
-            //Remove os arquivos preeviamente armazenados em caso de erro
-            if (anexos) {
-              this.deleteUploadedAnexos(anexos);
-            }
-            this.errorMessage = err.message
-            this.isLoadingTicket = false;
-          }
-        })
-    }
-
-  }
-
-  private deleteUploadedAnexos(anexo: Arquivo[]) {
-    anexo.forEach(a => {
-      this.arquivoService.removeByFileNames(a.fileName)
-        .subscribe({
-          error: err => {
-            console.log(err)
-          }
-        })
-    })
-  }
-
   private loadTicket(id: string) {
     this.ticketService.getById(id)
       .subscribe({
@@ -265,6 +227,44 @@ export class Ticket implements OnInit {
 
   }
 
+  private addAcao(anexos?: Arquivo[]) {
+    if (this.ticketId) {
+      this.ticketService.addAcao(this.ticketId, {
+        acaoInterna: this.acaoInterna,
+        statusId: this.selectedStatus!.id,
+        html: this.enteredDescricao,
+        anexos: anexos
+      })
+        .subscribe({
+          next: (response) => {
+            this.loadTicket(this.ticketId);
+            this.enteredDescricao = "";
+            this.anexos = [];
+          },
+          error: err => {
+            //Remove os arquivos preeviamente armazenados em caso de erro
+            if (anexos) {
+              this.deleteUploadedAnexos(anexos);
+            }
+            this.errorMessage = err.message
+            this.isLoadingTicket = false;
+          }
+        })
+    }
+
+  }
+
+  private deleteUploadedAnexos(anexo: Arquivo[]) {
+    anexo.forEach(a => {
+      this.arquivoService.removeByFileNames(a.fileName)
+        .subscribe({
+          error: err => {
+            console.log(err)
+          }
+        })
+    })
+  }
+
   onSubmit() {
     this.errorMessage = '';
 
@@ -320,8 +320,9 @@ export class Ticket implements OnInit {
     const input = event.target
     if (!input.files) return;
 
-    const maxSize = 5 * 1024 * 1024; // 5 MB
-    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg'];
+    const maxSize = 25 * 1024 * 1024; // 35 MB
+    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg', 'audio/wav',
+      'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
 
 
     for (let file of input.files) {
@@ -331,7 +332,7 @@ export class Ticket implements OnInit {
       }
 
       if (file.size > maxSize) {
-        this.errorMessage = `O arquivo "${file.name}" excede o limite de 5MB.`;
+        this.errorMessage = `O arquivo "${file.name}" excede o limite de 35MB.`;
         return;
       }
 
