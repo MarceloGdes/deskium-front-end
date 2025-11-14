@@ -41,6 +41,7 @@ export class TicketService {
              dataFechamentoFim?: string): Observable<TicketModel[]>{
 
     //Adicionando os parametros dinamicamente, conforme preenchido na tela.
+    //Angular mapeia chave e valor.
     let params: any = { status, allTickets };
     if (ticketId) params.ticketId = ticketId;
     if (assunto) params.assunto = assunto;

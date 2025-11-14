@@ -1,6 +1,6 @@
 <!-- Overlay de carregamento -->
 @if(isLoadingCategorias || isLoadingMotivos){
-  <app-loading-overlay></app-loading-overlay>
+  <app-loading-overlay [descCarregamento]="'Carregando dados'"></app-loading-overlay>
 }
 
 <div class="container-fluid">

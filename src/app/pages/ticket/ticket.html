@@ -1,7 +1,11 @@
 <!-- Overlay de carregamento -->
 @if(isLoadingTicket || isLoadingStatus || isLoadingPrioridades || isLoadingSubStatus || isLoadingCategorias ||
   isLoadingMotivos || isLoadingUsuario){
-  <app-loading-overlay></app-loading-overlay>
+  <app-loading-overlay [descCarregamento]="'Carregando ticket'"></app-loading-overlay>
+}
+
+@if(isTrancribing){
+  <app-loading-overlay [descCarregamento]="'Transcrevendo áudio. Aguarde!'"></app-loading-overlay>
 }
 
 <div class="container-fluid">
@@ -234,7 +238,7 @@
 
               <!-- Botões -->
               <div class="d-flex justify-content-between">
-                <div class="d-flex">
+                <div class="d-flex gap-2">
                   <div>
                     <label for="file-upload" class="btn btn-secondary d-flex align-items-center gap-2">
                       <span class="material-symbols-outlined">upload</span>
@@ -275,8 +279,8 @@
                       type="file"
                       hidden
                       accept=".mp3, .wav, .m4a, .ogg"
-                      [disabled]="isLoadingTicket"
-                      (change)="onFilesSelected($event)"/>
+                      [disabled]="isLoadingTicket || isTrancribing"
+                      (change)="onSelectAudioFileToTranscribe($event)"/>
                   </div>
                 </div>
                 <div class="d-flex flex-row align-items-center gap-2">

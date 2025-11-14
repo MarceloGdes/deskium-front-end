@@ -22,6 +22,7 @@ import {SubStatusService} from '../../service/sub-status.service';
 import {Prioridade} from '../../model/prioridade.model';
 import {PrioridadeService} from '../../service/prioridade.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AiService} from '../../service/ai.service';
 
 @Component({
   selector: 'app-ticket',
@@ -45,6 +46,7 @@ export class Ticket implements OnInit {
   private statusService = inject(StatusService);
   private subStatusService = inject(SubStatusService);
   private prioridadeService = inject(PrioridadeService);
+  private aiService = inject(AiService);
 
   private modalService = inject(NgbModal);
   private route = inject(ActivatedRoute);
@@ -63,6 +65,7 @@ export class Ticket implements OnInit {
   isLoadingSubStatus = false;
   isLoadingStatus = false;
   isLoadingPrioridades = false;
+  isTrancribing = false;
 
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
@@ -78,7 +81,6 @@ export class Ticket implements OnInit {
   statusList?: Status[];
   subStatusList?: SubStatus[];
   prioridades?: Prioridade[];
-
 
   ngOnInit(): void {
     //Recupera o id da rota e carrega o ticket
@@ -96,6 +98,167 @@ export class Ticket implements OnInit {
         console.log(error);
         this.router.navigate(['../my-tickets'])
       },
+    })
+  }
+
+  onSubmit() {
+    this.errorMessage = '';
+
+    if (this.enteredDescricao === "") {
+      this.errorMessage = 'Descrição não preenchida';
+      return;
+    }
+
+    this.isLoadingTicket = true;
+
+    if (this.anexos.length > 0) {
+      this.arquivoService.uploadFile(this.anexos)
+        .subscribe({
+          next: response => {
+            this.addAcao(response);
+          },
+          error: err => {
+            this.errorMessage = err.message;
+            this.isLoadingTicket = false
+          }
+        })
+    } else {
+      this.addAcao();
+    }
+  }
+
+  onUpdateTicket() {
+    this.isLoadingTicket = true;
+
+    this.ticketService.update(this.ticketId, {
+      categoriaId: this.selectedCategoria?.id,
+      motivoId: this.selectedMotivo!.id,
+      subStatusId: this.selectedSubStatus!.id,
+      prioridadeId: this.selectedPrioridade?.id
+    })
+      .subscribe({
+        next: (response) => {
+          this.isLoadingTicket = false;
+        },
+        error: err => {
+          this.errorMessage = err.message;
+          this.isLoadingTicket = false;
+        }
+      })
+  }
+
+  onRemoveAnexo(file: File) {
+    this.anexos = this.anexos.filter(f => f !== file);
+  }
+
+  onSelectAudioFileToTranscribe(event: any){
+    const input = event.target
+    if (!input.files) return;
+    let file = input.files[0]; // sempre pega o primeiro arquivo, pois o input n permite varios arquivos.
+
+    const maxSize = 25 * 1024 * 1024; // 35 MB
+    const tiposPermitidos = ['audio/mpeg', 'audio/wav', 'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
+
+    if (!tiposPermitidos.includes(file.type)) {
+      this.errorMessage = `O arquivo "${file.name}" não é um tipo permitido.`;
+      return;
+    }
+
+    if (file.size > maxSize) {
+      this.errorMessage = `O arquivo "${file.name}" excede o limite de 35MB.`;
+      return;
+    }
+
+    this.isTrancribing = true;
+    this.arquivoService.uploadFile([file]) //Upload file recebe um Array
+      .subscribe({
+        next: response => {
+          this.trancribe(response[0]);
+        },
+        error: err => {
+          this.errorMessage = err.message;
+          this.isTrancribing = false
+        }
+      })
+
+    //Resetar para aceitar o mesmo arquivo novamente
+    input.value = '';
+  }
+
+  onFilesSelected(event: any) {
+    const input = event.target
+    if (!input.files) return;
+
+    const maxSize = 25 * 1024 * 1024; // 35 MB
+    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg', 'audio/wav',
+      'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
+
+
+    for (let file of input.files) {
+
+
+      this.anexos.push(file)
+    }
+
+    //Resetar para aceitar o mesmo arquivo novamente
+    input.value = '';
+  }
+
+  private addAcao(anexos?: Arquivo[]) {
+    if (this.ticketId) {
+      this.ticketService.addAcao(this.ticketId, {
+        acaoInterna: this.acaoInterna,
+        statusId: this.selectedStatus!.id,
+        html: this.enteredDescricao,
+        anexos: anexos
+      })
+        .subscribe({
+          next: (response) => {
+            this.loadTicket(this.ticketId);
+            this.enteredDescricao = "";
+            this.anexos = [];
+            this.acaoInterna = false;
+          },
+          error: err => {
+            //Remove os arquivos preeviamente armazenados em caso de erro
+            if (anexos) {
+              this.deleteUploadedAnexos(anexos);
+            }
+            this.errorMessage = err.message
+            this.isLoadingTicket = false;
+          }
+        })
+    }
+
+  }
+
+  private trancribe(audio: Arquivo) {
+    this.aiService.transcribeAudio(audio.fileName)
+      .subscribe({
+        next: (response) => {
+          this.enteredDescricao = response.text;
+          this.acaoInterna = true;
+          this.isTrancribing = false;
+          this.isLoadingTicket = true;
+          this.addAcao([audio]);
+        },
+        error: err => {
+          //Remove os arquivos preeviamente armazenados em caso de erro
+          this.deleteUploadedAnexos([audio]);
+          this.errorMessage = err.message
+          this.isTrancribing = false;
+        }
+      })
+  }
+
+  private deleteUploadedAnexos(anexo: Arquivo[]) {
+    anexo.forEach(a => {
+      this.arquivoService.removeByFileNames(a.fileName)
+        .subscribe({
+          error: err => {
+            console.log(err)
+          }
+        })
     })
   }
 
@@ -224,120 +387,6 @@ export class Ticket implements OnInit {
           this.isLoadingStatus = false;
         }
       })
-
-  }
-
-  private addAcao(anexos?: Arquivo[]) {
-    if (this.ticketId) {
-      this.ticketService.addAcao(this.ticketId, {
-        acaoInterna: this.acaoInterna,
-        statusId: this.selectedStatus!.id,
-        html: this.enteredDescricao,
-        anexos: anexos
-      })
-        .subscribe({
-          next: (response) => {
-            this.loadTicket(this.ticketId);
-            this.enteredDescricao = "";
-            this.anexos = [];
-          },
-          error: err => {
-            //Remove os arquivos preeviamente armazenados em caso de erro
-            if (anexos) {
-              this.deleteUploadedAnexos(anexos);
-            }
-            this.errorMessage = err.message
-            this.isLoadingTicket = false;
-          }
-        })
-    }
-
-  }
-
-  private deleteUploadedAnexos(anexo: Arquivo[]) {
-    anexo.forEach(a => {
-      this.arquivoService.removeByFileNames(a.fileName)
-        .subscribe({
-          error: err => {
-            console.log(err)
-          }
-        })
-    })
-  }
-
-  onSubmit() {
-    this.errorMessage = '';
-
-    if (this.enteredDescricao === "") {
-      this.errorMessage = 'Descrição não preenchida';
-      return;
-    }
-
-    this.isLoadingTicket = true;
-
-    if (this.anexos.length > 0) {
-      this.arquivoService.uploadFile(this.anexos)
-        .subscribe({
-          next: response => {
-            this.addAcao(response);
-          },
-          error: err => {
-            this.errorMessage = err.message;
-            this.isLoadingTicket = false
-            return
-          }
-        })
-    } else {
-      this.addAcao();
-    }
-  }
-
-  onUpdateTicket() {
-    this.isLoadingTicket = true;
-
-    this.ticketService.update(this.ticketId, {
-      categoriaId: this.selectedCategoria?.id,
-      motivoId: this.selectedMotivo!.id,
-      subStatusId: this.selectedSubStatus!.id,
-      prioridadeId: this.selectedPrioridade?.id
-    })
-      .subscribe({
-        next: (response) => {
-          this.isLoadingTicket = false;
-        },
-        error: err => {
-          this.errorMessage = err.message;
-          this.isLoadingTicket = false;
-        }
-      })
-  }
-
-  onRemoveAnexo(file: File) {
-    this.anexos = this.anexos.filter(f => f !== file);
-  }
-
-  onFilesSelected(event: any) {
-    const input = event.target
-    if (!input.files) return;
-
-    const maxSize = 25 * 1024 * 1024; // 35 MB
-    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg', 'audio/wav',
-      'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
-
-
-    for (let file of input.files) {
-      if (!tiposPermitidos.includes(file.type)) {
-        this.errorMessage = `O arquivo "${file.name}" não é um tipo permitido.`;
-        return;
-      }
-
-      if (file.size > maxSize) {
-        this.errorMessage = `O arquivo "${file.name}" excede o limite de 35MB.`;
-        return;
-      }
-
-      this.anexos.push(file)
-    }
 
   }
 
