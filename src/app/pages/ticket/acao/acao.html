@@ -22,22 +22,46 @@
     <p class="card-text" [innerHTML]="acao?.html">
     </p>
   </div>
-  @if(acao?.anexos){
+  @if(acao?.anexos || acao?.acaoTranscricao){
     <div class="card-footer">
-      <div class="d-flex flex-wrap gap-2 mt-3">
-        @for (anexo of acao?.anexos; track anexo.fileName) {
-          <a (click)="onVisualizeAnexo(anexo.fileName)">
+      <div class="d-flex justify-content-between gap-2 mt-3">
+        <div class="flex-wrap">
+          @for (anexo of acao?.anexos; track anexo.fileName) {
+            <a (click)="onVisualizeAnexo(anexo.fileName)">
             <span class="badge bg-light text-dark border d-flex align-items-center gap-2">
               <span class="material-symbols-outlined fs-5 w-100">draft</span>
-                <!--Removendo o UUID na apresentação para o usuário-->
-                <!-- Primeiro divide em partes pelo "_".
-                Depois ignora a primeir aposição do Array e junta tudo novamente-->
+              <!--Removendo o UUID na apresentação para o usuário-->
+              <!-- Primeiro divide em partes pelo "_".
+              Depois ignora a primeir aposição do Array e junta tudo novamente-->
 
               <span class="link-body-emphasis">
                   {{ anexo.fileName.split('_').slice(1).join('_')}}
               </span>
             </span>
-          </a>
+            </a>
+          }
+        </div>
+
+        @if(acao?.acaoTranscricao && tipoUsuario !== 'SOLICITANTE'){
+          <div>
+            <button class="btn btn-transcrever d-flex gap-2 border-0 d-flex align-items-center">
+              <svg
+                fill="currentColor"
+                fill-rule="evenodd"
+                height="1.3em"
+                style="flex: none; line-height: 1"
+                viewBox="0 0 24 24"
+                width="1.3em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title>Gemini</title>
+                <path
+                  d="M20.616 10.835a14.147 14.147 0 01-4.45-3.001 14.111 14.111 0 01-3.678-6.452.503.503 0 00-.975 0 14.134 14.134 0 01-3.679 6.452 14.155 14.155 0 01-4.45 3.001c-.65.28-1.318.505-2.002.678a.502.502 0 000 .975c.684.172 1.35.397 2.002.677a14.147 14.147 0 014.45 3.001 14.112 14.112 0 013.679 6.453.502.502 0 00.975 0c.172-.685.397-1.351.677-2.003a14.145 14.145 0 013.001-4.45 14.113 14.113 0 016.453-3.678.503.503 0 000-.975 13.245 13.245 0 01-2.003-.678z"
+                ></path>
+              </svg>
+              Gerar Ação com IA
+            </button>
+          </div>
         }
       </div>
     </div>

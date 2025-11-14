@@ -53,6 +53,7 @@ export interface AcaoModel {
   numAcao: number;
   criadoEm: string;
   acaoInterna: boolean;
+  acaoTranscricao: boolean;
   dataAtendimento: string | null;
   inicioAtendimento: string | null;
   fimAtendimento: string | null;
@@ -64,6 +65,7 @@ export interface AcaoModel {
 
 export interface AddAcaoModel {
   acaoInterna: boolean,
+  acaoTranscricao: boolean;
   statusId: string;
   html: string,
   anexos?: Arquivo[]

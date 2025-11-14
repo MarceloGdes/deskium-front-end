@@ -204,10 +204,11 @@ export class Ticket implements OnInit {
     input.value = '';
   }
 
-  private addAcao(anexos?: Arquivo[]) {
+  private addAcao(anexos?: Arquivo[], isTranscricao?: boolean) {
     if (this.ticketId) {
       this.ticketService.addAcao(this.ticketId, {
         acaoInterna: this.acaoInterna,
+        acaoTranscricao: isTranscricao || false,
         statusId: this.selectedStatus!.id,
         html: this.enteredDescricao,
         anexos: anexos
@@ -240,7 +241,7 @@ export class Ticket implements OnInit {
           this.acaoInterna = true;
           this.isTrancribing = false;
           this.isLoadingTicket = true;
-          this.addAcao([audio]);
+          this.addAcao([audio], true);
         },
         error: err => {
           //Remove os arquivos preeviamente armazenados em caso de erro

@@ -27,3 +27,14 @@ img {
     cursor: pointer;
   }
 }
+
+.btn-transcrever {
+  background-color: var(--verdigris);
+  color: var(--antiflash-white);
+  border-color: var(--verdigris);
+}
+
+.btn-transcrever:hover {
+  background-color: #314ce7;
+  color: var(--antiflash-white);
+}
