@@ -221,7 +221,7 @@
                 <div>
                   <span class="form-label">Arquivos</span>
                   <div class="d-flex flex-wrap gap-2 mt-3">
-                    @for (file of anexos; track file.name) {
+                    @for (file of selectedFiles; track file.name) {
                       <span class="badge bg-light text-dark border d-flex align-items-center gap-2">
                       <span class="material-symbols-outlined fs-5 w-100">draft</span>
                       <span>{{ file.name }}</span>
@@ -261,7 +261,7 @@
                     <div>
                       <label
                         for="audio-upload"
-                        class="btn btn-transcrever d-flex align-i gap-2 p-2 me-3 border-0"
+                        class="btn btn-transcrever d-flex align-items-center gap-2"
                       >
                         <svg
                           fill="currentColor"

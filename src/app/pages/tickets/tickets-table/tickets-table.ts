@@ -9,7 +9,6 @@ import {TicketModel} from '../../../model/ticket.model';
     DatePipe,
     RouterLink,
     RouterLinkActive,
-    NgStyle,
   ],
   templateUrl: './tickets-table.html',
   styleUrl: './tickets-table.css'

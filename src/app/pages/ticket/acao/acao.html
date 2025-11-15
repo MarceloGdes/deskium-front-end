@@ -25,7 +25,7 @@
   @if(acao?.anexos || acao?.acaoTranscricao){
     <div class="card-footer">
       <div class="d-flex justify-content-between gap-2 mt-3">
-        <div class="flex-wrap">
+        <div class="d-flex gap-2">
           @for (anexo of acao?.anexos; track anexo.fileName) {
             <a (click)="onVisualizeAnexo(anexo.fileName)">
             <span class="badge bg-light text-dark border d-flex align-items-center gap-2">

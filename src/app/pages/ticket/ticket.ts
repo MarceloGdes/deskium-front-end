@@ -78,7 +78,7 @@ export class Ticket implements OnInit {
   enteredDescricao = "";
   acaoInterna = false;
 
-  anexos: File[] = [];
+  selectedFiles: File[] = [];
   motivos?: Motivo[];
   categorias?: Categoria[];
   statusList?: Status[];
@@ -114,8 +114,8 @@ export class Ticket implements OnInit {
 
     this.isLoadingTicket = true;
 
-    if (this.anexos.length > 0) {
-      this.arquivoService.uploadFile(this.anexos)
+    if (this.selectedFiles.length > 0) {
+      this.arquivoService.uploadFile(this.selectedFiles)
         .subscribe({
           next: response => {
             this.addAcao(response);
@@ -151,13 +151,13 @@ export class Ticket implements OnInit {
   }
 
   onRemoveAnexo(file: File) {
-    this.anexos = this.anexos.filter(f => f !== file);
+    this.selectedFiles = this.selectedFiles.filter(f => f !== file);
   }
 
   onSelectAudioFileToTranscribe(event: any){
     const input = event.target
     if (!input.files) return;
-    let file = input.files[0]; // sempre pega o primeiro arquivo, pois o input n permite varios arquivos.
+    let file: File = input.files[0]; // sempre pega o primeiro arquivo, pois o input n permite varios arquivos.
 
     const maxSize = 25 * 1024 * 1024; // 35 MB
     const tiposPermitidos = ['audio/mpeg', 'audio/wav', 'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
@@ -200,7 +200,7 @@ export class Ticket implements OnInit {
     for (let file of input.files) {
 
 
-      this.anexos.push(file)
+      this.selectedFiles.push(file)
     }
 
     //Resetar para aceitar o mesmo arquivo novamente
@@ -238,7 +238,7 @@ export class Ticket implements OnInit {
           next: (response) => {
             this.loadTicket(this.ticketId);
             this.enteredDescricao = "";
-            this.anexos = [];
+            this.selectedFiles = [];
             this.acaoInterna = false;
           },
           error: err => {
