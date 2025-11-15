@@ -17,6 +17,13 @@ export class AiService {
       )
   }
 
+  generateEmail(ticketId: string, acaoId: number): Observable<AiResponse>{
+    return this.client.post<AiResponse>(`${this.apiUrl}/generate-email/${ticketId}/${acaoId}`, null)
+      .pipe(
+        catchError(error => this.handleError(error))
+      )
+  }
+
 
   private handleError(error: any): Observable<never>{
     let errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';

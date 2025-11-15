@@ -50,6 +50,7 @@ export interface Suporte {
 }
 
 export interface AcaoModel {
+  id: number
   numAcao: number;
   criadoEm: string;
   acaoInterna: boolean;

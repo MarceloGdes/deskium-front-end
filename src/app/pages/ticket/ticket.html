@@ -1,11 +1,15 @@
 <!-- Overlay de carregamento -->
 @if(isLoadingTicket || isLoadingStatus || isLoadingPrioridades || isLoadingSubStatus || isLoadingCategorias ||
   isLoadingMotivos || isLoadingUsuario){
-  <app-loading-overlay [descCarregamento]="'Carregando ticket'"></app-loading-overlay>
+  <app-loading-overlay [descCarregamento]="'Carregando ticket.'"></app-loading-overlay>
 }
 
 @if(isTrancribing){
   <app-loading-overlay [descCarregamento]="'Transcrevendo áudio. Aguarde!'"></app-loading-overlay>
+}
+
+@if(isGeneratingAcao){
+  <app-loading-overlay [descCarregamento]="'Gerando ação. Aguarde!'"></app-loading-overlay>
 }
 
 <div class="container-fluid">
@@ -163,7 +167,7 @@
 
     <!-- Card Ações -->
     <div class="col-md-9">
-      <div class="card p-3 card-actions">
+      <div class="card p-3 card-actions" #cardActions>
         <!-- Mensagem de erro -->
         @if (errorMessage) {
           <div class="alert alert-danger w-100 mb-3" role="alert">
@@ -318,7 +322,10 @@
         }
 
         @for (acao of ticket?.acoes; track acao.numAcao) {
-          <app-acao [acao]="acao" [tipoUsuario]="usuario?.tipoUsuario"></app-acao>
+          <app-acao
+            [acao]="acao"
+            [tipoUsuario]="usuario?.tipoUsuario"
+            (generateEmail)="onGenerateAcao($event)"></app-acao>
         }
       </div>
     </div>

@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {AcaoModel} from '../../../model/ticket.model';
 import {DatePipe, NgClass} from '@angular/common';
 import {ArquivoService} from '../../../service/arquivo.service';
@@ -16,6 +16,7 @@ import {unwrapSubstitutionsFromLocalizeCall} from '@angular/localize/tools';
 export class Acao {
   @Input({required:true}) acao?: AcaoModel;
   @Input({required:true}) tipoUsuario?: string;
+  @Output() generateEmail = new EventEmitter<number>();
 
   private arquivoService = inject(ArquivoService);
 
@@ -23,5 +24,9 @@ export class Acao {
     var url = this.arquivoService.getFileViewURL(fileName)
 
     window.open(url, '_blank');
+  }
+
+  onGenerateAcao(id: number) {
+    this.generateEmail.emit(id)
   }
 }

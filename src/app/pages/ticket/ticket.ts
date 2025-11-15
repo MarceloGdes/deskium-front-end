@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, TemplateRef} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {TicketService} from '../../service/ticket.service';
 import {TicketModel} from '../../model/ticket.model';
 import {DatePipe, NgClass} from '@angular/common';
@@ -52,6 +52,8 @@ export class Ticket implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
+  @ViewChild('cardActions') cardActions!: ElementRef;
+
   errorMessage?: string;
 
   private ticketId = "";
@@ -66,6 +68,7 @@ export class Ticket implements OnInit {
   isLoadingStatus = false;
   isLoadingPrioridades = false;
   isTrancribing = false;
+  isGeneratingAcao = false;
 
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
@@ -202,6 +205,24 @@ export class Ticket implements OnInit {
 
     //Resetar para aceitar o mesmo arquivo novamente
     input.value = '';
+  }
+
+  onGenerateAcao(acaoId: number){
+    this.isGeneratingAcao = true;
+    this.errorMessage = '';
+    this.aiService.generateEmail(this.ticketId, acaoId)
+      .subscribe({
+        next: response => {
+          this.isGeneratingAcao = false;
+          this.enteredDescricao = response.text;
+          this.scrollToTop()
+        },
+        error: err => {
+          this.isGeneratingAcao = false;
+          this.errorMessage = err.message;
+          this.scrollToTop()
+        }
+      })
   }
 
   private addAcao(anexos?: Arquivo[], isTranscricao?: boolean) {
@@ -389,6 +410,14 @@ export class Ticket implements OnInit {
         }
       })
 
+  }
+
+  //Metodo para scrolar a div de ações para o inicio.
+  private scrollToTop(){
+    this.cardActions.nativeElement.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
   openModal(content: TemplateRef<any>, size: string) {
