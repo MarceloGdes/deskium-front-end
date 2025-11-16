@@ -8,8 +8,6 @@ import {AuthService} from '../../service/auth/auth.service';
 @Component({
   selector: 'app-navbar',
   imports: [
-    NgbNavItem,
-    NgbNav,
     RouterLink,
     RouterLinkActive
   ],

@@ -23,6 +23,7 @@ import {Prioridade} from '../../model/prioridade.model';
 import {PrioridadeService} from '../../service/prioridade.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AiService} from '../../service/ai.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-ticket',
@@ -106,10 +107,7 @@ export class Ticket implements OnInit {
       },
     })
 
-    if(this.usuario?.tipoUsuario === 'SUPORTE'){
-      this.enteredDataAtendimento = new Date().toISOString().split('T')[0]; //Gera a data no padrão yyyy-mm-dd, removendo o horario.
-      this.enteredInicioAtendimento = new Date().toLocaleTimeString();
-    }
+    this.apontarInicioAtendimento();
   }
 
   onSubmit() {
@@ -131,6 +129,7 @@ export class Ticket implements OnInit {
           error: err => {
             this.errorMessage = err.message;
             this.isLoadingTicket = false
+            this.scrollToTop();
           }
         })
     } else {
@@ -154,6 +153,7 @@ export class Ticket implements OnInit {
         error: err => {
           this.errorMessage = err.message;
           this.isLoadingTicket = false;
+          this.scrollToTop();
         }
       })
   }
@@ -172,11 +172,13 @@ export class Ticket implements OnInit {
 
     if (!tiposPermitidos.includes(file.type)) {
       this.errorMessage = `O arquivo "${file.name}" não é um tipo permitido.`;
+      this.scrollToTop();
       return;
     }
 
     if (file.size > maxSize) {
       this.errorMessage = `O arquivo "${file.name}" excede o limite de 35MB.`;
+      this.scrollToTop();
       return;
     }
 
@@ -189,6 +191,7 @@ export class Ticket implements OnInit {
         error: err => {
           this.errorMessage = err.message;
           this.isTrancribing = false
+          this.scrollToTop();
         }
       })
 
@@ -204,9 +207,18 @@ export class Ticket implements OnInit {
     const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg', 'audio/wav',
       'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
 
-
     for (let file of input.files) {
+      if (!tiposPermitidos.includes(file.type)) {
+        this.errorMessage = `O arquivo "${file.name}" não é um tipo permitido.`;
+        this.scrollToTop();
+        return;
+      }
 
+      if (file.size > maxSize) {
+        this.errorMessage = `O arquivo "${file.name}" excede o limite de 35MB.`;
+        this.scrollToTop();
+        return;
+      }
 
       this.selectedFiles.push(file)
     }
@@ -235,6 +247,10 @@ export class Ticket implements OnInit {
 
   private addAcao(anexos?: Arquivo[], isTranscricao?: boolean) {
     if (this.ticketId) {
+      //Valida se o fim de atendimento foi preenchido, se não coloca a data atual.
+      this.enteredFimAtendimento = this.enteredFimAtendimento || new Date().toLocaleTimeString().substring(0, 5)
+      //Data de atendimento só é considerada pelo back-end se o usuário autor for o suporte.
+
       this.ticketService.addAcao(this.ticketId, {
         acaoInterna: this.acaoInterna,
         acaoTranscricao: isTranscricao ||  false,
@@ -248,17 +264,22 @@ export class Ticket implements OnInit {
         .subscribe({
           next: (response) => {
             this.loadTicket(this.ticketId);
-            this.enteredDescricao = "";
-            this.selectedFiles = [];
-            this.acaoInterna = false;
+            this.resetCampos();
+            this.apontarInicioAtendimento();
           },
           error: err => {
             //Remove os arquivos preeviamente armazenados em caso de erro
             if (anexos) {
               this.deleteUploadedAnexos(anexos);
             }
+
+            if(isTranscricao){
+              this.resetCampos();
+            }
+
             this.errorMessage = err.message
             this.isLoadingTicket = false;
+            this.scrollToTop();
           }
         })
     }
@@ -273,13 +294,14 @@ export class Ticket implements OnInit {
           this.acaoInterna = true;
           this.isTrancribing = false;
           this.isLoadingTicket = true;
-          this.addAcao([audio], true);
+          this.addAcao([audio],true);
         },
         error: err => {
           //Remove os arquivos preeviamente armazenados em caso de erro
           this.deleteUploadedAnexos([audio]);
           this.errorMessage = err.message
           this.isTrancribing = false;
+          this.scrollToTop();
         }
       })
   }
@@ -431,7 +453,22 @@ export class Ticket implements OnInit {
     });
   }
 
+  private resetCampos(){
+    this.enteredDescricao = "";
+    this.selectedFiles = [];
+    this.acaoInterna = false;
+    this.enteredFimAtendimento = undefined
+  }
+
   openModal(content: TemplateRef<any>, size: string) {
     this.modalService.open(content, { size: size, modalDialogClass: '.modal-content-bg'});
+  }
+
+  protected readonly console = console;
+
+  private apontarInicioAtendimento() {
+    let now = new Date();
+    this.enteredDataAtendimento = now.toISOString().split('T')[0]; //Gera a data no padrão yyyy-mm-dd, removendo o horario.
+    this.enteredInicioAtendimento = now.toLocaleTimeString().substring(0, 5); //Ignora os milisegundo, ficando compativel com o input de horas do boostratop.
   }
 }

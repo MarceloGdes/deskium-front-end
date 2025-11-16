@@ -176,9 +176,9 @@
           </div>
         }
 
-        @if (ticket?.status?.id !== 'ABERTO') {
+        @if (ticket?.status?.id === 'RESOLVIDO' || ticket?.status?.id === 'CANCELADO') {
           <div class="alert alert-secondary w-100 mb-3" role="alert">
-            <p  class="mb-0">Este ticket está {{ticket?.status?.descricao}} e não pode ser atualizado.</p>
+            <p  class="mb-0">Este ticket está <strong>{{ticket?.status?.descricao}}</strong> e não pode ser atualizado.</p>
           </div>
         }
 
@@ -225,7 +225,8 @@
                       type="date"
                       class="form-control"
                       name="dataAtendimento"
-                      [(ngModel)]="enteredDataAtendimento"/>
+                      [(ngModel)]="enteredDataAtendimento"
+                      (change)="console.log(enteredDataAtendimento)"/>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Horários</label>
@@ -234,7 +235,7 @@
                         type="time"
                         class="form-control"
                         name="inicioAtendimento"
-                        [(ngModel)]="enteredInicioAtendimento" />
+                        [(ngModel)]="enteredInicioAtendimento"/>
                       <span class="input-group-text">a</span>
                       <input
                         type="time"
