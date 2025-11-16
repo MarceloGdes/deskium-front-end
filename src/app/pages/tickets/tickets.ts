@@ -224,6 +224,7 @@ export class Tickets implements OnInit {
     this.enteredNumTicket = undefined;
     this.enteredAssuntoTicket = undefined;
     this.enteredResponsavel = undefined;
+    this.enteredSolicitante = undefined
     this.selectedStatus = undefined;
     this.enteredDataAberturaInicial = undefined;
     this.enteredDataAberturaFinal = undefined;

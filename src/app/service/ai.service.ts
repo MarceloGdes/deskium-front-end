@@ -10,8 +10,8 @@ export class AiService {
 
   constructor(private client: HttpClient) {}
 
-  transcribeAudio(fileName: string): Observable<AiResponse> {
-    return this.client.post<AiResponse>(`${this.apiUrl}/transcribe-audio/${fileName}`, null)
+  transcribeAudio(ticketId: string, fileName: string): Observable<AiResponse> {
+    return this.client.post<AiResponse>(`${this.apiUrl}/transcribe-audio/${ticketId}/${fileName}`, null)
       .pipe(
         catchError(error => this.handleError(error))
       )
@@ -27,7 +27,7 @@ export class AiService {
 
   private handleError(error: any): Observable<never>{
     let errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
-    console.log(error)
+
     switch (error.status) {
       case 400:
         errorMessage = error.error.errorList.join(', ');
@@ -35,8 +35,6 @@ export class AiService {
       case 500:
         errorMessage = 'Erro no servidor. Tente mais tarde.';
         break;
-      default:
-        errorMessage = error.error?.message || errorMessage;
     }
 
     return throwError(() => ({message: errorMessage}));

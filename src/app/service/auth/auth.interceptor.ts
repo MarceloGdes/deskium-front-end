@@ -24,7 +24,7 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn){
 
   } else {
     router.navigate(['login']);
-    //Completa o Observable sem emitir a chamada do front não receberá erro
+    //Finaliza o ciclo de vida do observable
     return EMPTY
   }
 

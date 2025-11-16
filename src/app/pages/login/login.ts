@@ -30,8 +30,7 @@ export class Login {
   onLogin() {
     this.isLoading = true;
     this.errorMessage = '';
-    this.authService
-      .login({
+    this.authService.login({
         email: this.enteredEmail,
         senha: this.enteredSenha
       })
@@ -42,7 +41,7 @@ export class Login {
           this.router.navigate(['/tickets']);
         },
         error: (error) => {
-          this.errorMessage = error.message || 'Ocorreu um erro. Tente novamente mais tarde.';
+          this.errorMessage = error.message;
           this.isLoading = false
         },
         complete: () => {this.isLoading = false}

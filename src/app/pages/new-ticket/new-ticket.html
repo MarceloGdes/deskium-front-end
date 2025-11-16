@@ -1,6 +1,10 @@
 <!-- Overlay de carregamento -->
-@if(isLoadingCategorias || isLoadingMotivos){
-  <app-loading-overlay [descCarregamento]="'Carregando dados'"></app-loading-overlay>
+@if(isLoadingCategorias || isLoadingMotivos || isLoadingSolicitante){
+  <app-loading-overlay [descCarregamento]="'Carregando dados. Aguarde!'"></app-loading-overlay>
+}
+
+@if(isSavingTicket){
+  <app-loading-overlay [descCarregamento]="'Abrindo ticket. Aguarde!'"></app-loading-overlay>
 }
 
 <div class="container-fluid">
@@ -49,7 +53,7 @@
 
     <!-- Card Ticket -->
     <div class="col-md-8" >
-      <div class="card p-3">
+      <div class="card p-3" #cardTicket>
         <!-- Mensagem de erro -->
         @if (errorMessage) {
           <div class="alert alert-danger w-100 mb-3" role="alert">
@@ -156,14 +160,14 @@
                 hidden
                 multiple
                 accept=".png, .jpg, .jpeg, .pdf, .mp3"
-                [disabled]="isLoading"
+                [disabled]="isSavingTicket"
                 (change)="onFilesSelected($event)"/>
 
               <button
                 class="btn btn-primary"
                 type="submit"
-                [disabled]="isLoading">
-                @if (isLoading) {
+                [disabled]="isSavingTicket">
+                @if (isSavingTicket) {
                   Carregando...
                 } @else {
                   Abrir Ticket

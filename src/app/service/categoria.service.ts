@@ -27,8 +27,6 @@ export class CategoriaService{
       case 500:
         errorMessage = 'Erro no servidor. Tente mais tarde.';
         break;
-      default:
-        errorMessage = error.error?.message || errorMessage;
     }
 
     return throwError(() => ({message: errorMessage}));

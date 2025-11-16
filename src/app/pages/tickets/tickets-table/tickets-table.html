@@ -53,15 +53,6 @@
                 {{ ticket.solicitante.nomeCompleto }}
             </td>
           }
-
-          <td class="text-truncate" style="max-width: 10em;">
-            @if (tipoUsuario == 'SOLICITANTE'){
-              {{ ticket.suporte.nomeCompleto }}
-
-            }@else {
-              {{ ticket.solicitante.nomeCompleto }}
-            }
-          </td>
           <td>{{ ticket.motivo.descricao }}</td>
           <td>{{ ticket.categoria?.descricao }}</td>
           @if(tipoUsuario == 'SUPORTE'|| tipoUsuario == 'GESTOR_SUPORTE'){

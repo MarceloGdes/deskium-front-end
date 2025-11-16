@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 //wrapper ngx-quill, que faz a integração Angular + Quill Editor
@@ -34,7 +34,9 @@ export class NewTicket implements OnInit{
   private arquivoService = inject(ArquivoService);
   private router = inject(Router);
 
-  isLoading = false;
+  @ViewChild("cardTicket") cardTicket!: ElementRef
+
+  isSavingTicket = false;
   isLoadingSolicitante = false
   isLoadingMotivos = false
   isLoadingCategorias = false
@@ -67,20 +69,23 @@ export class NewTicket implements OnInit{
 
     if(this.selectedMotivo === undefined){
       this.errorMessage = 'Motivo não selecionado';
+      this.scrollToTop()
       return;
     }
 
     if(this.enteredTitulo === ""){
       this.errorMessage = 'Titulo não preenchido';
+      this.scrollToTop()
       return;
     }
 
     if(this.enteredDescricao === ""){
       this.errorMessage = 'Descrição não preenchida';
+      this.scrollToTop()
       return;
     }
 
-    this.isLoading = true;
+    this.isSavingTicket = true;
 
     if(this.anexos.length > 0){
       this.arquivoService.uploadFile(this.anexos)
@@ -90,13 +95,46 @@ export class NewTicket implements OnInit{
           },
           error: err => {
             this.errorMessage = err.message;
-            this.isLoading = false
+            this.isSavingTicket = false
+            this.scrollToTop()
             return
           }
         })
     }else {
       this.saveTicket();
     }
+  }
+
+  onFilesSelected(event: any) {
+    const input = event.target
+    if (!input.files) return;
+
+    const maxSize = 25 * 1024 * 1024; // 35 MB
+    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg', 'audio/wav',
+      'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
+
+
+    for (let file of input.files) {
+      if (!tiposPermitidos.includes(file.type)) {
+        this.errorMessage = `O arquivo "${file.name}" não é um tipo permitido.`;
+        return;
+      }
+
+      if (file.size > maxSize) {
+        this.errorMessage = `O arquivo "${file.name}" excede o limite de 5MB.`;
+        return;
+      }
+
+      this.anexos.push(file)
+
+      //Resetar para aceitar o mesmo arquivo novamente
+      input.value = '';
+    }
+
+  }
+
+  removerAnexo(file: File) {
+    this.anexos = this.anexos.filter(f => f !== file);
   }
 
   private saveTicket(anexos?: Arquivo[] ){
@@ -110,7 +148,7 @@ export class NewTicket implements OnInit{
     .subscribe({
       next: response =>{
         console.log(response)
-        this.isLoading = false;
+        this.isSavingTicket = false;
         this.router.navigate(['../my-tickets']);
       },
       error: error=> {
@@ -119,7 +157,8 @@ export class NewTicket implements OnInit{
           this.deleteUploadedAnexos(anexos);
         }
         this.errorMessage = error.message;
-        this.isLoading = false
+        this.isSavingTicket = false;
+        this.scrollToTop();
       }
     })
   }
@@ -180,31 +219,11 @@ export class NewTicket implements OnInit{
       })
   }
 
-  onFilesSelected(event: any) {
-    const input = event.target
-    if (!input.files) return;
-
-    const maxSize = 5 * 1024 * 1024; // 5 MB
-    const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg'];
-
-
-    for (let file of input.files) {
-      if (!tiposPermitidos.includes(file.type)) {
-        this.errorMessage = `O arquivo "${file.name}" não é um tipo permitido.`;
-        return;
-      }
-
-      if (file.size > maxSize) {
-        this.errorMessage = `O arquivo "${file.name}" excede o limite de 5MB.`;
-        return;
-      }
-
-      this.anexos.push(file)
-    }
-
-  }
-
-  removerAnexo(file: File) {
-    this.anexos = this.anexos.filter(f => f !== file);
+  //Metodo para scrolar a div de ações para o inicio.
+  private scrollToTop(){
+    this.cardTicket.nativeElement.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 }

@@ -52,12 +52,10 @@ export class Ticket implements OnInit {
   private modalService = inject(NgbModal);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private ticketId = "";
 
   @ViewChild('cardActions') cardActions!: ElementRef;
-
   errorMessage?: string;
-
-  private ticketId = "";
   ticket?: TicketModel;
   usuario?: UsuarioModel;
 
@@ -287,7 +285,7 @@ export class Ticket implements OnInit {
   }
 
   private trancribe(audio: Arquivo) {
-    this.aiService.transcribeAudio(audio.fileName)
+    this.aiService.transcribeAudio(this.ticketId, audio.fileName)
       .subscribe({
         next: (response) => {
           this.enteredDescricao = response.text;
@@ -463,8 +461,6 @@ export class Ticket implements OnInit {
   openModal(content: TemplateRef<any>, size: string) {
     this.modalService.open(content, { size: size, modalDialogClass: '.modal-content-bg'});
   }
-
-  protected readonly console = console;
 
   private apontarInicioAtendimento() {
     let now = new Date();

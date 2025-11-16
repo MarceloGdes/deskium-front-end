@@ -103,8 +103,7 @@ export class TicketService {
         errorMessage = 'Erro no servidor. Tente mais tarde.';
         break;
 
-      default:
-        errorMessage = 'Ocorreu um erro interno. Tente novamente mais tarde';
+
     }
     return throwError(() => ({message: errorMessage}));
   }
