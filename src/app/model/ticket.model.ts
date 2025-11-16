@@ -23,7 +23,7 @@ export interface TicketModel {
   dataResolucao?: string;
   previsaoPrimeiraResposta?: string;
   dataPrimeiraResposta?: string;
-  horasApontadas?: string;
+  horasApontadas: string;
   status: Status;
   solicitante: Solicitante;
   suporte: Suporte;

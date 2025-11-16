@@ -576,7 +576,14 @@
             <div class="p-3 bg-light rounded border">
               <h6 class="mb-1">Total de Horas Apontadas</h6>
               <p class="fs-5 fw-bold text-success">
-                {{ ticket?.horasApontadas?.replace('PT', '')?.replace('H', 'h ')?.replace('M', 'm') }}
+              <p class="fs-5 fw-bold text-success">
+                {{
+                  (ticket?.horasApontadas ?? '')
+                    .replace('PT', '')
+                    .replace('H', 'h ')
+                    .replace('M', 'm')
+                }}
+              <!-- ?? Operador de coalencia nula, retorna uma string vazia caso horas apontadas não seja um valor valido. -->
               </p>
             </div>
           </div>
