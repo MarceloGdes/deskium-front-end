@@ -77,6 +77,9 @@ export class Ticket implements OnInit {
   selectedStatus?: Status;
   enteredDescricao = "";
   acaoInterna = false;
+  enteredDataAtendimento?: string;
+  enteredInicioAtendimento?: string;
+  enteredFimAtendimento?: string;
 
   selectedFiles: File[] = [];
   motivos?: Motivo[];
@@ -102,6 +105,11 @@ export class Ticket implements OnInit {
         this.router.navigate(['../my-tickets'])
       },
     })
+
+    if(this.usuario?.tipoUsuario === 'SUPORTE'){
+      this.enteredDataAtendimento = new Date().toISOString().split('T')[0]; //Gera a data no padrão yyyy-mm-dd, removendo o horario.
+      this.enteredInicioAtendimento = new Date().toLocaleTimeString();
+    }
   }
 
   onSubmit() {
@@ -229,9 +237,12 @@ export class Ticket implements OnInit {
     if (this.ticketId) {
       this.ticketService.addAcao(this.ticketId, {
         acaoInterna: this.acaoInterna,
-        acaoTranscricao: isTranscricao || false,
+        acaoTranscricao: isTranscricao ||  false,
         statusId: this.selectedStatus!.id,
         html: this.enteredDescricao,
+        dataAtendimento: this.enteredDataAtendimento,
+        inicioAtendimento: this.enteredInicioAtendimento,
+        fimAtendimento: this.enteredFimAtendimento,
         anexos: anexos
       })
         .subscribe({

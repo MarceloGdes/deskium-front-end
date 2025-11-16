@@ -69,5 +69,8 @@ export interface AddAcaoModel {
   acaoTranscricao: boolean;
   statusId: string;
   html: string,
+  dataAtendimento?: string,
+  inicioAtendimento?: string,
+  fimAtendimento?: string,
   anexos?: Arquivo[]
 }
