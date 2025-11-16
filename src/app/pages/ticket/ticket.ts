@@ -320,7 +320,6 @@ export class Ticket implements OnInit {
       .subscribe({
         next: (response) => {
           this.ticket = response;
-          console.log(response)
           //chamando os métodos aqui por conta dos observables sincronos
           this.loadMotivos();
           this.loadCategorias();
