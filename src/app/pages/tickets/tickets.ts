@@ -18,7 +18,7 @@ import {
 import {DatePipe, NgClass} from '@angular/common';
 import {SubStatusService} from '../../service/sub-status.service';
 import {SubStatus} from '../../model/sub-status.model';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router';
 import {Status} from '../../model/status.model';
 import {StatusService} from '../../service/status.service';
 import {TicketsTable} from './tickets-table/tickets-table';
@@ -50,6 +50,7 @@ export class Tickets implements OnInit {
   private motivoService = inject(MotivoService);
   private statusService = inject(StatusService);
   private authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
 
   isLoadingTickets = false;
   isLoadingCategorias = false;
@@ -60,6 +61,7 @@ export class Tickets implements OnInit {
   isCollapsed = true;
 
   usuario?: UsuarioModel;
+  isAllTickets = false;
 
   ticketsAtendimento: TicketModel[] = [];
   ticketsNovos: TicketModel[] = [];
@@ -86,6 +88,14 @@ export class Tickets implements OnInit {
   enteredDataFechamentoFinal?: string;
 
   ngOnInit(): void {
+    let path = this.route.snapshot.routeConfig?.path;
+
+    if(path === 'my-tickets'){
+      this.isAllTickets = false;
+    }else if(path === 'all-tickets'){
+      this.isAllTickets = true;
+    }
+
     this.loadUsuario()
     this.loadCategorias();
     this.loadMotivos();
@@ -171,7 +181,7 @@ export class Tickets implements OnInit {
 
     this.ticketService.getTickets(
       this.auxSelectedStatus?.id || "ABERTO",
-      false,
+      this.isAllTickets,
       this.enteredNumTicket,
       this.enteredAssuntoTicket,
       this.enteredResponsavel,

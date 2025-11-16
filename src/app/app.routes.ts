@@ -25,11 +25,15 @@ export const routes: Routes = [
       },
       {
         path: 'my-tickets',
-        component: Tickets
+        component: Tickets,
+      },
+      {
+        path: 'all-tickets',
+        component: Tickets,
       },
       {
         path: ':id',
-        component: Ticket
+        component: Ticket,
       }
     ]
   },

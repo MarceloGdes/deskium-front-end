@@ -59,8 +59,8 @@
               [(ngModel)]="enteredAssuntoTicket"/>
           </div>
 
-          <div class="col-md-6 col-lg-2">
-            @if(usuario?.tipoUsuario == "SOLICITANTE"){
+          @if(usuario?.tipoUsuario == "SOLICITANTE" || isAllTickets){
+            <div class="col-md-6 col-lg-2">
               <label class="form-label">Responsável</label>
               <input
                 type="text"
@@ -68,8 +68,10 @@
                 placeholder="Nome do responsável"
                 name="responsavel"
                 [(ngModel)]="enteredResponsavel"/>
-
-            } @else {
+            </div>
+          }
+          @if(usuario?.tipoUsuario == "SUPORTE" || usuario?.tipoUsuario == "GESTOR_SUPORTE" || isAllTickets){
+            <div class="col-md-6 col-lg-2">
               <label class="form-label">Solicitante</label>
               <input
                 type="text"
@@ -77,9 +79,9 @@
                 placeholder="Nome do solicitante"
                 name="responsavel"
                 [(ngModel)]="enteredSolicitante"/>
-            }
+            </div>
+          }
 
-          </div>
 
           <div class="col-md-6 col-lg-2">
             <label class="form-label">Status</label>
@@ -194,7 +196,8 @@
             <app-tickets-table
               [tickets]="allTickets"
               [tipoUsuario]="usuario?.tipoUsuario"
-              [statusId]="selectedStatus?.id"></app-tickets-table>
+              [statusId]="selectedStatus?.id"
+              [isAllTickets]="isAllTickets"></app-tickets-table>
           </ng-template>
         </li>
         @if(selectedStatus?.id == 'ABERTO'){
@@ -204,7 +207,8 @@
               <app-tickets-table
                 [tickets]="ticketsNovos"
                 [tipoUsuario]="usuario?.tipoUsuario"
-                [statusId]="selectedStatus?.id"></app-tickets-table>
+                [statusId]="selectedStatus?.id"
+                [isAllTickets]="isAllTickets"></app-tickets-table>
             </ng-template>
           </li>
           <li ngbNavItem>
@@ -213,7 +217,8 @@
               <app-tickets-table
                 [tickets]="ticketsAtendimento"
                 [tipoUsuario]="usuario?.tipoUsuario"
-                [statusId]="selectedStatus?.id"></app-tickets-table>
+                [statusId]="selectedStatus?.id"
+                [isAllTickets]="isAllTickets"></app-tickets-table>
             </ng-template>
           </li>
           <li ngbNavItem>
@@ -222,7 +227,8 @@
               <app-tickets-table
                 [tickets]="ticketsAguardo"
                 [tipoUsuario]="usuario?.tipoUsuario"
-                [statusId]="selectedStatus?.id"></app-tickets-table>
+                [statusId]="selectedStatus?.id"
+                [isAllTickets]="isAllTickets"></app-tickets-table>
             </ng-template>
           </li>
         }

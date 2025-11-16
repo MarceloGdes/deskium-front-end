@@ -4,13 +4,16 @@
     <tr>
       <th scope="col" class="fw-medium">Ticket</th>
       <th scope="col" class="fw-medium">Título</th>
-      <th scope="col" class="fw-medium">
-        @if (tipoUsuario == 'SOLICITANTE'){
+      @if (tipoUsuario == 'SOLICITANTE' || isAllTickets){
+        <th scope="col" class="fw-medium">
           Responsável
-        }@else {
+        </th>
+      }
+      @if(tipoUsuario == 'SUPORTE' || tipoUsuario == 'GESTOR_SUPORTE' || isAllTickets) {
+        <th scope="col" class="fw-medium">
           Solicitante
-        }
-      </th>
+        </th>
+      }
       <th scope="col" class="fw-medium">Motivo</th>
       <th scope="col" class="fw-medium">Categoria</th>
       @if (tipoUsuario == 'SUPORTE' || tipoUsuario == 'GESTOR_SUPORTE'){
@@ -39,6 +42,18 @@
             </a>
           </td>
           <td class="text-truncate" style="max-width: 15em;" title="{{ticket.titulo}}">{{ ticket.titulo }}</td>
+
+          @if (tipoUsuario == 'SOLICITANTE' || isAllTickets){
+            <td class="text-truncate" style="max-width: 10em;">
+              {{ ticket.suporte.nomeCompleto }}
+            </td>
+          }
+          @if(tipoUsuario == 'SUPORTE' || tipoUsuario == 'GESTOR_SUPORTE' || isAllTickets) {
+            <td class="text-truncate" style="max-width: 10em;">
+                {{ ticket.solicitante.nomeCompleto }}
+            </td>
+          }
+
           <td class="text-truncate" style="max-width: 10em;">
             @if (tipoUsuario == 'SOLICITANTE'){
               {{ ticket.suporte.nomeCompleto }}

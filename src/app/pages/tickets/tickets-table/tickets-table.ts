@@ -17,4 +17,5 @@ export class TicketsTable {
   @Input({required:true}) tickets?: TicketModel[];
   @Input({required:true}) tipoUsuario?: string;
   @Input({required:true}) statusId?: string;
+  @Input({required:true}) isAllTickets?: boolean;
 }
