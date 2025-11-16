@@ -18,17 +18,28 @@
     <div class="col-md-3">
       <div class="card p-3 card-requester">
         <div class="border-bottom mt-2 mb-3">
-          <h2 class="fs-5 fw-bold mb-2">
-            Ticket
-            <span class="" id="ticket-id">
-               #{{ ticket?.id }}
-            </span>
-          </h2>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="fs-5 fw-bold">
+              Ticket
+              <span id="ticket-id">
+                #{{ ticket?.id }}
+              </span>
+            </h2>
+            @if (usuario?.tipoUsuario !== 'SOLICITANTE'){
+              <button
+                class="btn btn-sm  d-flex align-items-center"
+                title="Apontamentos"
+                (click)="openModal(apontamentosModal, 'lg')">
+              <span class="material-symbols-outlined fs-3">
+                calendar_clock
+              </span>
+              </button>
+            }
+          </div>
           <h3 class="fw-bolder mb-2">
             {{ ticket?.titulo }}
           </h3>
         </div>
-
         <div
           class="d-flex justify-content-between align-items-center mb-0"
         >
@@ -365,7 +376,7 @@
   </div>
 
   <!-- Solicitante Modal Template -->
-<!--  https://ng-bootstrap.github.io/#/components/modal/examples-->
+  <!--  https://ng-bootstrap.github.io/#/components/modal/examples-->
   <ng-template #solicitanteModal let-modal>
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="requesterInfosModalLabel">
@@ -515,6 +526,59 @@
               disabled
               [value]="ticket?.solicitante?.observacoes">
             </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Apontamentos Modal Template -->
+  <!--  https://ng-bootstrap.github.io/#/components/modal/examples-->
+  <ng-template #apontamentosModal let-modal>
+    <div class="modal-header">
+      <h1 class="modal-title fs-5">
+        Apontamentos do Ticket
+      </h1>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p class="mb-1 fw-semibold">Data de Abertura:</p>
+            <p class="text-muted">{{ ticket?.criadoEm | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p class="mb-1 fw-semibold">Data Limite de Primeira Resposta:</p>
+            <p class="text-muted">{{ ticket?.previsaoPrimeiraResposta | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-1 fw-semibold">Data de Primeira Resposta:</p>
+            <p class="text-muted">{{ ticket?.dataPrimeiraResposta | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p class="mb-1 fw-semibold">Previsão de Solução/Encerramento:</p>
+            <p class="text-muted">{{ ticket?.previsaoResolucao | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-1 fw-semibold">Data de Solução/Encerramento:</p>
+            <p class="text-muted">{{ ticket?.dataResolucao | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="p-3 bg-light rounded border">
+              <h6 class="mb-1">Total de Horas Apontadas</h6>
+              <p class="fs-5 fw-bold text-success">
+                {{ ticket?.horasApontadas?.replace('PT', '')?.replace('H', 'h ')?.replace('M', 'm') }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
