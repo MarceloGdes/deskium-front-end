@@ -8,27 +8,10 @@
       <span class="material-symbols-outlined menu-icon">menu</span>
       <span class="fw-bold logo fs-4">Deskium</span>
     </button>
-    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav nav-tabs border-0 gap-2">
-
-      @for (tab of tabs; track tab.id) {
-        <li [ngbNavItem]="tab.id" class="nav-item border-0 border-ra">
-          <button ngbNavLink class="nav-link">
-            {{ tab.title }}
-            @if (tab.closable){
-              <span class="btn-close btn-close-white ms-3 fw-light" (click)="closeTab($event, tab.id)"></span>
-            }
-          </button>
-          <ng-template ngbNavContent>
-            <ng-container *ngTemplateOutlet="tab.content"></ng-container>
-          </ng-template>
-        </li>
-      }
-    </ul>
   </div>
-
 </nav>
-<div [ngbNavOutlet]="nav" class="mt-2"></div>
 
+<!--Sidebar-->
 <ng-template #sidebar let-offcanvas>
   <div class="offcanvas-header">
     <span class="logo mt-3">Deskium</span>
@@ -42,7 +25,6 @@
           routerLink="{{navItem.route}}"
           routerLinkActive="active"
           class="btn d-flex align-items-center gap-2"
-          (isActiveChange)="this.onRouterLinkActive($event, navItem.tabs)"
           (click)="offcanvas.close()"
           >
           <span class="material-symbols-outlined">{{navItem.icon}}</span>

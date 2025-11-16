@@ -47,14 +47,6 @@ export class Home implements OnInit {
       name: 'Meus Tickets',
       icon: 'confirmation_number',
       route: 'my-tickets',
-      tabs: [
-        {
-          id: 1,
-          content: null,
-          title: 'Meus tickets',
-          closable: false
-        }
-      ]
     })
 
     switch (user?.tipoUsuario){
@@ -65,14 +57,6 @@ export class Home implements OnInit {
             name: 'Novo Ticket',
             icon: 'add_box',
             route: 'new',
-            tabs: [
-              {
-                id: 1,
-                content: null,
-                title: 'Novo Ticket',
-                closable: false
-              }
-            ]
           }
         )
         break;
@@ -83,14 +67,6 @@ export class Home implements OnInit {
             name: 'Todos os Tickets',
             icon: 'all_inbox',
             route: 'all-tickets',
-            tabs: [
-              {
-                id: 1,
-                content: null,
-                title: 'Todos os Tickets',
-                closable: false
-              }
-            ]
           }
         )
     }

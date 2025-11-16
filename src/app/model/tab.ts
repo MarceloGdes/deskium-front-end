@@ -3,12 +3,11 @@ export interface NavItem {
   name: string;
   icon: string;
   route: string;
-  tabs: Tab[];
 }
 
 export interface Tab {
   id: number;
   title: string;
-  content: any;
+  route: string;
   closable: boolean;
 }

@@ -216,6 +216,36 @@
                 </quill-editor>
               </div>
 
+              @if(usuario?.tipoUsuario !== 'SOLICITANTE'){
+                <!-- data/hora -->
+                <div class="row mb-3">
+                  <div class="col-md-2">
+                    <label class="form-label">Data</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="dataAtendimento"
+                      [(ngModel)]="enteredDataAtendimento"/>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Horários</label>
+                    <div class="input-group">
+                      <input
+                        type="time"
+                        class="form-control"
+                        name="inicioAtendimento"
+                        [(ngModel)]="enteredInicioAtendimento" />
+                      <span class="input-group-text">a</span>
+                      <input
+                        type="time"
+                        class="form-control"
+                        name="fimAtendimento"
+                        [(ngModel)]="enteredFimAtendimento"/>
+                    </div>
+                  </div>
+                </div>
+              }
+
               <!-- Arquivos anexados -->
               <div class="mb-3 d-flex">
                 <div>
@@ -239,6 +269,8 @@
                   </div>
                 </div>
               </div>
+
+
 
               <!-- Botões -->
               <div class="d-flex justify-content-between">
