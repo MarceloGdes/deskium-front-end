@@ -55,9 +55,6 @@ export interface AcaoModel {
   criadoEm: string;
   acaoInterna: boolean;
   acaoTranscricao: boolean;
-  dataAtendimento: string | null;
-  inicioAtendimento: string | null;
-  fimAtendimento: string | null;
   autor: UsuarioModel;
   html: string;
   origemAcao: string;
