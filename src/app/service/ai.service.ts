@@ -32,9 +32,13 @@ export class AiService {
       case 400:
         errorMessage = error.error.errorList.join(', ');
         break;
+      case 503:
+        errorMessage = error.error.errorList.join(', ');
+        break;
       case 500:
         errorMessage = 'Erro no servidor. Tente mais tarde.';
         break;
+
     }
 
     return throwError(() => ({message: errorMessage}));
