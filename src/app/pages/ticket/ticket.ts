@@ -137,6 +137,7 @@ export class Ticket implements OnInit {
 
   onUpdateTicket() {
     this.isLoadingTicket = true;
+    this.errorMessage = '';
 
     this.ticketService.update(this.ticketId, {
       categoriaId: this.selectedCategoria?.id,
