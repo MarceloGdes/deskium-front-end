@@ -1,6 +1,6 @@
 import {Component, ElementRef, inject, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {TicketService} from '../../service/ticket.service';
-import {TicketModel} from '../../model/ticket.model';
+import {AddAcaoModel, TicketModel} from '../../model/ticket.model';
 import {DatePipe, NgClass} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Motivo} from '../../model/motivo.model';
@@ -23,7 +23,6 @@ import {Prioridade} from '../../model/prioridade.model';
 import {PrioridadeService} from '../../service/prioridade.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AiService} from '../../service/ai.service';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-ticket',
@@ -68,6 +67,7 @@ export class Ticket implements OnInit {
   isLoadingPrioridades = false;
   isTrancribing = false;
   isGeneratingAcao = false;
+  isReOpenningTicket = false;
 
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
@@ -147,7 +147,7 @@ export class Ticket implements OnInit {
     })
       .subscribe({
         next: (response) => {
-          this.isLoadingTicket = false;
+          this.loadTicket(this.ticketId);
         },
         error: err => {
           this.errorMessage = err.message;
@@ -202,7 +202,7 @@ export class Ticket implements OnInit {
     const input = event.target
     if (!input.files) return;
 
-    const maxSize = 25 * 1024 * 1024; // 35 MB
+    const maxSize = 25 * 1024 * 1024; // 25 MB
     const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg', 'audio/wav',
       'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
 
@@ -214,7 +214,7 @@ export class Ticket implements OnInit {
       }
 
       if (file.size > maxSize) {
-        this.errorMessage = `O arquivo "${file.name}" excede o limite de 35MB.`;
+        this.errorMessage = `O arquivo "${file.name}" excede o limite de 25MB.`;
         this.scrollToTop();
         return;
       }
@@ -244,13 +244,29 @@ export class Ticket implements OnInit {
       })
   }
 
+  onReOpenTicket(){
+    this.isReOpenningTicket = true;
+  }
+
+  dateIsAfterNow(date?: Date | string): boolean{
+    if (!date) {
+      return false;
+    }
+
+    //Valida se é um Date se não converte.
+    const dateToCompare = date instanceof Date ? date : new Date(date);
+    const dateNow = new Date();
+
+    return dateToCompare > dateNow;
+  }
+
   private addAcao(anexos?: Arquivo[], isTranscricao?: boolean) {
     if (this.ticketId) {
       //Valida se o fim de atendimento foi preenchido, se não coloca a data atual.
       this.enteredFimAtendimento = this.enteredFimAtendimento || new Date().toLocaleTimeString().substring(0, 5)
       //Data de atendimento só é considerada pelo back-end se o usuário autor for o suporte.
 
-      this.ticketService.addAcao(this.ticketId, {
+      let acao: AddAcaoModel = {
         acaoInterna: this.acaoInterna,
         acaoTranscricao: isTranscricao ||  false,
         statusId: this.selectedStatus!.id,
@@ -259,12 +275,22 @@ export class Ticket implements OnInit {
         inicioAtendimento: this.enteredInicioAtendimento,
         fimAtendimento: this.enteredFimAtendimento,
         anexos: anexos
-      })
+      };
+      let response;
+
+      if(this.isReOpenningTicket){
+        response = this.ticketService.reOpenTicket(this.ticketId, acao);
+      }else {
+        response = this.ticketService.addAcao(this.ticketId, acao);
+      }
+
+      response
         .subscribe({
           next: (response) => {
             this.loadTicket(this.ticketId);
             this.resetCampos();
             this.apontarInicioAtendimento();
+            this.isReOpenningTicket = false;
           },
           error: err => {
             //Remove os arquivos preeviamente armazenados em caso de erro
@@ -321,6 +347,7 @@ export class Ticket implements OnInit {
       .subscribe({
         next: (response) => {
           this.ticket = response;
+          console.log(this.ticket)
           //chamando os métodos aqui por conta dos observables sincronos
           this.loadMotivos();
           this.loadCategorias();

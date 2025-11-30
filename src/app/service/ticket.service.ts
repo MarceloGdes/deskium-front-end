@@ -73,7 +73,14 @@ export class TicketService {
   }
 
   addAcao(ticketId: string, acao: AddAcaoModel): Observable<any>{
-    return this.client.post<AddAcaoModel>(`${this.apiUrl}/${ticketId}/acoes`, acao)
+    return this.client.post(`${this.apiUrl}/${ticketId}/acoes`, acao)
+      .pipe(
+        catchError(err => this.handleError(err))
+      );
+  }
+
+  reOpenTicket(ticketId: string, acao: AddAcaoModel): Observable<any>{
+    return this.client.put(`${this.apiUrl}/reopen/${ticketId}`, acao)
       .pipe(
         catchError(err => this.handleError(err))
       );

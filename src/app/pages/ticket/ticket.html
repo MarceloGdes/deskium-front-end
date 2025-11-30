@@ -187,13 +187,38 @@
           </div>
         }
 
-        @if (ticket?.status?.id === 'RESOLVIDO' || ticket?.status?.id === 'CANCELADO') {
-          <div class="alert alert-secondary w-100 mb-3" role="alert">
-            <p  class="mb-0">Este ticket está <strong>{{ticket?.status?.descricao}}</strong> e não pode ser atualizado.</p>
+        @if (ticket?.status?.id !== 'ABERTO' && !isReOpenningTicket) {
+          <div class="alert alert-secondary w-100 mb-3 d-flex align-items-center justify-content-between" role="alert">
+            <p  class="mb-0">Este ticket está <strong>{{ticket?.status?.descricao}}</strong>
+              @if(
+                ticket?.status?.id === 'RESOLVIDO' &&
+                ticket?.prazoReabertura &&
+                dateIsAfterNow(ticket?.prazoReabertura)
+                ) {
+                e pode ser reaberto até {{ ticket?.prazoReabertura | date:'dd/MM/yyyy HH:mm' }}.
+              } @else {
+                e não pode ser reaberto.
+              }
+            </p>
+            @if(
+              ticket?.status?.id === 'RESOLVIDO' &&
+              ticket?.prazoReabertura &&
+              usuario?.tipoUsuario === 'SOLICITANTE' &&
+              dateIsAfterNow(ticket?.prazoReabertura)){
+              <button class="btn btn-success d-flex justify-content-center align-items-center gap-1" (click)="onReOpenTicket()">
+                <span class="material-symbols-outlined fs-5">replay</span>
+                <span>Reabrir Ticket</span>
+              </button>
+            }
+          </div>
+
+        } @else if (isReOpenningTicket){
+          <div class="alert alert-warning w-100 mb-3 d-flex align-items-center justify-content-between" role="alert">
+            <p  class="mb-0">Adicione uma ação para reabrir o ticket.</p>
           </div>
         }
 
-        @if (ticket?.status?.id === 'ABERTO') {
+        @if (ticket?.status?.id === 'ABERTO' || isReOpenningTicket) {
           <div class="card p-3 mb-4 card-new-action">
             <div class="d-flex justify-content-between align-content-center p-0 mb-2">
               <h5 class="fs-5 fw-medium">Nova Ação</h5>

@@ -17,7 +17,7 @@ export interface CreateTicketRequest {
 
 export interface TicketModel {
   id: number;
-  criadoEm: Date;
+  criadoEm: string;
   titulo: string;
   previsaoResolucao?: string;
   dataResolucao?: string;
@@ -32,6 +32,7 @@ export interface TicketModel {
   subStatus: SubStatus;
   prioridade?: Prioridade;
   acoes?: AcaoModel[];
+  prazoReabertura?: string;
 }
 
 export interface UpdateTicketModel {

@@ -5,17 +5,18 @@ import {App} from './app';
 import {Home} from './pages/home/home';
 import {Tickets} from './pages/tickets/tickets';
 import {Ticket} from './pages/ticket/ticket';
+import {People} from './pages/people/people';
 
 //Rotas
 //https://angular.dev/guide/routing/define-routes
 export const routes: Routes = [
-  { path: '', redirectTo: 'tickets', pathMatch: 'full' },
+  { path: '', redirectTo: 'app', pathMatch: 'full' },
   {
     path: 'login',
     component: Login
   },
   {
-    path: 'tickets',
+    path: 'app',
     component: Home,
     children: [
       { path: '', redirectTo: 'my-tickets', pathMatch: 'full' },
@@ -32,11 +33,15 @@ export const routes: Routes = [
         component: Tickets,
       },
       {
-        path: ':id',
+        path: 'people',
+        component: People
+      },
+      {
+        path: 'ticket/:id',
         component: Ticket,
       }
     ]
   },
-  { path: '**', redirectTo: 'tickets' }
+  { path: '**', redirectTo: 'app' }
 
 ];

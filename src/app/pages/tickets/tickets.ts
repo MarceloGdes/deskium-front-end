@@ -165,7 +165,6 @@ export class Tickets implements OnInit {
         next: (response) => {
           this.usuario = response;
           this.isLoadingUsuario = false;
-          console.log(this.usuario);
         },
         error: (error) => {
           this.errorMessage = error.message;

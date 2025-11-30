@@ -109,7 +109,7 @@ export class NewTicket implements OnInit{
     const input = event.target
     if (!input.files) return;
 
-    const maxSize = 25 * 1024 * 1024; // 35 MB
+    const maxSize = 25 * 1024 * 1024; // 25 MB
     const tiposPermitidos = ['image/png', 'image/jpeg', 'application/pdf', 'audio/mpeg', 'audio/wav',
       'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'];
 
@@ -121,7 +121,7 @@ export class NewTicket implements OnInit{
       }
 
       if (file.size > maxSize) {
-        this.errorMessage = `O arquivo "${file.name}" excede o limite de 5MB.`;
+        this.errorMessage = `O arquivo "${file.name}" excede o limite de 25MB.`;
         return;
       }
 
