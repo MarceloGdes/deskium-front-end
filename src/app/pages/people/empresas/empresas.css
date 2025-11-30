@@ -1,0 +1,66 @@
+.card-body {
+  background-color: #F5F5F5;
+}
+
+/* Cards */
+.card-table {
+  background-color: var(--antiflash-white);
+}
+
+.card-config-list {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background-color: var(--antiflash-white);
+  height: calc(100vh - 80px);
+  overflow: auto;
+}
+
+.nav-link-pessoas-pane {
+  color: var(--verdigris) !important;
+  padding: 0.7rem;
+}
+
+.nav-link-pessoas-pane.active {
+  background-color: var(--antiflash-white) !important;
+  color: var(--oxford-blue) !important;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+
+}
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+
+}
+
+table,
+tbody,
+th,
+td {
+  background-color: var(--antiflash-white) !important;
+}
+
+table,
+tbody,
+td {
+  height: 3.7rem;
+  vertical-align: middle;
+}
+
+
+.card-body {
+  background-color: #F5F5F5;
+}
+
+
+.modal-content {
+  background-color: var(--antiflash-white);
+}
+
+
+.btn-primary {
+  background-color: #318fe7;
+  color: var(--antiflash-white);
+}

@@ -91,19 +91,15 @@ export class TicketService {
 
     switch (error.status) {
       case 400:
-        let errors = [];
 
-        for (let errMsg of error.error?.errorList) {
-          errMsg = errMsg
+        //exibe um erro por vez.
+        let errMsg = error.error?.errorList[0]
             .replace('motivoId', 'Motivo')
             .replace('descricaoHtml', 'Descrição')
             .replace('titulo', 'Título')
             .replace('html', 'Descrição');
 
-          errors.push(errMsg);
-        }
-
-        errorMessage = errors.join('; ');
+          errorMessage = errMsg
         break;
 
       case 500:

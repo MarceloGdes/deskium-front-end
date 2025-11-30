@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 import {Navbar} from '../../layout/navbar/navbar';
 import {AuthService} from '../../service/auth/auth.service';
 import {NavItem} from '../../model/nav-item.model';
@@ -16,6 +16,7 @@ import {UsuarioModel} from '../../model/usuario.model';
 })
 export class Home implements OnInit {
   private authService = inject(AuthService);
+  private router = inject(Router);
   user?: UsuarioModel
   navItems: NavItem[];
 
@@ -66,6 +67,23 @@ export class Home implements OnInit {
             name: 'Todos os Tickets',
             icon: 'all_inbox',
             route: 'all-tickets',
+          }
+        )
+        break;
+      case 'GESTOR_SUPORTE':
+        this.navItems.pop()
+        this.navItems.push(
+          {
+            id: 1,
+            name: 'Todos os Tickets',
+            icon: 'all_inbox',
+            route: 'all-tickets',
+          },
+          {
+            id: 2,
+            name: 'Pessoas',
+            icon: 'groups',
+            route: 'people',
           }
         )
     }

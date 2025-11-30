@@ -38,7 +38,11 @@ export class Login {
       //.subscribe executa o Observable retornado pelo metodo login do authservice
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/tickets']);
+          if(response.usuario.tipoUsuario === 'GESTOR_SUPORTE'){
+            this.router.navigate(['/app/all-tickets']);
+          }else {
+            this.router.navigate(['/app/my-tickets']);
+          }
         },
         error: (error) => {
           this.errorMessage = error.message;

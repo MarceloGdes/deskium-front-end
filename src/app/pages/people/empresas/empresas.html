@@ -1,0 +1,190 @@
+<div class="container-fluid">
+  <div class="border-bottom p-1 mb-3">
+    <form class="mb-2">
+      @if (errorMessage) {
+        <div class="alert alert-danger w-100 mb-3" role="alert">
+          <h4 class="mb-1 fw-bold">Erro:</h4>
+          {{ errorMessage }}
+        </div>
+      }
+      <div class="d-flex align-items-end gap-3 flex-wrap">
+        <div>
+          <label class="form-label">Código</label>
+          <input
+            type="number"
+            class="form-control"
+            placeholder=""
+            name="codigo"
+            [(ngModel)]="enteredCodigo"/>
+        </div>
+        <div>
+          <label class="form-label">Razão Social</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            name="razaoSocial"
+            [(ngModel)]="enteredRazaoSocial"/>
+        </div>
+        <div>
+          <label class="form-label">CNPJ</label>
+          <input
+            type="number"
+            class="form-control"
+            placeholder=""
+            name="cnpj"
+            [(ngModel)]="enteredCnpj"/>
+        </div>
+        <div class="d-flex gap-2">
+          <button
+            (click)="loadEmpresas()"
+            class="btn btn-primary d-flex justify-content-center align-items-center gap-1">
+            <span class="material-symbols-outlined fs-5">search</span>
+            <span>Filtrar</span>
+          </button>
+          <button
+            (click)="onLimparCampos()"
+            class="btn btn-secondary d-flex justify-content-center align-items-center gap-1">
+            <span class="material-symbols-outlined fs-5">ink_eraser</span>
+            <span>Limpar Filtros</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card border-0 card-table">
+    <div class="table-responsive">
+      <table class="table align-middle table-bordered">
+        <thead>
+        <tr>
+          <th>Código</th>
+          <th>Razão Social</th>
+          <th>CNPJ</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th class="text-center">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (empresa of empresas; track empresa.id){
+            <tr>
+              <td>{{empresa.id}}</td>
+              <td>{{ empresa.razaoSocial }}</td>
+              <td>{{ empresa.cnpj }}</td>
+              <td>{{ empresa.email }}</td>
+              <td>{{ empresa.telefone }}</td>
+              <td class="text-center d-flex gap-2 align-items-center justify-content-center">
+                <button
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="openEmpresaModal(empresaModal, empresa)"
+                >
+                  Editar
+                </button>
+                <button
+                  class="btn btn-sm"
+                  [ngClass]="{
+                  'btn-outline-danger': empresa.ativo,
+                  'btn-outline-success': !empresa.ativo
+                  }"
+                  (click)="onChangeStatus(empresa)">
+                  @if(empresa.ativo){
+                    Inativar
+                  } @else {
+                    Ativar
+                  }
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <button
+        class="btn btn-success mt-2 w-25"
+        (click)="openEmpresaModal(empresaModal)"
+      >
+        Cadastrar Empresa
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Empresa -->
+<ng-template #empresaModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ isEditing ? 'Alterar' : 'Cadastrar' }} Empresa</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeModal()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    @if (errorModalMessage) {
+      <div class="alert alert-danger w-100 mb-3" role="alert">
+        <h4 class="mb-1 fw-bold">Erro:</h4>
+        {{ errorModalMessage }}
+      </div>
+    }
+    <form>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Razão Social</label>
+          <input
+            type="text"
+            class="form-control"
+            required
+            name="razaoSocialEmpresa"
+            [(ngModel)]="enteredModalRazao"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">CNPJ</label>
+          <input
+            type="number"
+            class="form-control"
+            required
+            name="cnpjEmpresa"
+            [(ngModel)]="enteredModalCnpj"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            required
+            name="emailEmpresa"
+            [(ngModel)]="enteredModalEmail"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Telefone</label>
+          <input
+            type="number"
+            class="form-control"
+            required
+            name="telefoneEmpresa"
+            [(ngModel)]="enteredModalTelefone"
+          />
+        </div>
+        <div class="col-12">
+          <label class="form-label">Observações</label>
+          <textarea
+            class="form-control"
+            rows="2"
+            name="observacoesEmpresa"
+            [(ngModel)]="enteredModalObs"
+          ></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="closeModal()">
+      Cancelar
+    </button>
+    <button class="btn btn-primary" type="submit" (click)="onSubimit()">
+      Salvar
+    </button>
+  </div>
+</ng-template>

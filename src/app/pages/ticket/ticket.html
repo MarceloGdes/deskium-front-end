@@ -88,9 +88,9 @@
             id="motivo"
             class="form-select"
             name="motivo"
-            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !==  'ABERTO'"
+            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !==  'ABERTO' || usuario?.email !== ticket?.suporte?.email"
             [ngClass]="{
-             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
+             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO' || usuario?.email !== ticket?.suporte?.email
             }"
             [(ngModel)]="selectedMotivo"
             (ngModelChange)="onUpdateTicket()">
@@ -110,9 +110,9 @@
             id="categoria"
             class="form-select"
             name="categoria"
-            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !==  'ABERTO'"
+            [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !==  'ABERTO' || usuario?.email !== ticket?.suporte?.email"
             [ngClass]="{
-             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO'
+             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || ticket?.status?.id !== 'ABERTO' || usuario?.email !== ticket?.suporte?.email
             }"
             [(ngModel)]="selectedCategoria"
             (ngModelChange)="onUpdateTicket()">
@@ -133,9 +133,9 @@
               id="subStatus"
               class="form-select"
               name="subStatus"
-              [disabled]="usuario?.tipoUsuario === 'SOLICITANTE'"
+              [disabled]="usuario?.tipoUsuario === 'SOLICITANTE' || usuario?.email !== ticket?.suporte?.email"
               [ngClass]="{
-             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE'
+             'ticket-info-value': usuario?.tipoUsuario === 'SOLICITANTE' || usuario?.email !== ticket?.suporte?.email
             }"
               [(ngModel)]="selectedSubStatus"
               (ngModelChange)="onUpdateTicket()">
@@ -157,9 +157,9 @@
               id="prioridade"
               class="form-select"
               name="prioridade"
-              [disabled]="ticket?.status?.id !==  'ABERTO'"
+              [disabled]="ticket?.status?.id !==  'ABERTO' || usuario?.email !== ticket?.suporte?.email"
               [ngClass]="{
-                'ticket-info-value': ticket?.status?.id !== 'ABERTO'
+                'ticket-info-value': ticket?.status?.id !== 'ABERTO' || usuario?.email !== ticket?.suporte?.email
               }"
               [(ngModel)]="selectedPrioridade"
               (ngModelChange)="onUpdateTicket()">

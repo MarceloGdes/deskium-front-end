@@ -1,6 +1,6 @@
 import {Motivo} from './motivo.model';
 import {Categoria} from './categoria.model';
-import {Solicitante} from './solicitante.model';
+import {SolicitanteModel} from './solicitante.model';
 import {Arquivo} from './arquivo.model';
 import {SubStatus} from './sub-status.model';
 import {UsuarioModel} from './usuario.model';
@@ -25,7 +25,7 @@ export interface TicketModel {
   dataPrimeiraResposta?: string;
   horasApontadas: string;
   status: Status;
-  solicitante: Solicitante;
+  solicitante: SolicitanteModel;
   suporte: Suporte;
   motivo: Motivo;
   categoria?: Categoria;

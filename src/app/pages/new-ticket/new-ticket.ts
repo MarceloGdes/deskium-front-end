@@ -9,7 +9,7 @@ import {CategoriaService} from '../../service/categoria.service';
 import {Categoria} from '../../model/categoria.model';
 import {TicketService} from '../../service/ticket.service';
 import {SolicitanteService} from '../../service/solicitante.service';
-import {Solicitante} from '../../model/solicitante.model';
+import {SolicitanteModel} from '../../model/solicitante.model';
 import {ArquivoService} from '../../service/arquivo.service';
 import {Arquivo} from '../../model/arquivo.model';
 import {Router} from '@angular/router';
@@ -47,7 +47,7 @@ export class NewTicket implements OnInit{
   categorias: Categoria[] = [];
   selectedMotivo?: Motivo;
   selectedCategoria?: Categoria;
-  solicitante?: Solicitante;
+  solicitante?: SolicitanteModel;
   anexos: File[] = [];
   errorMessage = '';
 

@@ -1,5 +1,7 @@
 import {Component, TemplateRef, ViewChild} from '@angular/core';
-import {NgbModal, NgbNav, NgbNavItem, NgbNavLinkButton, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbNav, NgbNavContent, NgbNavItem, NgbNavLinkButton, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
+import {Empresas} from './empresas/empresas';
+import {LoadingOverlay} from '../../layout/shared/loading-overlay/loading-overlay';
 
 @Component({
   selector: 'app-people',
@@ -7,39 +9,14 @@ import {NgbModal, NgbNav, NgbNavItem, NgbNavLinkButton, NgbNavOutlet} from '@ng-
     NgbNav,
     NgbNavItem,
     NgbNavOutlet,
-    NgbNavLinkButton
+    NgbNavLinkButton,
+    NgbNavContent,
+    Empresas,
+    LoadingOverlay
   ],
   templateUrl: './people.html',
   styleUrl: './people.css'
 })
 export class People {
-  active = 1;
-  isEditMode = false;
-
-  @ViewChild('empresaModal') empresaModal!: TemplateRef<any>;
-  @ViewChild('solicitanteModal') solicitanteModal!: TemplateRef<any>;
-  @ViewChild('usuarioModal') usuarioModal!: TemplateRef<any>;
-
-  constructor(private modalService: NgbModal) {}
-
-  openEmpresaModal() {
-    this.modalService.open(this.empresaModal, {
-      size: 'lg',
-      centered: true
-    });
-  }
-
-  openSolicitanteModal() {
-    this.modalService.open(this.solicitanteModal, {
-      size: 'lg',
-      centered: true
-    });
-  }
-
-  openUsuarioModal() {
-    this.modalService.open(this.usuarioModal, {
-      size: 'lg',
-      centered: true
-    });
-  }
+  isLoadingEmpresas = false;
 }

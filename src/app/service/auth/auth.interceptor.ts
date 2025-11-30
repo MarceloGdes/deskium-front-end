@@ -30,13 +30,14 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn){
 
   return next(newReq).pipe(
     catchError((error: HttpErrorResponse) => {
+      console.log(error)
       if (error.status === HttpStatusCode.Unauthorized) {
         // Token inválido, expirado  > logout
         authService.logout();
 
       }else if(error.status === HttpStatusCode.Forbidden){
         //acesso negado a um recurso da api da pagina.
-        router.navigate(['/tickets'])
+        router.navigate(['/app'])
         return EMPTY
       }
       return throwError(() => error);
