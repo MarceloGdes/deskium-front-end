@@ -1,0 +1,427 @@
+<div class="container-fluid">
+  <div class="card border-0 pt-3 p-4 card-config-list">
+    <ul ngbNav #nav="ngbNav" class="nav-tabs mb-2">
+      <li ngbNavItem>
+        <button ngbNavLink class="nav-link-pessoas-pane">Todos os tickets</button>
+        <ng-template ngbNavContent>
+          <div class="border-bottom p-1 mb-3">
+            <form class="mb-2">
+              <div class="d-flex align-items-end gap-3 flex-wrap">
+                <div>
+                  <label class="form-label">Código</label>
+                  <input type="number" class="form-control" placeholder="" />
+                </div>
+                <div>
+                  <label class="form-label">Razão Social</label>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+                <div>
+                  <label class="form-label">CNPJ</label>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+                <div class="d-flex gap-2">
+                  <button
+                    class="btn btn-primary d-flex justify-content-center align-items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined fs-5">search</span>
+                    <span>Filtrar</span>
+                  </button>
+                  <button
+                    class="btn btn-secondary d-flex justify-content-center align-items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined fs-5">ink_eraser</span>
+                    <span>Limpar Filtros</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card border-0 card-table">
+            <div class="table-responsive">
+              <table class="table align-middle table-bordered">
+                <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Razão Social</th>
+                  <th>CNPJ</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th class="text-center">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Empresa X LTDA</td>
+                  <td>12.345.678/0001-99</td>
+                  <td>email</td>
+                  <td>(11) 3333-4444</td>
+                  <td class="text-center">
+                    <button
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="openEmpresaModal()"
+                    >
+                      Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger">
+                      Inativar
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <button
+                class="btn btn-success mt-2 w-25"
+                (click)="openEmpresaModal()"
+              >
+                Cadastrar Empresa
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+
+      <li ngbNavItem>
+        <button ngbNavLink class="nav-link-pessoas-pane">Solicitantes</button>
+        <ng-template ngbNavContent>
+          <div class="border-bottom p-1 mb-3">
+            <form class="mb-3">
+              <div class="d-flex align-items-end gap-3 flex-wrap">
+                <div>
+                  <label class="form-label">Código</label>
+                  <input type="number" class="form-control" placeholder="" />
+                </div>
+                <div>
+                  <label class="form-label">Nome</label>
+                  <input type="text" class="form-control" />
+                </div>
+                <div>
+                  <label class="form-label">Empresa</label>
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="d-flex gap-2">
+                  <button
+                    class="btn btn-primary d-flex justify-content-center align-items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined fs-5">search</span>
+                    <span>Filtrar</span>
+                  </button>
+                  <button
+                    class="btn btn-secondary d-flex justify-content-center align-items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined fs-5">ink_eraser</span>
+                    <span>Limpar Filtros</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="card border-0 card-table">
+            <div class="table-responsive">
+              <table class="table align-middle table-bordered">
+                <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Celular</th>
+                  <th>Empresa</th>
+                  <th class="text-center">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Marcia Silva</td>
+                  <td>email</td>
+                  <td>(11) 2222-3333</td>
+                  <td>(11) 98888-7777</td>
+                  <td>Empresa X LTDA</td>
+                  <td class="text-center">
+                    <button
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="openSolicitanteModal()"
+                    >
+                      Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger">
+                      Inativar
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <button
+              class="btn btn-success mt-2 w-25"
+              (click)="openSolicitanteModal()"
+            >
+              Cadastrar Solicitante
+            </button>
+          </div>
+        </ng-template>
+      </li>
+
+      <li ngbNavItem>
+        <button ngbNavLink class="nav-link-pessoas-pane">
+          Suportes e Gestores
+        </button>
+        <ng-template ngbNavContent>
+          <div class="border-bottom p-1 mb-3">
+            <form class="mb-2">
+              <div class="d-flex align-items-end gap-3 flex-wrap">
+                <div>
+                  <label class="form-label">Código</label>
+                  <input type="number" class="form-control" placeholder="" />
+                </div>
+                <div>
+                  <label class="form-label">Nome</label>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+                <div class="d-flex gap-2">
+                  <button
+                    class="btn btn-primary d-flex justify-content-center align-items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined fs-5">search</span>
+                    <span>Filtrar</span>
+                  </button>
+                  <button
+                    class="btn btn-secondary d-flex justify-content-center align-items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined fs-5">ink_eraser</span>
+                    <span>Limpar Filtros</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card border-0 card-table">
+            <div class="table-responsive">
+              <table class="table align-middle table-bordered">
+                <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Perfil</th>
+                  <th class="text-center">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Marcelo Guedes</td>
+                  <td>email</td>
+                  <td>Gestor</td>
+                  <td class="text-center">
+                    <button
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="openUsuarioModal()"
+                    >
+                      Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger">
+                      Inativar
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <button
+              class="btn btn-success mt-2 w-25"
+              (click)="openUsuarioModal()"
+            >
+              Adicionar Usuário
+            </button>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>
+
+<!-- Modal Empresa -->
+<ng-template #empresaModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ isEditMode ? 'Alterar' : 'Cadastrar' }} Empresa</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Razão Social</label>
+          <input type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">CNPJ</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="00.000.000/0000-00"
+            required
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Telefone</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="(11) 3333-4444"
+          />
+        </div>
+        <div class="col-12">
+          <label class="form-label">Observações</label>
+          <textarea class="form-control" rows="2"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">
+      Cancelar
+    </button>
+    <button class="btn btn-primary" (click)="modal.close('Save')">
+      Salvar
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal Solicitante -->
+<ng-template #solicitanteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Cadastrar Solicitante</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Empresa</label>
+          <select class="form-select" required>
+            <option>Selecione</option>
+            <option>Empresa X LTDA</option>
+            <option>Empresa Y LTDA</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Cargo</label>
+          <input type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Setor</label>
+          <input type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Telefone</label>
+          <input type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Celular</label>
+          <input type="text" class="form-control" />
+        </div>
+        <div class="col-12">
+          <label class="form-label">Observações</label>
+          <textarea class="form-control" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Senha</label>
+          <input type="password" class="form-control" />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Confirmar Senha</label>
+          <input type="password" class="form-control" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">
+      Cancelar
+    </button>
+    <button class="btn btn-primary" (click)="modal.close('Save')">
+      Salvar
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal Usuario -->
+<ng-template #usuarioModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Cadastrar Usuario</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Perfil</label>
+          <select class="form-select" required>
+            <option>Gestor</option>
+            <option>Analista</option>
+          </select>
+        </div>
+        <div class="col-md-12">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" required />
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Senha</label>
+          <input type="password" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Confirmar Senha</label>
+          <input type="password" class="form-control" required />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">
+      Cancelar
+    </button>
+    <button class="btn btn-primary" (click)="modal.close('Save')">
+      Salvar
+    </button>
+  </div>
+</ng-template>
